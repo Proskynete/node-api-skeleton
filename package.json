@@ -10,6 +10,7 @@
     "lint": "eslint --ignore-path .gitignore . --ext .ts",
     "lint:fix": "npm run lint -- --fix",
     "test": "jest --verbose",
+    "test:coverage": "npm run test -- --coverage",
     "prepare": "husky install"
   },
   "dependencies": {
