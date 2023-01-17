@@ -1,8 +1,10 @@
 import request from "supertest";
 
+import app from "../src/app";
 import { config } from "../src/config";
-import app from "../src/server";
 import mockResponse from "./__mocks__/hello.response.json";
+
+request.agent(app.listen());
 
 describe("GET /", () => {
   it("should return 200 OK", async () => {
