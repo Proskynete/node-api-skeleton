@@ -5,6 +5,7 @@ import morgan from "morgan";
 
 import { config } from "./config";
 import { router } from "./routes";
+import Health from "./tools/health";
 
 // Create Express server
 const app: Express = express();
@@ -15,6 +16,9 @@ app.use(helmet());
 app.use(morgan("tiny"));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+
+// health check
+app.use("/health", Health);
 
 // routes
 app.use(config.base_url, router);
