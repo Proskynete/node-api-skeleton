@@ -1,6 +1,8 @@
-import { readdirSync } from 'node:fs';
-import { Router } from 'express';
-import { removeExtensions } from '../utils/remove_extensions';
+import { readdirSync } from "node:fs";
+
+import { Router } from "express";
+
+import { removeExtensions } from "../utils/remove_extensions";
 
 const router: Router = Router();
 const PATH_ROUTES = __dirname;
@@ -11,12 +13,12 @@ const PATH_ROUTES = __dirname;
  * @param {string} file - The name of the file that we're importing.
  */
 const loadRoutes = (file: string): void => {
-	const name = removeExtensions(file);
-	if (name !== 'index') {
-		import(`./${file}`).then((routeModule) => {
-			router.use(`/${name}`, routeModule.router);
-		});
-	}
+  const name = removeExtensions(file);
+  if (name !== "index") {
+    import(`./${file}`).then((routeModule) => {
+      router.use(`/${name}`, routeModule.router);
+    });
+  }
 };
 
 readdirSync(PATH_ROUTES).filter((file) => loadRoutes(file));
