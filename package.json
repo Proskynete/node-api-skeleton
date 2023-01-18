@@ -9,7 +9,7 @@
     "build": "tsc",
     "lint": "eslint --ignore-path .gitignore . --ext .ts",
     "lint:fix": "npm run lint -- --fix",
-    "test": "jest --verbose",
+    "test": "cross-env PORT=5054 jest --verbose",
     "test:coverage": "npm run test -- --coverage",
     "prepare": "husky install"
   },
@@ -34,6 +34,7 @@
     "@types/swagger-ui-express": "^4.1.3",
     "@typescript-eslint/eslint-plugin": "^5.48.2",
     "@typescript-eslint/parser": "^5.48.2",
+    "cross-env": "^7.0.3",
     "eslint": "^8.32.0",
     "eslint-config-prettier": "^8.6.0",
     "eslint-plugin-import": "^2.27.5",
