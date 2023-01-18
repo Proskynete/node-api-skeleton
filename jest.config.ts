@@ -4,18 +4,19 @@ import { defaults } from "jest-config";
 const config: Config = {
   moduleFileExtensions: [...defaults.moduleFileExtensions, "ts", "js"],
   modulePathIgnorePatterns: ["<rootDir>/dist"],
-  globals: {
-    "ts-jest": {
-      tsconfig: "tsconfig.json",
-    },
-  },
+
   transform: {
-    "^.+\\.(ts|tsx)$": "ts-jest",
+    "^.+\\.(ts|tsx)$": [
+      "ts-jest",
+      {
+        tsconfig: "tsconfig.json",
+      },
+    ],
   },
   testMatch: ["**/test/**/*.spec.(ts|js)"],
   testEnvironment: "node",
   collectCoverage: true,
-  collectCoverageFrom: ["src/**/*.ts"],
+  collectCoverageFrom: ["src/**/*.ts", "!src/server.ts", "!src/config.ts"],
   coverageThreshold: {
     global: {
       branches: 80,

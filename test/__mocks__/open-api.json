@@ -1,0 +1,37 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "Node API Skeleton",
+    "description": "Node API Skeleton",
+    "version": "0.0.1"
+  },
+  "paths": {
+    "/api/v1/hello": {
+      "get": {
+        "tags": [
+          "Example"
+        ],
+        "responses": {
+          "200": {
+            "description": "First dummy route - Route example",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "Hello World!"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {},
+  "tags": []
+}
