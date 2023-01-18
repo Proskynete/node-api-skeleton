@@ -8,6 +8,7 @@ import morgan from "morgan";
 import { config } from "./config";
 import { router } from "./routes";
 import Health from "./tools/health";
+import { swaggerDocs } from "./tools/swagger";
 
 // Create Express server
 const app: Express = express();
@@ -21,6 +22,8 @@ app.use(express.urlencoded({ extended: true }));
 
 // health check
 app.use("/health", Health);
+// swagger config
+swaggerDocs(app);
 
 // routes
 app.use(config.base_url, router);
