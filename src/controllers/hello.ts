@@ -1,7 +1,8 @@
 import { Request, Response } from "express";
 
-export const HelloController = (req: Request, res: Response): void => {
-  res.status(200).json({
-    message: "Hello World!",
-  });
+import { HelloService } from "../services/hello";
+
+export const HelloController = async (req: Request, res: Response) => {
+  const response = await HelloService();
+  res.status(200).json(response);
 };
