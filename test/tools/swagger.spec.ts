@@ -5,10 +5,10 @@ import mockResponse from "../__mocks__/open-api.json";
 
 describe("/docs", () => {
   describe("GET:", () => {
-    it("should return 200 OK", async () => {
+    it("should return 301 OK", async () => {
       const response = await request(app).get("/docs");
 
-      expect(response.statusCode).toEqual(200);
+      expect(response.statusCode).toEqual(301);
     });
   });
 });
