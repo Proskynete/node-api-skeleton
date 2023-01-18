@@ -1,0 +1,30 @@
+name: '🔦 lint'
+
+on: push
+
+jobs:
+  lint:
+    name: Lint
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: 📚 Checkout git repository
+        uses: actions/checkout@v3
+        
+      - name: 🟢 Setup Node.js
+        uses: actions/setup-node@v3
+        env:
+          cache-name: cache-node-modules
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-build-${{ env.cache-name }}-
+            ${{ runner.os }}-build-
+            ${{ runner.os }}-
+    
+      - name: 🛠 Install dependencies
+        run: npm install
+
+      - name: 🔦 Run linter
+        run: npm run lint
