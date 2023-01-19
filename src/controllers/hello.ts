@@ -1,13 +1,13 @@
 import { Request, Response } from "express";
 
+import { EStatusCode } from "../models/status_code";
 import { HelloService } from "../services/hello";
-import { handleHttpError } from "../utils/handle-error";
 
 export const HelloController = async (req: Request, res: Response) => {
   try {
     const response = await HelloService();
-    res.status(200).json(response);
+    res.status(EStatusCode.OK).json(response);
   } catch (error) {
-    handleHttpError(res, "[HelloController] - Server internal error");
+    res.status(EStatusCode.INTERNAL_SERVER_ERROR).json({ error });
   }
 };
