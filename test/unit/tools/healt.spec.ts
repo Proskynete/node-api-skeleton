@@ -1,7 +1,7 @@
 import request from "supertest";
 
-import app from "../../src/app";
-import { EStatusCode } from "../../src/models/status_code";
+import app from "../../../src/app";
+import { EStatusCode } from "../../../src/models/status_code";
 
 describe("/health", () => {
   describe("GET:", () => {
