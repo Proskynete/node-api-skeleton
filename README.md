@@ -9,6 +9,23 @@
 
 [![Coverage Status](https://img.shields.io/coverallsCoverage/github/Proskynete/node-api-skeleton?logo=Coveralls)](https://coveralls.io/github/Proskynete/node-api-skeleton?branch=master) [![CI](https://img.shields.io/github/actions/workflow/status/Proskynete/node-api-skeleton/ci.yml?logo=GithubActions&logoColor=fff)](https://github.com/Proskynete/node-api-skeleton/actions/workflows/ci.yml) [![GitHub issues](https://img.shields.io/github/issues/Proskynete/node-api-skeleton)](https://github.com/Proskynete/node-api-skeleton/issues) [![GitHub forks](https://img.shields.io/github/forks/Proskynete/node-api-skeleton)](https://github.com/Proskynete/node-api-skeleton/network) [![GitHub stars](https://img.shields.io/github/stars/Proskynete/node-api-skeleton)](https://github.com/Proskynete/node-api-skeleton/stargazers)  [![PRs welcome](https://img.shields.io/badge/PRs-welcome-green)](#CONTRIBUTING.md)
 
+## 🚀 Migration to Modern Architecture
+
+> **Note**: A comprehensive migration plan is available in the [`specs/`](./specs/) folder to transform this project into a modern, scalable architecture.
+
+**Target Stack**: Fastify • SWC • Vitest • Zod • Winston • Hexagonal Architecture
+
+**Highlights**:
+- 🏗️ Hexagonal + Onion + Screaming Architecture
+- ⚡ Fastify (replacing Express) for better performance
+- 🔥 SWC compiler (20x faster than tsc)
+- 🧪 Vitest for faster tests
+- 🎯 Hybrid approach: OOP for structure, FP for transformations
+- 📦 API versioning strategy (v1, v2, etc.)
+- 📊 Observability with Winston + Prometheus
+
+See **[specs/README.md](./specs/README.md)** for the complete migration roadmap and implementation plan.
+
 <details>
   <summary>Table of contents</summary>
   <ol>
@@ -32,6 +49,9 @@
     </li>
     <li>
       <a href="#coveralls">Coveralls</a>
+    </li>
+    <li>
+      <a href="#migration-plan">Migration Plan</a>
     </li>
   </ol>
 </details>
@@ -173,5 +193,69 @@ In case you do not want to use [Coveralls](https://coveralls.io/), you must do t
   - Remove the `.coveralls.yml` file if you have already created it.
 - Remove the `test:coveralls` script from the `package.json` file.
   - Remove the `coveralls` package if you have already installed it.
+
+<p align="right"><a href="#top">🔝</a></p>
+
+<h2 id="migration-plan">🏗️ Migration Plan</h2>
+
+A comprehensive migration plan is available in the [`specs/`](./specs/) folder to modernize this API skeleton with:
+
+### 🎯 Target Architecture
+
+- **Hexagonal Architecture** (Ports & Adapters): Clean separation between business logic and infrastructure
+- **Onion Architecture**: Dependencies point inward toward the domain
+- **Screaming Architecture**: Folder structure organized by business features, not technical layers
+
+### ⚡ Modern Tech Stack
+
+| Current | Target | Benefit |
+|---------|--------|---------|
+| Express | **Fastify** | 2-3x better performance |
+| tsc | **SWC** | 20x faster compilation |
+| Jest | **Vitest** | Faster tests, better DX |
+| Manual validation | **Zod** | Runtime type safety |
+| Console logs | **Winston** | Structured logging |
+| - | **Prometheus** | Production metrics |
+
+### 📚 Migration Documents
+
+1. **[00_analisis_situacion_actual.md](./specs/00_analisis_situacion_actual.md)** - Current state analysis
+2. **[01_arquitectura_hexagonal.md](./specs/01_arquitectura_hexagonal.md)** - Architecture design
+3. **[02_carpetas_versionadas.md](./specs/02_carpetas_versionadas.md)** - API versioning strategy
+4. **[03_oportunidades_mejora.md](./specs/03_oportunidades_mejora.md)** - Improvement opportunities
+5. **[04_plan_implementacion.md](./specs/04_plan_implementacion.md)** - 8-stage implementation plan
+6. **[05_enfoque_hibrido_pragmatico.md](./specs/05_enfoque_hibrido_pragmatico.md)** - Hybrid OOP+FP approach
+7. **[README.md](./specs/README.md)** - Executive summary and index
+
+### 🎨 Hybrid Pragmatic Approach
+
+The migration follows a **pragmatic hybrid** of OOP and Functional Programming:
+
+- **Classes** for: Entities, Value Objects, Use Cases, Repositories (structure & DI)
+- **Functions** for: DTOs (types), Mappers, Utilities (transformations)
+- **Principles**: Immutability, pure functions, composition over inheritance, DDD
+
+### 📅 Implementation Timeline
+
+**Total estimate**: 32-50 days (8 stages)
+
+- Stage 0: Setup (Fastify, SWC, Vitest) - 2-3 days
+- Stage 1: Base structure - 3-5 days
+- Stage 2: Domain layer - 4-5 days
+- Stage 3: Application layer v1 - 4-5 days
+- Stage 4: Infrastructure (Fastify) v1 - 5-6 days
+- Stage 5: API versioning v2 - 3-4 days
+- Stage 6: Observability - 4-5 days
+- Stage 7: Optional improvements - 5-10 days
+- Stage 8: Cleanup & docs - 2-3 days
+
+### 🚦 Getting Started with Migration
+
+1. Read the executive summary: [`specs/README.md`](./specs/README.md)
+2. Review the architecture design: [`specs/01_arquitectura_hexagonal.md`](./specs/01_arquitectura_hexagonal.md)
+3. Follow the implementation plan: [`specs/04_plan_implementacion.md`](./specs/04_plan_implementacion.md)
+4. Reference the coding patterns: [`specs/05_enfoque_hibrido_pragmatico.md`](./specs/05_enfoque_hibrido_pragmatico.md)
+
+**Status**: Planning phase complete ✅ | Implementation not started
 
 <p align="right"><a href="#top">🔝</a></p>
