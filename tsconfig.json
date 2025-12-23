@@ -6,7 +6,7 @@
     "target": "es6",
     "types": [
       "node",
-      "jest"
+      "vitest/globals"
     ],
     "strict": true,
     "moduleResolution": "node",
