@@ -1,25 +1,24 @@
-import js from '@eslint/js';
-import eslintConfigPrettier from 'eslint-config-prettier';
-import importPlugin from 'eslint-plugin-import';
-import jestPlugin from 'eslint-plugin-jest';
-import prettierPlugin from 'eslint-plugin-prettier';
-import simpleImportSort from 'eslint-plugin-simple-import-sort';
-import globals from 'globals';
-import tseslint from 'typescript-eslint';
+import js from "@eslint/js";
+import eslintConfigPrettier from "eslint-config-prettier";
+import importPlugin from "eslint-plugin-import";
+import prettierPlugin from "eslint-plugin-prettier";
+import simpleImportSort from "eslint-plugin-simple-import-sort";
+import vitestPlugin from "eslint-plugin-vitest";
+import globals from "globals";
+import tseslint from "typescript-eslint";
 
 export default tseslint.config(
   // Global ignores
   {
     ignores: [
-      '**/dist/**',
-      '**/build/**',
-      '**/coverage/**',
-      '**/node_modules/**',
-      '**/*.js',
-      '**/*.cjs',
-      '**/*.mjs',
-      '!eslint.config.js',
-      'jest.config.ts',
+      "**/dist/**",
+      "**/build/**",
+      "**/coverage/**",
+      "**/node_modules/**",
+      "**/*.js",
+      "**/*.cjs",
+      "**/*.mjs",
+      "vitest.config.ts",
     ],
   },
 
@@ -32,14 +31,13 @@ export default tseslint.config(
 
   // Configuration for all TypeScript files
   {
-    files: ['**/*.ts', '**/*.tsx'],
+    files: ["**/*.ts"],
     languageOptions: {
       ecmaVersion: 2022,
-      sourceType: 'module',
+      sourceType: "module",
       globals: {
         ...globals.node,
         ...globals.es2022,
-        ...globals.jest,
       },
       parserOptions: {
         projectService: true,
@@ -48,56 +46,58 @@ export default tseslint.config(
     },
     plugins: {
       import: importPlugin,
-      'simple-import-sort': simpleImportSort,
-      jest: jestPlugin,
+      "simple-import-sort": simpleImportSort,
+      vitest: vitestPlugin,
       prettier: prettierPlugin,
     },
     rules: {
       // Prettier integration
-      'prettier/prettier': 'error',
+      "prettier/prettier": "error",
 
       // Simple import sort rules
-      'simple-import-sort/imports': 'error',
-      'simple-import-sort/exports': 'error',
+      "simple-import-sort/imports": "error",
+      "simple-import-sort/exports": "error",
 
       // Import plugin rules
-      'import/first': 'error',
-      'import/newline-after-import': 'error',
-      'import/no-duplicates': 'error',
+      "import/first": "error",
+      "import/newline-after-import": "error",
+      "import/no-duplicates": "error",
 
       // TypeScript specific rules
-      '@typescript-eslint/explicit-function-return-type': [
-        'warn',
+      "@typescript-eslint/explicit-function-return-type": [
+        "warn",
         {
           allowExpressions: true,
           allowTypedFunctionExpressions: true,
         },
       ],
-      '@typescript-eslint/no-unused-vars': [
-        'error',
+      "@typescript-eslint/no-unused-vars": [
+        "error",
         {
-          argsIgnorePattern: '^_',
-          varsIgnorePattern: '^_',
+          argsIgnorePattern: "^_",
+          varsIgnorePattern: "^_",
         },
       ],
-      '@typescript-eslint/no-explicit-any': 'warn',
-      '@typescript-eslint/explicit-module-boundary-types': 'off',
+      "@typescript-eslint/no-explicit-any": "warn",
+      "@typescript-eslint/explicit-module-boundary-types": "off",
 
       // General rules
-      'no-console': ['warn', { allow: ['warn', 'error'] }],
-      'prefer-const': 'error',
-      'no-var': 'error',
+      "no-console": ["warn", { allow: ["warn", "error"] }],
+      "prefer-const": "error",
+      "no-var": "error",
     },
   },
 
-  // Jest configuration for test files
+  // Vitest configuration for test files
   {
-    files: ['**/*.spec.ts', '**/*.test.ts', '**/test/**/*.ts'],
-    ...jestPlugin.configs['flat/recommended'],
+    files: ["**/*.spec.ts", "**/*.test.ts", "**/test/**/*.ts"],
+    plugins: {
+      vitest: vitestPlugin,
+    },
     rules: {
-      ...jestPlugin.configs['flat/recommended'].rules,
-      'jest/expect-expect': 'warn',
-      'jest/no-disabled-tests': 'warn',
+      ...vitestPlugin.configs.recommended.rules,
+      "vitest/expect-expect": "warn",
+      "vitest/no-disabled-tests": "warn",
     },
   },
 
