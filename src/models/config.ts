@@ -1,4 +1,4 @@
 export interface Config {
-  port: string;
+  port: number;
   base_url: string;
 }
