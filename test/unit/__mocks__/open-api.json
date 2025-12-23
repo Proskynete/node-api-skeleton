@@ -8,9 +8,7 @@
   "paths": {
     "/api/v1/hello": {
       "get": {
-        "tags": [
-          "Example"
-        ],
+        "tags": ["Example"],
         "responses": {
           "200": {
             "description": "First dummy route - Route example",
