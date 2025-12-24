@@ -11,16 +11,17 @@
 
 ## 🚀 Migration to Modern Architecture - IN PROGRESS
 
-> **Status**: 🚧 **Stage 1 COMPLETED** - Foundation and Fastify setup complete!
+> **Status**: 🚧 **Stage 2 COMPLETED** - Domain layer with entities, value objects, and ports!
 
 **Target Stack**: Fastify • SWC • Vitest • Zod • Winston • Hexagonal Architecture
 
 **Completed**:
 - ✅ **Stage 0**: SWC compiler (20x faster builds), Fastify dependencies, path aliases
 - ✅ **Stage 1**: Hexagonal folder structure, Zod environment validation, basic Fastify server
+- ✅ **Stage 2**: Domain exceptions, Message value object, Greeting entity, domain ports, unit tests
 
 **Next**:
-- 🔜 **Stage 2**: Core domain layer (Entities, Value Objects, Ports)
+- 🔜 **Stage 3**: Application layer (DTOs, mappers, use cases)
 
 **Highlights**:
 - 🏗️ Hexagonal + Onion + Screaming Architecture

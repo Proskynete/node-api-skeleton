@@ -13,31 +13,61 @@ Node API Skeleton is a TypeScript Express API template with best practices, test
 - **Target Architecture**: Hexagonal + Onion + Screaming Architecture
 - **Target Stack**: Fastify, SWC, Vitest, Zod, Winston
 - **Approach**: Hybrid Pragmatic (OOP + FP)
-- **Status**: 🚧 **Stage 1 COMPLETED** (Foundation + Fastify Setup)
+- **Status**: 🚧 **Stage 2 COMPLETED** (Domain Layer with Entities & Ports)
 
 ### ✅ Completed Stages:
 - **Stage 0**: Setup (SWC, Fastify deps, path aliases) ✓
 - **Stage 1**: Foundation (folder structure, Zod config, Fastify server) ✓
+- **Stage 2**: Domain layer (exceptions, value objects, entities, ports, unit tests) ✓
 
 ### 📁 New Architecture (src/@*)
 ```
 src/
-├── @core/                    # Domain layer (business logic)
+├── @core/                    # Domain layer (business logic) ✅
 │   ├── domain/               # Entities, Value Objects, Services
+│   │   ├── greetings/        # Greeting domain (entities, VOs, exceptions)
+│   │   └── shared/           # Shared domain (DomainException base)
 │   └── ports/                # Interfaces (inbound/outbound)
-├── @application/             # Use cases layer
+│       ├── inbound/          # Use case interfaces (IGetGreetingUseCase)
+│       └── outbound/         # Repository/service interfaces (IGreetingRepository, ILogger)
+├── @application/             # Use cases layer (🔜 Stage 3)
 │   ├── v1/                   # API version 1
 │   └── v2/                   # API version 2
 ├── @infrastructure/          # External concerns
-│   ├── http/                 # Fastify HTTP (controllers, routes)
+│   ├── http/                 # Fastify HTTP (controllers, routes) ✅
 │   ├── persistence/          # Databases, repositories
-│   ├── config/               # Environment validation (Zod)
+│   ├── config/               # Environment validation (Zod) ✅
 │   └── observability/        # Logging, metrics
-└── @shared/                  # Shared utilities
+└── @shared/                  # Shared utilities ✅
     ├── types/                # Result, common types
     ├── utils/                # Pure functions
     └── constants/            # HTTP status, etc.
 ```
+
+### 🏗️ Domain Layer (Stage 2)
+
+The domain layer follows DDD principles with immutable entities and value objects:
+
+**Exceptions**:
+- `DomainException` (abstract base): Custom error with code and HTTP status
+- `InvalidGreetingException`: Validation errors for greeting messages
+
+**Value Objects**:
+- `Message`: Immutable value object with validation (1-200 chars)
+  - Uses static factory method `Message.create()`
+  - Implements `equals()` for value comparison
+
+**Entities**:
+- `Greeting`: Immutable entity encapsulating Message
+  - `Greeting.create()`: New instance with current timestamp
+  - `Greeting.reconstitute()`: Rebuild from persistence
+  - Private constructor ensures controlled creation
+
+**Ports (Interfaces)**:
+- **Inbound**: `IGetGreetingUseCase` - Application layer contract
+- **Outbound**: `IGreetingRepository`, `ILogger` - Infrastructure contracts
+
+**Tests**: Unit tests in `test/unit/@core/domain/` with >90% coverage
 
 ### 🔄 Coexistence Period
 During migration, **both architectures coexist**:
