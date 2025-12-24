@@ -1,3 +1,4 @@
+import path from "path";
 import { defineConfig } from "vitest/config";
 
 export default defineConfig({
@@ -17,6 +18,8 @@ export default defineConfig({
         "**/test/**",
         "src/server.ts",
         "src/config.ts",
+        "src/main.ts",
+        "src/@infrastructure/config/**",
         "vitest.config.ts",
         "eslint.config.mjs",
       ],
@@ -29,5 +32,13 @@ export default defineConfig({
     },
     include: ["test/**/*.spec.ts", "test/**/*.test.ts"],
     testTimeout: 10000,
+  },
+  resolve: {
+    alias: {
+      "@core": path.resolve(__dirname, "./src/@core"),
+      "@application": path.resolve(__dirname, "./src/@application"),
+      "@infrastructure": path.resolve(__dirname, "./src/@infrastructure"),
+      "@shared": path.resolve(__dirname, "./src/@shared"),
+    },
   },
 });
