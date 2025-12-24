@@ -6,16 +6,49 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 Node API Skeleton is a TypeScript Express API template with best practices, testing infrastructure, and OpenAPI documentation. It's designed as a starting point for new API projects.
 
-## 🚨 Migration Plan Available
+## 🚨 Migration to Hexagonal Architecture - IN PROGRESS
 
-**IMPORTANT**: There is a comprehensive migration plan in the `specs/` folder to transform this project into a modern architecture:
+**IMPORTANT**: This project is actively migrating to modern architecture. The migration plan is in `specs/` folder.
 
 - **Target Architecture**: Hexagonal + Onion + Screaming Architecture
 - **Target Stack**: Fastify, SWC, Vitest, Zod, Winston
 - **Approach**: Hybrid Pragmatic (OOP + FP)
-- **Status**: Planning phase - implementation not started
+- **Status**: 🚧 **Stage 1 COMPLETED** (Foundation + Fastify Setup)
 
-See `specs/README.md` for the complete migration roadmap. The current codebase still uses Express, Jest, and layered architecture as described below.
+### ✅ Completed Stages:
+- **Stage 0**: Setup (SWC, Fastify deps, path aliases) ✓
+- **Stage 1**: Foundation (folder structure, Zod config, Fastify server) ✓
+
+### 📁 New Architecture (src/@*)
+```
+src/
+├── @core/                    # Domain layer (business logic)
+│   ├── domain/               # Entities, Value Objects, Services
+│   └── ports/                # Interfaces (inbound/outbound)
+├── @application/             # Use cases layer
+│   ├── v1/                   # API version 1
+│   └── v2/                   # API version 2
+├── @infrastructure/          # External concerns
+│   ├── http/                 # Fastify HTTP (controllers, routes)
+│   ├── persistence/          # Databases, repositories
+│   ├── config/               # Environment validation (Zod)
+│   └── observability/        # Logging, metrics
+└── @shared/                  # Shared utilities
+    ├── types/                # Result, common types
+    ├── utils/                # Pure functions
+    └── constants/            # HTTP status, etc.
+```
+
+### 🔄 Coexistence Period
+During migration, **both architectures coexist**:
+- **Legacy Express**: `src/app.ts`, `src/server.ts`, `src/routes/`, `src/controllers/`
+- **New Fastify**: `src/main.ts`, `src/@infrastructure/http/app.ts`
+
+**Commands**:
+- `npm run dev` - Fastify server (new) with SWC
+- `npm run dev:express` - Express server (legacy)
+
+See `specs/README.md` for complete migration roadmap.
 
 ## Development Commands
 

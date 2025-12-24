@@ -9,20 +9,33 @@
 
 [![Coverage Status](https://img.shields.io/coverallsCoverage/github/Proskynete/node-api-skeleton?logo=Coveralls)](https://coveralls.io/github/Proskynete/node-api-skeleton?branch=master) [![CI](https://img.shields.io/github/actions/workflow/status/Proskynete/node-api-skeleton/ci.yml?logo=GithubActions&logoColor=fff)](https://github.com/Proskynete/node-api-skeleton/actions/workflows/ci.yml) [![GitHub issues](https://img.shields.io/github/issues/Proskynete/node-api-skeleton)](https://github.com/Proskynete/node-api-skeleton/issues) [![GitHub forks](https://img.shields.io/github/forks/Proskynete/node-api-skeleton)](https://github.com/Proskynete/node-api-skeleton/network) [![GitHub stars](https://img.shields.io/github/stars/Proskynete/node-api-skeleton)](https://github.com/Proskynete/node-api-skeleton/stargazers)  [![PRs welcome](https://img.shields.io/badge/PRs-welcome-green)](#CONTRIBUTING.md)
 
-## 🚀 Migration to Modern Architecture
+## 🚀 Migration to Modern Architecture - IN PROGRESS
 
-> **Note**: A comprehensive migration plan is available in the [`specs/`](./specs/) folder to transform this project into a modern, scalable architecture.
+> **Status**: 🚧 **Stage 1 COMPLETED** - Foundation and Fastify setup complete!
 
 **Target Stack**: Fastify • SWC • Vitest • Zod • Winston • Hexagonal Architecture
+
+**Completed**:
+- ✅ **Stage 0**: SWC compiler (20x faster builds), Fastify dependencies, path aliases
+- ✅ **Stage 1**: Hexagonal folder structure, Zod environment validation, basic Fastify server
+
+**Next**:
+- 🔜 **Stage 2**: Core domain layer (Entities, Value Objects, Ports)
 
 **Highlights**:
 - 🏗️ Hexagonal + Onion + Screaming Architecture
 - ⚡ Fastify (replacing Express) for better performance
-- 🔥 SWC compiler (20x faster than tsc)
+- 🔥 SWC compiler - builds in ~56ms (was ~2-3s with tsc)
 - 🧪 Vitest for faster tests
 - 🎯 Hybrid approach: OOP for structure, FP for transformations
 - 📦 API versioning strategy (v1, v2, etc.)
 - 📊 Observability with Winston + Prometheus
+
+**Try the new Fastify server**:
+```bash
+npm run dev        # New Fastify server with SWC hot reload
+npm run dev:express # Legacy Express server
+```
 
 See **[specs/README.md](./specs/README.md)** for the complete migration roadmap and implementation plan.
 
