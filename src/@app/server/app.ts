@@ -7,8 +7,7 @@ import { corsPlugin } from "@app/server/plugins/cors.plugin";
 import { helmetPlugin } from "@app/server/plugins/helmet.plugin";
 import { errorHandler } from "@app/server/middlewares/errorHandler";
 import { registerHealthRoutes } from "@app/server/health";
-import { greetingRoutes as v1GreetingRoutes } from "@contexts/greetings/infrastructure/http/v1/routes/greeting.routes";
-import { greetingRoutes as v2GreetingRoutes } from "@contexts/greetings/infrastructure/http/v2/routes/greeting.routes";
+import { loadRoutes } from "@app/server/loaders/route-loader";
 
 export async function buildApp(): Promise<FastifyInstance> {
   const app = Fastify({
@@ -66,11 +65,8 @@ export async function buildApp(): Promise<FastifyInstance> {
   // Health check routes
   await registerHealthRoutes(app);
 
-  // Register v1 routes
-  await app.register(v1GreetingRoutes, { prefix: "/api/v1" });
-
-  // Register v2 routes
-  await app.register(v2GreetingRoutes, { prefix: "/api/v2" });
+  // Auto-load routes from all contexts (scans @contexts/*/infrastructure/http/v*/routes/)
+  await loadRoutes(app);
 
   // Error handler (must be last)
   app.setErrorHandler(errorHandler);
