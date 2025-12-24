@@ -34,17 +34,13 @@ export const fail = <E>(error: E): Failure<E> => ({
 /**
  * Type guard to check if Result is Success
  */
-export const isSuccess = <T, E>(
-  result: Result<T, E>
-): result is Success<T> => {
+export const isSuccess = <T, E>(result: Result<T, E>): result is Success<T> => {
   return result.success === true;
 };
 
 /**
  * Type guard to check if Result is Failure
  */
-export const isFailure = <T, E>(
-  result: Result<T, E>
-): result is Failure<E> => {
+export const isFailure = <T, E>(result: Result<T, E>): result is Failure<E> => {
   return result.success === false;
 };
