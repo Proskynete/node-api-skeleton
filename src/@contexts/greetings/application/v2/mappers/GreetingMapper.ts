@@ -1,5 +1,5 @@
-import { Greeting } from "@contexts/greetings/domain/entities/Greeting";
 import { GreetingResponseDto } from "@contexts/greetings/application/v2/dtos/GreetingResponseDto";
+import { Greeting } from "@contexts/greetings/domain/entities/Greeting";
 
 /**
  * Maps Greeting entity to GreetingResponseDto v2

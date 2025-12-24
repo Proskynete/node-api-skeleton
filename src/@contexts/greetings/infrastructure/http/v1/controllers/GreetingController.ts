@@ -1,6 +1,6 @@
-import { FastifyRequest, FastifyReply } from "fastify";
 import { IGetGreetingUseCase } from "@contexts/greetings/application/v1/ports/inbound/IGetGreetingUseCase";
 import { ILogger } from "@shared/infrastructure/observability/ILogger";
+import { FastifyReply, FastifyRequest } from "fastify";
 
 /**
  * Greeting Controller (Fastify v1)

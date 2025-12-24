@@ -1,9 +1,8 @@
-import { beforeEach, describe, expect, it, vi } from "vitest";
-
-import { GetGreetingUseCase } from "@contexts/greetings/application/v1/use-cases/GetGreetingUseCase";
 import { IGreetingRepository } from "@contexts/greetings/application/v1/ports/outbound/IGreetingRepository";
-import { ILogger } from "@shared/infrastructure/observability/ILogger";
+import { GetGreetingUseCase } from "@contexts/greetings/application/v1/use-cases/GetGreetingUseCase";
 import { Greeting } from "@contexts/greetings/domain/entities/Greeting";
+import { ILogger } from "@shared/infrastructure/observability/ILogger";
+import { beforeEach, describe, expect, it, vi } from "vitest";
 
 describe("GetGreetingUseCase", () => {
   let useCase: GetGreetingUseCase;

@@ -1,14 +1,15 @@
-import { FastifyInstance } from "fastify";
-import { container } from "@shared/infrastructure/config/dependency-injection/container";
 import { GreetingController } from "@contexts/greetings/infrastructure/http/v2/controllers/GreetingController";
+import { container } from "@shared/infrastructure/config/dependency-injection/container";
+import { FastifyInstance } from "fastify";
 
 /**
  * Greeting Routes (Fastify v2)
  * Registers all greeting endpoints with OpenAPI schemas for v2
  */
 export async function greetingRoutes(fastify: FastifyInstance) {
-  const controller =
-    container.resolve<GreetingController>("greetingControllerV2");
+  const controller = container.resolve<GreetingController>(
+    "greetingControllerV2"
+  );
 
   fastify.get("/greetings", {
     schema: {

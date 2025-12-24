@@ -1,7 +1,6 @@
-import { describe, expect, it } from "vitest";
-
 import { InvalidGreetingException } from "@contexts/greetings/domain/exceptions/InvalidGreetingException";
 import { Message } from "@contexts/greetings/domain/value-objects/Message";
+import { describe, expect, it } from "vitest";
 
 describe("Message Value Object", () => {
   describe("create", () => {

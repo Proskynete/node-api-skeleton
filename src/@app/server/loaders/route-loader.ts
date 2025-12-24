@@ -1,5 +1,6 @@
-import { readdirSync, existsSync, statSync } from "node:fs";
+import { existsSync, readdirSync, statSync } from "node:fs";
 import { join } from "node:path";
+
 import { FastifyInstance } from "fastify";
 
 /**
@@ -8,9 +9,7 @@ import { FastifyInstance } from "fastify";
  * Supports multiple API versions (v1, v2, etc.)
  */
 
-interface RouteModule {
-  [key: string]: (fastify: FastifyInstance) => Promise<void>;
-}
+type RouteModule = Record<string, (fastify: FastifyInstance) => Promise<void>>;
 
 /**
  * Load routes for a specific version from a context
@@ -49,9 +48,7 @@ async function loadContextVersionRoutes(
       const prefix = `/api/${version}`;
       await app.register(routeHandler, { prefix });
 
-      console.log(
-        `✓ Registered ${contextName}/${version} routes at ${prefix}`
-      );
+      console.log(`✓ Registered ${contextName}/${version} routes at ${prefix}`);
     }
   }
 }

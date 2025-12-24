@@ -1,12 +1,12 @@
+import { IGreetingRepository } from "@contexts/greetings/application/v1/ports/outbound/IGreetingRepository";
 import { GetGreetingUseCase as GetGreetingUseCaseV1 } from "@contexts/greetings/application/v1/use-cases/GetGreetingUseCase";
 import { GetGreetingUseCase as GetGreetingUseCaseV2 } from "@contexts/greetings/application/v2/use-cases/GetGreetingUseCase";
-import { InMemoryGreetingRepository } from "@contexts/greetings/infrastructure/persistence/InMemoryGreetingRepository";
 import { GreetingController as GreetingControllerV1 } from "@contexts/greetings/infrastructure/http/v1/controllers/GreetingController";
 import { GreetingController as GreetingControllerV2 } from "@contexts/greetings/infrastructure/http/v2/controllers/GreetingController";
-import { WinstonLogger } from "@shared/infrastructure/observability/WinstonLogger";
-import { ILogger } from "@shared/infrastructure/observability/ILogger";
-import { IGreetingRepository } from "@contexts/greetings/application/v1/ports/outbound/IGreetingRepository";
+import { InMemoryGreetingRepository } from "@contexts/greetings/infrastructure/persistence/InMemoryGreetingRepository";
 import { env } from "@shared/infrastructure/config/environment";
+import { ILogger } from "@shared/infrastructure/observability/ILogger";
+import { WinstonLogger } from "@shared/infrastructure/observability/WinstonLogger";
 
 /**
  * Dependency Injection Container
@@ -14,9 +14,11 @@ import { env } from "@shared/infrastructure/config/environment";
  * Supports singleton and transient scopes
  */
 class Container {
-  private services: Map<string, { factory: () => any; singleton: boolean }> =
-    new Map();
-  private singletons: Map<string, any> = new Map();
+  private services = new Map<
+    string,
+    { factory: () => any; singleton: boolean }
+  >();
+  private singletons = new Map<string, any>();
 
   /**
    * Register a singleton service (single instance shared across app)

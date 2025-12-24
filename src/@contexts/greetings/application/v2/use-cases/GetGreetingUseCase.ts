@@ -1,8 +1,8 @@
-import { IGetGreetingUseCase } from "@contexts/greetings/application/v2/ports/inbound/IGetGreetingUseCase";
 import { IGreetingRepository } from "@contexts/greetings/application/v1/ports/outbound/IGreetingRepository";
-import { ILogger } from "@shared/infrastructure/observability/ILogger";
 import { GreetingResponseDto } from "@contexts/greetings/application/v2/dtos/GreetingResponseDto";
 import { greetingToDto } from "@contexts/greetings/application/v2/mappers/GreetingMapper";
+import { IGetGreetingUseCase } from "@contexts/greetings/application/v2/ports/inbound/IGetGreetingUseCase";
+import { ILogger } from "@shared/infrastructure/observability/ILogger";
 
 /**
  * Use Case: Get Greeting (v2)

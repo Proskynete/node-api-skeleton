@@ -1,6 +1,6 @@
-import { FastifyInstance } from "fastify";
-import { container } from "@shared/infrastructure/config/dependency-injection/container";
 import { GreetingController } from "@contexts/greetings/infrastructure/http/v1/controllers/GreetingController";
+import { container } from "@shared/infrastructure/config/dependency-injection/container";
+import { FastifyInstance } from "fastify";
 
 /**
  * Greeting Routes (Fastify v1)

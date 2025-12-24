@@ -1,5 +1,5 @@
-import winston from "winston";
 import { ILogger } from "@shared/infrastructure/observability/ILogger";
+import winston from "winston";
 
 /**
  * Winston Logger Implementation
@@ -9,7 +9,7 @@ import { ILogger } from "@shared/infrastructure/observability/ILogger";
 export class WinstonLogger implements ILogger {
   private logger: winston.Logger;
 
-  constructor(level: string = "info") {
+  constructor(level = "info") {
     this.logger = winston.createLogger({
       level,
       format: winston.format.combine(

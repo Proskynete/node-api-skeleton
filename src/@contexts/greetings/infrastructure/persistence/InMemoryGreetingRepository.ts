@@ -1,5 +1,5 @@
-import { Greeting } from "@contexts/greetings/domain/entities/Greeting";
 import { IGreetingRepository } from "@contexts/greetings/application/v1/ports/outbound/IGreetingRepository";
+import { Greeting } from "@contexts/greetings/domain/entities/Greeting";
 
 /**
  * In-Memory Greeting Repository

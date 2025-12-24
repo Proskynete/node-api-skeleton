@@ -1,13 +1,12 @@
-import Fastify, { FastifyInstance } from "fastify";
-import swagger from "@fastify/swagger";
-import swaggerUi from "@fastify/swagger-ui";
-
-import { env } from "@shared/infrastructure/config/environment";
-import { corsPlugin } from "@app/server/plugins/cors.plugin";
-import { helmetPlugin } from "@app/server/plugins/helmet.plugin";
-import { errorHandler } from "@app/server/middlewares/errorHandler";
 import { registerHealthRoutes } from "@app/server/health";
 import { loadRoutes } from "@app/server/loaders/route-loader";
+import { errorHandler } from "@app/server/middlewares/errorHandler";
+import { corsPlugin } from "@app/server/plugins/cors.plugin";
+import { helmetPlugin } from "@app/server/plugins/helmet.plugin";
+import swagger from "@fastify/swagger";
+import swaggerUi from "@fastify/swagger-ui";
+import { env } from "@shared/infrastructure/config/environment";
+import Fastify, { FastifyInstance } from "fastify";
 
 export async function buildApp(): Promise<FastifyInstance> {
   const app = Fastify({

@@ -1,5 +1,5 @@
-import { FastifyError, FastifyRequest, FastifyReply } from "fastify";
 import { DomainException } from "@shared/domain/exceptions/DomainException";
+import { FastifyError, FastifyReply, FastifyRequest } from "fastify";
 import { ZodError } from "zod";
 
 /**

@@ -1,5 +1,5 @@
-import { env } from "@shared/infrastructure/config/environment";
 import { buildApp } from "@app/server/app";
+import { env } from "@shared/infrastructure/config/environment";
 
 async function start(): Promise<void> {
   try {

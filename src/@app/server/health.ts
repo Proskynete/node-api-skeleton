@@ -4,7 +4,9 @@ import { FastifyInstance } from "fastify";
  * Health Check Routes
  * Provides health and readiness endpoints for monitoring
  */
-export async function registerHealthRoutes(app: FastifyInstance): Promise<void> {
+export async function registerHealthRoutes(
+  app: FastifyInstance
+): Promise<void> {
   app.get(
     "/health",
     {
