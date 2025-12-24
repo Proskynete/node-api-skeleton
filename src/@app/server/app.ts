@@ -8,6 +8,7 @@ import { helmetPlugin } from "@app/server/plugins/helmet.plugin";
 import { errorHandler } from "@app/server/middlewares/errorHandler";
 import { registerHealthRoutes } from "@app/server/health";
 import { greetingRoutes as v1GreetingRoutes } from "@contexts/greetings/infrastructure/http/v1/routes/greeting.routes";
+import { greetingRoutes as v2GreetingRoutes } from "@contexts/greetings/infrastructure/http/v2/routes/greeting.routes";
 
 export async function buildApp(): Promise<FastifyInstance> {
   const app = Fastify({
@@ -36,7 +37,7 @@ export async function buildApp(): Promise<FastifyInstance> {
         title: "Node API Skeleton",
         description:
           "API with Hexagonal + Onion + Screaming Architecture using Fastify",
-        version: "1.0.0",
+        version: "2.0.0",
       },
       servers: [
         {
@@ -44,7 +45,12 @@ export async function buildApp(): Promise<FastifyInstance> {
           description: "Development",
         },
       ],
-      tags: [{ name: "Greetings", description: "Greeting endpoints" }],
+      tags: [
+        {
+          name: "Greetings",
+          description: "Greeting endpoints (v1 and v2 available)",
+        },
+      ],
     },
   });
 
@@ -62,6 +68,9 @@ export async function buildApp(): Promise<FastifyInstance> {
 
   // Register v1 routes
   await app.register(v1GreetingRoutes, { prefix: "/api/v1" });
+
+  // Register v2 routes
+  await app.register(v2GreetingRoutes, { prefix: "/api/v2" });
 
   // Error handler (must be last)
   app.setErrorHandler(errorHandler);
