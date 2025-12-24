@@ -5,8 +5,7 @@
   "private": true,
   "scripts": {
     "start": "node ./dist/main.js",
-    "dev": "nodemon --exec \"node --loader @swc-node/register/esm-preloader\" src/main.ts",
-    "dev:express": "ts-node-dev ./src/server.ts",
+    "dev": "nodemon --exec \"node -r @swc-node/register\" src/main.ts",
     "build": "swc src -d dist --copy-files --strip-leading-paths",
     "build:tsc": "tsc",
     "lint": "eslint .",
