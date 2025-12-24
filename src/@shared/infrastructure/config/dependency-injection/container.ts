@@ -1,6 +1,8 @@
-import { GetGreetingUseCase } from "@contexts/greetings/application/v1/use-cases/GetGreetingUseCase";
+import { GetGreetingUseCase as GetGreetingUseCaseV1 } from "@contexts/greetings/application/v1/use-cases/GetGreetingUseCase";
+import { GetGreetingUseCase as GetGreetingUseCaseV2 } from "@contexts/greetings/application/v2/use-cases/GetGreetingUseCase";
 import { InMemoryGreetingRepository } from "@contexts/greetings/infrastructure/persistence/InMemoryGreetingRepository";
-import { GreetingController } from "@contexts/greetings/infrastructure/http/v1/controllers/GreetingController";
+import { GreetingController as GreetingControllerV1 } from "@contexts/greetings/infrastructure/http/v1/controllers/GreetingController";
+import { GreetingController as GreetingControllerV2 } from "@contexts/greetings/infrastructure/http/v2/controllers/GreetingController";
 import { WinstonLogger } from "@shared/infrastructure/observability/WinstonLogger";
 import { ILogger } from "@shared/infrastructure/observability/ILogger";
 import { IGreetingRepository } from "@contexts/greetings/application/v1/ports/outbound/IGreetingRepository";
@@ -58,16 +60,17 @@ container.registerSingleton<ILogger>(
   () => new WinstonLogger(env.LOG_LEVEL)
 );
 
-// Register greetings context services
+// Register greetings context services (shared repository)
 container.register<IGreetingRepository>(
   "greetingRepository",
   () => new InMemoryGreetingRepository()
 );
 
+// V1 services
 container.register(
-  "getGreetingUseCase",
+  "getGreetingUseCaseV1",
   () =>
-    new GetGreetingUseCase(
+    new GetGreetingUseCaseV1(
       container.resolve<IGreetingRepository>("greetingRepository"),
       container.resolve<ILogger>("logger")
     )
@@ -76,8 +79,27 @@ container.register(
 container.register(
   "greetingController",
   () =>
-    new GreetingController(
-      container.resolve("getGreetingUseCase"),
+    new GreetingControllerV1(
+      container.resolve("getGreetingUseCaseV1"),
+      container.resolve<ILogger>("logger")
+    )
+);
+
+// V2 services
+container.register(
+  "getGreetingUseCaseV2",
+  () =>
+    new GetGreetingUseCaseV2(
+      container.resolve<IGreetingRepository>("greetingRepository"),
+      container.resolve<ILogger>("logger")
+    )
+);
+
+container.register(
+  "greetingControllerV2",
+  () =>
+    new GreetingControllerV2(
+      container.resolve("getGreetingUseCaseV2"),
       container.resolve<ILogger>("logger")
     )
 );
