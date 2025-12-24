@@ -20,25 +20,33 @@ Node API Skeleton is a TypeScript Express API template with best practices, test
 - **Stage 1**: Foundation (folder structure, Zod config, Fastify server) ✓
 - **Stage 2**: Domain layer (exceptions, value objects, entities, ports, unit tests) ✓
 
-### 📁 New Architecture (src/@*)
+### 📁 New Architecture (Vertical Slice by Contexts) ✅
 ```
 src/
-├── @core/                    # Domain layer (business logic) ✅
-│   ├── domain/               # Entities, Value Objects, Services
-│   │   ├── greetings/        # Greeting domain (entities, VOs, exceptions)
-│   │   └── shared/           # Shared domain (DomainException base)
-│   └── ports/                # Interfaces (inbound/outbound)
-│       ├── inbound/          # Use case interfaces (IGetGreetingUseCase)
-│       └── outbound/         # Repository/service interfaces (IGreetingRepository, ILogger)
-├── @application/             # Use cases layer (🔜 Stage 3)
-│   ├── v1/                   # API version 1
-│   └── v2/                   # API version 2
-├── @infrastructure/          # External concerns
-│   ├── http/                 # Fastify HTTP (controllers, routes) ✅
-│   ├── persistence/          # Databases, repositories
-│   ├── config/               # Environment validation (Zod) ✅
-│   └── observability/        # Logging, metrics
-└── @shared/                  # Shared utilities ✅
+├── @contexts/                # Bounded Contexts (vertical slices)
+│   └── greetings/            # Greetings context ✅
+│       ├── domain/           # Domain layer
+│       │   ├── entities/     # Greeting entity
+│       │   ├── value-objects/# Message VO
+│       │   └── exceptions/   # InvalidGreetingException
+│       ├── application/      # Application layer (🔜 Stage 3)
+│       │   ├── ports/
+│       │   │   ├── inbound/  # IGetGreetingUseCase
+│       │   │   └── outbound/ # IGreetingRepository
+│       │   ├── use-cases/
+│       │   ├── dtos/
+│       │   └── mappers/
+│       └── infrastructure/   # Infrastructure layer
+│           ├── http/         # Controllers, routes
+│           └── persistence/  # Repositories
+│
+└── @shared/                  # Cross-cutting concerns ✅
+    ├── domain/
+    │   └── exceptions/       # DomainException base class
+    ├── infrastructure/
+    │   ├── config/           # Environment validation (Zod)
+    │   ├── http/             # Fastify app, plugins
+    │   └── observability/    # ILogger interface
     ├── types/                # Result, common types
     ├── utils/                # Pure functions
     └── constants/            # HTTP status, etc.
@@ -67,12 +75,27 @@ The domain layer follows DDD principles with immutable entities and value object
 - **Inbound**: `IGetGreetingUseCase` - Application layer contract
 - **Outbound**: `IGreetingRepository`, `ILogger` - Infrastructure contracts
 
-**Tests**: Unit tests in `test/unit/@core/domain/` with >90% coverage
+**Tests**: Unit tests in `test/unit/@contexts/greetings/domain/` with >90% coverage
+
+### 🎯 Vertical Slice Architecture (Contexts)
+
+The codebase now uses **Vertical Slice Architecture** where each bounded context contains all layers:
+
+**Benefits**:
+- **High cohesion**: All greetings code in `@contexts/greetings/`
+- **Easy navigation**: No jumping between @core, @application, @infrastructure
+- **Scalability**: Add new contexts without affecting existing ones
+- **Team ownership**: Each team can own a complete context
+- **Microservices-ready**: Easy to extract a context to its own service
+
+**Path Aliases**:
+- `@contexts/*` - Bounded contexts (greetings, users, orders, etc.)
+- `@shared/*` - Cross-cutting concerns (config, logger, types, utils)
 
 ### 🔄 Coexistence Period
 During migration, **both architectures coexist**:
 - **Legacy Express**: `src/app.ts`, `src/server.ts`, `src/routes/`, `src/controllers/`
-- **New Fastify**: `src/main.ts`, `src/@infrastructure/http/app.ts`
+- **New Fastify**: `src/main.ts`, `src/@shared/infrastructure/http/app.ts`
 
 **Commands**:
 - `npm run dev` - Fastify server (new) with SWC
