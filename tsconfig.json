@@ -3,7 +3,7 @@
     "module": "commonjs",
     "esModuleInterop": true,
     "allowSyntheticDefaultImports": true,
-    "target": "es6",
+    "target": "es2022",
     "types": [
       "node",
       "vitest/globals"
@@ -11,7 +11,14 @@
     "strict": true,
     "moduleResolution": "node",
     "outDir": "dist",
-    "resolveJsonModule": true
+    "resolveJsonModule": true,
+    "baseUrl": "./src",
+    "paths": {
+      "@core/*": ["@core/*"],
+      "@application/*": ["@application/*"],
+      "@infrastructure/*": ["@infrastructure/*"],
+      "@shared/*": ["@shared/*"]
+    }
   },
   "include": [
     "src/**/*",
