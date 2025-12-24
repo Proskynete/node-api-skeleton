@@ -1,6 +1,6 @@
 import { describe, it, expect, beforeAll, afterAll } from "vitest";
 import { FastifyInstance } from "fastify";
-import { buildApp } from "@shared/infrastructure/http/app";
+import { buildApp } from "@app/server/app";
 
 describe("GET /api/v1/greetings", () => {
   let app: FastifyInstance;

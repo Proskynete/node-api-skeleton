@@ -1,5 +1,5 @@
 import { env } from "@shared/infrastructure/config/environment";
-import { buildApp } from "@shared/infrastructure/http/app";
+import { buildApp } from "@app/server/app";
 
 async function start(): Promise<void> {
   try {
@@ -13,11 +13,11 @@ async function start(): Promise<void> {
     console.log(`
 ╔═══════════════════════════════════════════════════════╗
 ║                                                       ║
-║   🚀 Fastify Server Ready                              ║
+║   Server Ready                                        ║
 ║                                                       ║
-║   📍 Environment: ${env.NODE_ENV.padEnd(20)} ║
-║   🌐 Port: ${String(env.PORT).padEnd(27)} ║
-║   📊 Health: http://localhost:${env.PORT}/health${" ".repeat(14)}║
+║   Environment: ${env.NODE_ENV.padEnd(20)}${" ".repeat(17 - env.NODE_ENV.length)}             ║
+║   Port: ${String(env.PORT).padEnd(27)}${" ".repeat(7 - String(env.PORT).length)}                ║
+║   Health: http://localhost:${env.PORT}/health${" ".repeat(16)}║
 ║                                                       ║
 ╚═══════════════════════════════════════════════════════╝
     `);
