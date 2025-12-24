@@ -1,8 +1,8 @@
 import Fastify, { FastifyInstance } from "fastify";
 
-import { env } from "../config/environment";
-import { corsPlugin } from "./shared/plugins/cors.plugin";
-import { helmetPlugin } from "./shared/plugins/helmet.plugin";
+import { env } from "@shared/infrastructure/config/environment";
+import { corsPlugin } from "@shared/infrastructure/http/shared/plugins/cors.plugin";
+import { helmetPlugin } from "@shared/infrastructure/http/shared/plugins/helmet.plugin";
 
 export async function buildApp(): Promise<FastifyInstance> {
   const app = Fastify({

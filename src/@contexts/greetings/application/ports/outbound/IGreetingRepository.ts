@@ -1,4 +1,4 @@
-import { Greeting } from "../../../domain/greetings/entities/Greeting";
+import { Greeting } from "@contexts/greetings/domain/entities/Greeting";
 
 export interface IGreetingRepository {
   getGreeting(): Promise<Greeting>;

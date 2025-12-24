@@ -1,4 +1,4 @@
-import { Message } from "../value-objects/Message";
+import { Message } from "@contexts/greetings/domain/value-objects/Message";
 
 export class Greeting {
   private constructor(

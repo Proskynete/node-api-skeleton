@@ -19,7 +19,7 @@ export default defineConfig({
         "src/server.ts",
         "src/config.ts",
         "src/main.ts",
-        "src/@infrastructure/config/**",
+        "src/@shared/infrastructure/config/**",
         "vitest.config.ts",
         "eslint.config.mjs",
       ],
@@ -35,9 +35,7 @@ export default defineConfig({
   },
   resolve: {
     alias: {
-      "@core": path.resolve(__dirname, "./src/@core"),
-      "@application": path.resolve(__dirname, "./src/@application"),
-      "@infrastructure": path.resolve(__dirname, "./src/@infrastructure"),
+      "@contexts": path.resolve(__dirname, "./src/@contexts"),
       "@shared": path.resolve(__dirname, "./src/@shared"),
     },
   },

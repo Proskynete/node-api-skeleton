@@ -1,4 +1,4 @@
-import { InvalidGreetingException } from "../exceptions/InvalidGreetingException";
+import { InvalidGreetingException } from "@contexts/greetings/domain/exceptions/InvalidGreetingException";
 
 export class Message {
   private readonly MIN_LENGTH = 1;

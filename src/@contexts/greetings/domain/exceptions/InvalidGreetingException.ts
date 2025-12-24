@@ -1,4 +1,4 @@
-import { DomainException } from "../../shared/exceptions/DomainException";
+import { DomainException } from "@shared/domain/exceptions/DomainException";
 
 export class InvalidGreetingException extends DomainException {
   constructor(message: string) {

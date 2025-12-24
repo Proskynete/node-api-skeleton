@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest";
 
-import { Greeting } from "../../../../../../src/@core/domain/greetings/entities/Greeting";
-import { InvalidGreetingException } from "../../../../../../src/@core/domain/greetings/exceptions/InvalidGreetingException";
+import { Greeting } from "@contexts/greetings/domain/entities/Greeting";
+import { InvalidGreetingException } from "@contexts/greetings/domain/exceptions/InvalidGreetingException";
 
 describe("Greeting Entity", () => {
   describe("create", () => {

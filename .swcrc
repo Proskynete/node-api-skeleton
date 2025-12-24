@@ -15,9 +15,7 @@
     "keepClassNames": true,
     "baseUrl": "./src",
     "paths": {
-      "@core/*": ["@core/*"],
-      "@application/*": ["@application/*"],
-      "@infrastructure/*": ["@infrastructure/*"],
+      "@contexts/*": ["@contexts/*"],
       "@shared/*": ["@shared/*"]
     }
   },
