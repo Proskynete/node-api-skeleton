@@ -4,26 +4,43 @@ on:
   push:
     branches:
       - main
+      - feat/**
+  pull_request:
+    branches:
+      - main
 
 jobs:
-  build:
+  build-and-test:
     runs-on: ${{matrix.os}}
     strategy:
       max-parallel: 24
       matrix:
         os: [ubuntu-latest, macos-latest, windows-latest]
-        node-version: [14.x, 16.x]
+        node-version: [20.x, 22.x]
     steps:
       - name: 📚 Checkout git repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: 🟢 Setup Node.js ${{matrix.node-version}}
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v4
         with:
           node-version: ${{matrix.node-version}}
+          cache: 'npm'
 
       - name: 🛠 Install Node.js dependencies
-        run: npm install
+        run: npm ci
 
-      - name: 🤖 Run tests
+      - name: 🏗️ Build application with SWC
+        run: npm run build
+
+      - name: 🧪 Run tests with Vitest
         run: npm run test
+
+      - name: 📊 Generate coverage report
+        run: npm run test:coverage
+
+      - name: 📤 Upload coverage to Coveralls
+        uses: coverallsapp/github-action@v2
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+        if: matrix.os == 'ubuntu-latest' && matrix.node-version == '20.x'

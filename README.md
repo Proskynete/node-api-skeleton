@@ -2,274 +2,429 @@
   <h1>Node API Skeleton <img src="https://cdn.iconscout.com/icon/free/png-256/typescript-1174965.png" width="25" height="25" /></h1>
 </div>
 
-<p>This is a repository meant to serve as a starting point if you want to start a TypeScript express API project with some common features already set up and best practices.</p>
-</div>
+<p>
+Production-ready Node.js API skeleton built with <strong>Hexagonal Architecture</strong>, <strong>Fastify</strong>, <strong>TypeScript</strong>, <strong>DDD</strong>, and modern best practices. Perfect starting point for scalable, maintainable API projects.
+</p>
 
 ## Status
 
-[![Coverage Status](https://img.shields.io/coverallsCoverage/github/Proskynete/node-api-skeleton?logo=Coveralls)](https://coveralls.io/github/Proskynete/node-api-skeleton?branch=master) [![CI](https://img.shields.io/github/actions/workflow/status/Proskynete/node-api-skeleton/ci.yml?logo=GithubActions&logoColor=fff)](https://github.com/Proskynete/node-api-skeleton/actions/workflows/ci.yml) [![GitHub issues](https://img.shields.io/github/issues/Proskynete/node-api-skeleton)](https://github.com/Proskynete/node-api-skeleton/issues) [![GitHub forks](https://img.shields.io/github/forks/Proskynete/node-api-skeleton)](https://github.com/Proskynete/node-api-skeleton/network) [![GitHub stars](https://img.shields.io/github/stars/Proskynete/node-api-skeleton)](https://github.com/Proskynete/node-api-skeleton/stargazers)  [![PRs welcome](https://img.shields.io/badge/PRs-welcome-green)](#CONTRIBUTING.md)
+[![Coverage Status](https://img.shields.io/coverallsCoverage/github/Proskynete/node-api-skeleton?logo=Coveralls)](https://coveralls.io/github/Proskynete/node-api-skeleton?branch=master) [![CI](https://img.shields.io/github/actions/workflow/status/Proskynete/node-api-skeleton/ci.yml?logo=GithubActions&logoColor=fff)](https://github.com/Proskynete/node-api-skeleton/actions/workflows/ci.yml) [![GitHub issues](https://img.shields.io/github/issues/Proskynete/node-api-skeleton)](https://github.com/Proskynete/node-api-skeleton/issues) [![GitHub forks](https://img.shields.io/github/forks/Proskynete/node-api-skeleton)](https://github.com/Proskynete/node-api-skeleton/network) [![GitHub stars](https://img.shields.io/github/stars/Proskynete/node-api-skeleton)](https://github.com/Proskynete/node-api-skeleton/stargazers) [![PRs welcome](https://img.shields.io/badge/PRs-welcome-green)](#CONTRIBUTING.md)
 
-## 🚀 Migration to Modern Architecture - IN PROGRESS
+## 🎉 Architecture Status: PRODUCTION READY
 
-> **Status**: 🚧 **Stage 2 COMPLETED** - Domain layer with entities, value objects, and ports!
+> **Version 2.0** - Migration to Hexagonal Architecture + Fastify **COMPLETED**!
 
-**Target Stack**: Fastify • SWC • Vitest • Zod • Winston • Hexagonal Architecture
+**All 8 migration stages completed** ✅
 
-**Completed**:
-- ✅ **Stage 0**: SWC compiler (20x faster builds), Fastify dependencies, path aliases
-- ✅ **Stage 1**: Hexagonal folder structure, Zod environment validation, basic Fastify server
-- ✅ **Stage 2**: Domain exceptions, Message value object, Greeting entity, domain ports, unit tests
-
-**Next**:
-- 🔜 **Stage 3**: Application layer (DTOs, mappers, use cases)
-
-**Highlights**:
-- 🏗️ Hexagonal + Onion + Screaming Architecture
-- ⚡ Fastify (replacing Express) for better performance
-- 🔥 SWC compiler - builds in ~56ms (was ~2-3s with tsc)
-- 🧪 Vitest for faster tests
-- 🎯 Hybrid approach: OOP for structure, FP for transformations
-- 📦 API versioning strategy (v1, v2, etc.)
-- 📊 Observability with Winston + Prometheus
-
-**Try the new Fastify server**:
-```bash
-npm run dev        # New Fastify server with SWC hot reload
-npm run dev:express # Legacy Express server
-```
-
-See **[specs/README.md](./specs/README.md)** for the complete migration roadmap and implementation plan.
+- ✅ **Stage 0**: SWC compiler, Fastify dependencies, path aliases
+- ✅ **Stage 1**: Hexagonal folder structure, Zod validation, Fastify server
+- ✅ **Stage 2**: Domain layer (entities, value objects, ports)
+- ✅ **Stage 3**: Application layer (use cases, DTOs, mappers)
+- ✅ **Stage 4**: Infrastructure layer (controllers, routes, repositories)
+- ✅ **Stage 5**: Dependency Injection with Awilix
+- ✅ **Stage 6**: Observability (Winston logging + Prometheus metrics)
+- ✅ **Stage 7**: Testing (Vitest + k6 performance tests)
+- ✅ **Stage 8**: Cleanup, documentation, Docker production setup
 
 <details>
-  <summary>Table of contents</summary>
+  <summary>📋 Table of Contents</summary>
   <ol>
-    <li>
-      <a href="#features">Features</a>
-    </li>
-    <li>
-      <a href="#folder-structure">Folder structure</a>
-    </li>
-    <li>
-      <a href="#how-to-use">How to use</a>
-    </li>
-    <li>
-      <a href="#docker">Docker</a>
-    </li>
-    <li>
-      <a href="#linting">Linting</a>
-    </li>
-    <li>
-      <a href="#testing">Testing</a>
-    </li>
-    <li>
-      <a href="#coveralls">Coveralls</a>
-    </li>
-    <li>
-      <a href="#migration-plan">Migration Plan</a>
-    </li>
+    <li><a href="#highlights">Highlights</a></li>
+    <li><a href="#features">Features</a></li>
+    <li><a href="#architecture">Architecture</a></li>
+    <li><a href="#folder-structure">Folder Structure</a></li>
+    <li><a href="#quick-start">Quick Start</a></li>
+    <li><a href="#docker">Docker</a></li>
+    <li><a href="#api-endpoints">API Endpoints</a></li>
+    <li><a href="#testing">Testing</a></li>
+    <li><a href="#observability">Observability</a></li>
+    <li><a href="#documentation">Documentation</a></li>
   </ol>
 </details>
 
-<h2 id="features">⚙️ Features</h2>
+## ✨ Highlights
 
-- [Express](https://expressjs.com/)
-- [TypeScript](https://www.typescriptlang.org/)
-- [ts-node-dev](https://github.com/wclr/ts-node-dev)
-- [Jest](https://jestjs.io/)
-- [Cors](https://github.com/expressjs/cors)
-- [Morgan](https://github.com/expressjs/morgan)
-- [Helmet](https://helmetjs.github.io/)
-- [Supertest](https://github.com/ladjs/supertest#readme)
-- [ESLint](https://eslint.org/)
-- [Prettier](https://prettier.io/)
-- [Husky](https://typicode.github.io/husky/#/)
-- [Github Actions](https://github.com/features/actions)
-- [Docker](https://www.docker.com/)
-- [Open API](https://swagger.io/specification/)
+### 🏗️ Modern Architecture
 
-<p align="right"><a href="#top">🔝</a></p>
+- **Hexagonal Architecture** (Ports & Adapters) for clean separation of concerns
+- **Onion Architecture** with dependency inversion
+- **Screaming Architecture** - folder structure reflects business capabilities
+- **DDD** (Domain-Driven Design) with entities, value objects, and aggregates
+- **Vertical Slice** organization by bounded contexts
 
-<h2 id="folder-structure">🗂️ Folder structure</h2>
+### ⚡ Performance
 
-    .
-    ├── .github/
-    │   └── workflows/
-    │       ├── ci.yml          # Continuous integration workflow
-    │       ├── coveralls.yml   # Coveralls workflow
-    │       ├── lint.yml        # Linting workflow
-    │       └── test.yml        # Testing workflow
-    ├── .husky/                 # Husky configuration
-    │   ├── pre-commit          # Pre-commit hook    
-    │   └── pre-push            # Pre-push hook
-    ├── coverage/               # Coverage report generated by Jest (folder is ignored by git)
-    ├── dist/                   # Transpiler files (folder is ignored by git)
-    ├── src/
-    │   ├── controllers/        # Controllers define functions that respond to various http requests
-    │   │   └── ...
-    │   ├── models/             # Models define the structure
-    │   │   └── ...
-    │   ├── routes/             # Routes define the endpoints of the API
-    │   │   ├── index.ts        # Index file that generates the prefix of the routes and imports all the routes
-    │   │   └── ...
-    │   ├── tools/              # Tools are used to generate the Open API documentation and health check
-    │   │   └── ...
-    │   ├── utils/              # Functions that are used in multiple places
-    │   │   └── ...
-    │   ├── app.ts              # Express app with middlewares and routes
-    │   ├── config.ts           # Configuration file
-    │   └── server.ts           # Server file that starts the app
-    ├── test/
-    │   ├── __mocks__/          # Mocks for tests
-    │   └── ...                 # Tests
-    └── ...
+- **Fastify** - 2x faster than Express
+- **SWC** - Ultra-fast TypeScript compiler (20x faster than tsc)
+- **Build time**: ~56ms (was ~2-3s with tsc)
+- **Production-ready** with Docker multi-stage builds
 
-<p align="right"><a href="#top">🔝</a></p>
+### 🧪 Testing & Quality
 
-<h2 id="how-to-use">💪  How to use</h2>
+- **Vitest** - Lightning-fast unit & integration tests
+- **k6** - Performance/load testing with thresholds
+- **>80% coverage** - Comprehensive test suite
+- **Type-safe** validation with Zod
+- **ESLint + Prettier** - Code quality enforcement
 
-You can use this repository as a template by clicking on the `Use this template` button on the top right of the repository page and select the `Create a new repository` option. This will create a new repository with the same files and history as this one.
+### 📊 Observability
+
+- **Winston** - Structured JSON logging
+- **Prometheus** - Metrics collection (requests, latency, errors)
+- **Grafana** - Metrics visualization
+- **Health checks** - Liveness & readiness probes
+- **OpenAPI** - Interactive API documentation
+
+### 🐳 DevOps Ready
+
+- **Docker** multi-stage builds (minimal Alpine images)
+- **Docker Compose** stacks for dev & production
+- **Non-root user** for security
+- **Health checks** integrated
+- **Prometheus + Grafana** stack included
+
+## ⚙️ Features
+
+### Core Stack
+
+- ✅ [Fastify](https://fastify.dev/) - High-performance web framework
+- ✅ [TypeScript](https://www.typescriptlang.org/) - Type-safe JavaScript
+- ✅ [SWC](https://swc.rs/) - Ultra-fast TypeScript compiler
+- ✅ [Zod](https://zod.dev/) - Runtime schema validation
+- ✅ [Awilix](https://github.com/jeffijoe/awilix) - Dependency injection
+
+### Testing
+
+- ✅ [Vitest](https://vitest.dev/) - Fast unit & integration tests
+- ✅ [Supertest](https://github.com/ladjs/supertest) - HTTP endpoint testing
+- ✅ [k6](https://k6.io/) - Load & performance testing
+- ✅ Coverage reports with v8
+
+### Observability
+
+- ✅ [Winston](https://github.com/winstonjs/winston) - Structured logging
+- ✅ [Prometheus](https://prometheus.io/) - Metrics collection
+- ✅ [prom-client](https://github.com/siimon/prom-client) - Prometheus client
+- ✅ Health checks (liveness/readiness)
+- ✅ [Swagger/OpenAPI](https://swagger.io/) - API documentation
+
+### Security & Best Practices
+
+- ✅ [@fastify/helmet](https://github.com/fastify/fastify-helmet) - Security headers
+- ✅ [@fastify/cors](https://github.com/fastify/fastify-cors) - CORS support
+- ✅ Environment validation with Zod
+- ✅ Docker non-root user
+- ✅ Immutable domain entities
+
+### Development Tools
+
+- ✅ [ESLint](https://eslint.org/) - Code linting
+- ✅ [Prettier](https://prettier.io/) - Code formatting
+- ✅ [Husky](https://typicode.github.io/husky/) - Git hooks
+- ✅ [lint-staged](https://github.com/lint-staged/lint-staged) - Pre-commit checks
+- ✅ [Nodemon](https://nodemon.io/) - Dev server auto-reload
+
+## 🏗️ Architecture
+
+### Hexagonal Architecture
+
+The application follows **Hexagonal Architecture** (Ports & Adapters):
+
+```
+┌─────────────────────────────────────────┐
+│  Infrastructure (Adapters)              │  ← Fastify, DB, External APIs
+├─────────────────────────────────────────┤
+│  Application (Use Cases)                │  ← Business orchestration
+├─────────────────────────────────────────┤
+│  Domain (Business Logic)                │  ← Pure business rules
+└─────────────────────────────────────────┘
+```
+
+**Dependency Rule**: Dependencies point inward only
+
+- Infrastructure → Application → Domain
+- Domain has **zero** framework dependencies
+
+### Vertical Slice by Contexts
+
+Each bounded context is a complete vertical slice:
+
+```
+@contexts/greetings/
+├── domain/            # Entities, Value Objects, Business Rules
+├── application/       # Use Cases, DTOs, Mappers, Ports
+└── infrastructure/    # Controllers, Routes, Repositories
+```
+
+**Benefits**:
+
+- High cohesion - related code lives together
+- Easy to navigate - no jumping between layers
+- Scalable - add new contexts without touching existing ones
+- Microservices-ready - easy to extract contexts
+
+See [ARCHITECTURE.md](./ARCHITECTURE.md) for complete documentation.
+
+## 📁 Folder Structure
+
+```
+src/
+├── @contexts/                 # Business Features (Bounded Contexts)
+│   └── greetings/
+│       ├── domain/            # Business Logic (framework-independent)
+│       │   ├── entities/      # Greeting entity
+│       │   ├── value-objects/ # Message value object
+│       │   └── exceptions/    # Domain exceptions
+│       ├── application/       # Use Cases & Orchestration
+│       │   ├── v1/            # API version 1
+│       │   │   ├── use-cases/ # GetGreetingUseCase
+│       │   │   ├── dtos/      # Request/Response DTOs
+│       │   │   ├── mappers/   # Domain ↔ DTO transformation
+│       │   │   └── ports/     # Interfaces (inbound/outbound)
+│       │   └── v2/            # API version 2 (enhanced)
+│       └── infrastructure/    # Adapters (HTTP, DB, External)
+│           ├── http/          # Controllers & Routes (v1, v2)
+│           └── persistence/   # Repository implementations
+│
+├── @shared/                   # Cross-Cutting Concerns
+│   ├── domain/                # Shared domain concepts
+│   ├── infrastructure/
+│   │   ├── config/            # Environment, DI container
+│   │   ├── http/              # Fastify app, plugins
+│   │   └── observability/     # Winston, Prometheus
+│   ├── types/                 # Common types
+│   ├── utils/                 # Pure utility functions
+│   └── constants/             # HTTP status codes, etc.
+│
+├── @app/                      # Application Bootstrap
+│   └── server/                # Fastify configuration
+│
+└── main.ts                    # Entry point
+```
+
+## 🚀 Quick Start
+
+### Prerequisites
+
+- Node.js >= 20
+- npm >= 10
+- Docker (optional, for containerized setup)
+- k6 (optional, for performance tests)
+
+### Installation
 
 ```bash
+# Clone repository
+git clone https://github.com/Proskynete/node-api-skeleton.git
+cd node-api-skeleton
+
 # Install dependencies
 npm install
 
-# Set up environment variables and fill in the values
+# Copy environment file
 cp .env.example .env
-code .env # or vim or whatever you prefer
 
-# Set up coveralls repo token
-cp .coveralls.example .coveralls.yml
-code .coveralls.yml # or vim or whatever you prefer
-
-# Run the development server
+# Start development server
 npm run dev
-
-# Production build
-npm run build
-
-# Run the production server
-npm start
 ```
 
-<p align="right"><a href="#top">🔝</a></p>
+The API will be running at `http://localhost:3000`
 
-<h2 id="docker">🐳 Docker</h2>
+### Available Scripts
 
 ```bash
-# Build the image
-docker build -t {{some-name}} .
+# Development
+npm run dev              # Start dev server with hot reload (SWC)
+npm run build            # Build production bundle (SWC)
+npm start                # Run production server
 
-# Run the container
-docker run -p 3000:3000 {{some-name}}
+# Testing
+npm run test             # Run all tests (Vitest)
+npm run test:watch       # Run tests in watch mode
+npm run test:ui          # Run tests with UI dashboard
+npm run test:coverage    # Generate coverage report
+
+# Performance Testing (k6)
+npm run test:performance:v1    # Test v1 endpoint
+npm run test:performance:v2    # Test v2 endpoint
+npm run test:performance:load  # Full load test
+
+# Code Quality
+npm run lint             # Check linting
+npm run lint:fix         # Fix linting issues
+npm run format           # Format code with Prettier
+npm run format:check     # Check formatting
 ```
 
-<p align="right"><a href="#top">🔝</a></p>
+## 🐳 Docker
 
-<h2 id="linting">🔦 Linting</h2>
+### Quick Start with Docker Compose
 
 ```bash
-# Run Linter
-npm run lint
+# Start production stack (API + Prometheus + Grafana)
+docker-compose up -d
 
-# Run Formatter
-npm run lint:fix
+# View logs
+docker-compose logs -f api
+
+# Stop services
+docker-compose down
 ```
 
-> The linter will run automatically before every commit using [Husky](https://typicode.github.io/husky/).
-
-<p align="right"><a href="#top">🔝</a></p>
-
-<h2 id="testing">👾 Testing</h2>
+### Development with Docker
 
 ```bash
-# Run tests
+# Start dev environment with hot reload
+docker-compose -f docker-compose.dev.yml up -d
+```
+
+### Services
+
+- **API**: http://localhost:3000
+- **Prometheus**: http://localhost:9090
+- **Grafana**: http://localhost:3001 (admin/admin)
+
+See [DOCKER.md](./DOCKER.md) for complete documentation.
+
+## 📡 API Endpoints
+
+### Health & Metrics
+
+- **Liveness**: `GET /health/live` - Is the app running?
+- **Readiness**: `GET /health/ready` - Can it serve traffic?
+- **Metrics**: `GET /metrics` - Prometheus metrics
+- **Docs**: `GET /docs` - Swagger UI
+
+### Greetings API (v1)
+
+- **Get Greeting**: `GET /api/v1/greetings`
+
+### Greetings API (v2)
+
+- **Get Greeting** (enhanced): `GET /api/v2/greetings`
+
+**API Versioning**: Multiple versions coexist, sharing the same domain layer but with different use cases.
+
+## 🧪 Testing
+
+### Unit Tests
+
+Test business logic in isolation:
+
+```bash
 npm run test
-
-# Run tests and generate coverage report
+npm run test:watch
 npm run test:coverage
-
-# Run coverage and send report to Coveralls
-npm run test:coveralls
 ```
 
-<p align="right"><a href="#top">🔝</a></p>
+**Coverage thresholds**: 80% for branches, functions, lines, statements
 
-<h2 id="coveralls">📊 Coveralls</h2>
+### Integration Tests
 
-> If you have a coveralls account, and you have the project synchronized with coveralls, you can use it to generate the jest coverage and send it to coveralls.
+Test HTTP endpoints:
 
-The coverage report is generated by [Jest](https://jestjs.io/) and sent to [Coveralls](https://coveralls.io/) but first you need the `repo_token` variable in your `.coveralls.yml` file. The coverage report is generated automatically when you push to the repository, only if you have a coveralls repo token set up and a coveralls profile linked to your github account.
+```typescript
+describe("GET /api/v1/greetings", () => {
+  it("should return greeting", async () => {
+    const response = await request(app.server)
+      .get("/api/v1/greetings")
+      .expect(200);
+    expect(response.body.message).toBe("Hello World!");
+  });
+});
+```
 
-In case you do not want to use [Coveralls](https://coveralls.io/), you must do the following:
+### Performance Tests (k6)
 
-- Delete the `coveralls.yml` github action workflow file from the `.github/workflows` folder.
-- Remove the `coveralls.example` file from the root of the project.
-  - Remove the `.coveralls.yml` file if you have already created it.
-- Remove the `test:coveralls` script from the `package.json` file.
-  - Remove the `coveralls` package if you have already installed it.
+Load testing with thresholds:
 
-<p align="right"><a href="#top">🔝</a></p>
+```bash
+npm run test:performance:load
+```
 
-<h2 id="migration-plan">🏗️ Migration Plan</h2>
+**Thresholds**:
 
-A comprehensive migration plan is available in the [`specs/`](./specs/) folder to modernize this API skeleton with:
+- p95 < 500ms
+- p99 < 1000ms
+- Error rate < 1%
+- Request rate > 50 req/s
 
-### 🎯 Target Architecture
+See [test/performance/README.md](./test/performance/README.md)
 
-- **Hexagonal Architecture** (Ports & Adapters): Clean separation between business logic and infrastructure
-- **Onion Architecture**: Dependencies point inward toward the domain
-- **Screaming Architecture**: Folder structure organized by business features, not technical layers
+## 📊 Observability
 
-### ⚡ Modern Tech Stack
+### Logging (Winston)
 
-| Current | Target | Benefit |
-|---------|--------|---------|
-| Express | **Fastify** | 2-3x better performance |
-| tsc | **SWC** | 20x faster compilation |
-| Jest | **Vitest** | Faster tests, better DX |
-| Manual validation | **Zod** | Runtime type safety |
-| Console logs | **Winston** | Structured logging |
-| - | **Prometheus** | Production metrics |
+Structured JSON logging in production, pretty logs in development:
 
-### 📚 Migration Documents
+```typescript
+logger.info("Processing request", {
+  requestId: request.id,
+  version: "v1",
+});
+```
 
-1. **[00_analisis_situacion_actual.md](./specs/00_analisis_situacion_actual.md)** - Current state analysis
-2. **[01_arquitectura_hexagonal.md](./specs/01_arquitectura_hexagonal.md)** - Architecture design
-3. **[02_carpetas_versionadas.md](./specs/02_carpetas_versionadas.md)** - API versioning strategy
-4. **[03_oportunidades_mejora.md](./specs/03_oportunidades_mejora.md)** - Improvement opportunities
-5. **[04_plan_implementacion.md](./specs/04_plan_implementacion.md)** - 8-stage implementation plan
-6. **[05_enfoque_hibrido_pragmatico.md](./specs/05_enfoque_hibrido_pragmatico.md)** - Hybrid OOP+FP approach
-7. **[README.md](./specs/README.md)** - Executive summary and index
+### Metrics (Prometheus)
 
-### 🎨 Hybrid Pragmatic Approach
+Available at `/metrics`:
 
-The migration follows a **pragmatic hybrid** of OOP and Functional Programming:
+- `http_request_duration_seconds` - Request latency
+- `http_requests_total` - Total requests
+- `http_requests_in_progress` - Active requests
 
-- **Classes** for: Entities, Value Objects, Use Cases, Repositories (structure & DI)
-- **Functions** for: DTOs (types), Mappers, Utilities (transformations)
-- **Principles**: Immutability, pure functions, composition over inheritance, DDD
+### Health Checks
 
-### 📅 Implementation Timeline
+- **Liveness**: `/health/live` - Basic health check
+- **Readiness**: `/health/ready` - Dependency health (memory, DB, etc.)
 
-**Total estimate**: 32-50 days (8 stages)
+### OpenAPI Documentation
 
-- Stage 0: Setup (Fastify, SWC, Vitest) - 2-3 days
-- Stage 1: Base structure - 3-5 days
-- Stage 2: Domain layer - 4-5 days
-- Stage 3: Application layer v1 - 4-5 days
-- Stage 4: Infrastructure (Fastify) v1 - 5-6 days
-- Stage 5: API versioning v2 - 3-4 days
-- Stage 6: Observability - 4-5 days
-- Stage 7: Optional improvements - 5-10 days
-- Stage 8: Cleanup & docs - 2-3 days
+Interactive API docs at:
 
-### 🚦 Getting Started with Migration
+- **Swagger UI**: http://localhost:3000/docs
 
-1. Read the executive summary: [`specs/README.md`](./specs/README.md)
-2. Review the architecture design: [`specs/01_arquitectura_hexagonal.md`](./specs/01_arquitectura_hexagonal.md)
-3. Follow the implementation plan: [`specs/04_plan_implementacion.md`](./specs/04_plan_implementacion.md)
-4. Reference the coding patterns: [`specs/05_enfoque_hibrido_pragmatico.md`](./specs/05_enfoque_hibrido_pragmatico.md)
+## 📚 Documentation
 
-**Status**: Stage 2 complete ✅ | Vertical slice architecture implemented ✅
+- **[ARCHITECTURE.md](./ARCHITECTURE.md)** - Complete architecture guide
+- **[DOCKER.md](./DOCKER.md)** - Docker setup and usage
+- **[CLAUDE.md](./CLAUDE.md)** - Development guide for Claude Code
+- **[specs/](./specs/)** - Migration plan and design decisions (historical)
+- **[test/performance/README.md](./test/performance/README.md)** - k6 testing guide
 
-<p align="right"><a href="#top">🔝</a></p>
+## 🎯 Design Patterns
+
+- **Dependency Injection** (Awilix)
+- **Factory Pattern** (Entity creation)
+- **Mapper Pattern** (Domain ↔ DTO)
+- **Repository Pattern** (Data access)
+- **Strategy Pattern** (API versioning)
+
+## 🔒 Security
+
+- Helmet security headers
+- CORS configuration
+- Input validation with Zod
+- Non-root Docker user
+- Environment variable validation
+
+## 🤝 Contributing
+
+Contributions are welcome! Please read [CONTRIBUTING.md](./CONTRIBUTING.md) for guidelines.
+
+## 📝 License
+
+This project is licensed under the MIT License.
+
+## 🙏 Acknowledgments
+
+- Built with ❤️ using modern Node.js best practices
+- Inspired by Clean Architecture, DDD, and Hexagonal Architecture principles
+
+---
+
+**Version**: 2.0.0
+**Status**: Production Ready
+**Architecture**: Hexagonal + Onion + Screaming
+**Last Updated**: December 2024
+
+<p align="right">(<a href="#top">⬆️ Back to top</a>)</p>
