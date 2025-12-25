@@ -7,10 +7,13 @@ const envSchema = z.object({
     .enum(["development", "production", "test"])
     .default("development"),
   PORT: z.coerce.number().int().positive().default(3000),
-  BASE_URL: z.string().default("/api/v1"),
+  BASE_URL: z.string().default("/api"),
   LOG_LEVEL: z
     .enum(["error", "warn", "info", "http", "verbose", "debug", "silly"])
     .default("info"),
+  // Rate Limiting
+  RATE_LIMIT_MAX: z.coerce.number().int().positive().default(100),
+  RATE_LIMIT_TIME_WINDOW: z.coerce.number().int().positive().default(60000), // 1 minute in ms
 });
 
 export type Environment = z.infer<typeof envSchema>;
