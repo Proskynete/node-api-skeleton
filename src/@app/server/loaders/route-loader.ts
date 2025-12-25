@@ -49,7 +49,7 @@ async function loadContextVersionRoutes(
       await app.register(routeHandler, { prefix });
 
       app.log.info(
-        `✓ Registered ${contextName}/${version} routes at ${prefix}`
+        `✅ Registered ${contextName}/${version} routes at ${prefix}`
       );
     }
   }
@@ -93,5 +93,5 @@ export async function loadRoutes(app: FastifyInstance): Promise<void> {
     }
   }
 
-  app.log.info("✓ Route loading completed\n");
+  app.log.info("✅ Route loading completed\n");
 }

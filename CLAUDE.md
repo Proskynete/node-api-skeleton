@@ -322,6 +322,71 @@ npm run test:performance:load   # Full load test (50→100→150 users)
 - Error rate < 1%
 - Request rate > 50 req/s
 
+### Contract Tests (Pact)
+
+Consumer-driven contract testing to ensure API compatibility:
+
+**Location**: `test/contract/`
+
+**Example**:
+
+```typescript
+// Provider verification
+const verifier = new Verifier({
+  provider: "GreetingsAPI",
+  providerBaseUrl: "http://localhost:3000",
+  pactUrls: ["./pacts/consumer-provider.json"],
+});
+
+await verifier.verifyProvider();
+```
+
+See `test/contract/README.md` for complete documentation.
+
+## Security
+
+### Rate Limiting
+
+Global rate limiting to protect against abuse:
+
+```typescript
+// Configuration (.env)
+RATE_LIMIT_MAX=100              # Max requests per window
+RATE_LIMIT_TIME_WINDOW=60000    # Window in ms (1 minute)
+```
+
+**Features**:
+
+- Global rate limiting across all routes
+- Customizable per-route limits
+- Rate limit headers (x-ratelimit-limit, x-ratelimit-remaining, x-ratelimit-reset)
+- Custom error responses (429 Too Many Requests)
+- IP-based tracking
+
+**Headers**:
+
+- `x-ratelimit-limit`: Maximum requests allowed
+- `x-ratelimit-remaining`: Requests remaining in window
+- `x-ratelimit-reset`: Time until limit resets
+- `retry-after`: Seconds to wait before retrying
+
+**Per-Route Customization**:
+
+```typescript
+app.get(
+  "/api/v1/resource",
+  {
+    config: {
+      rateLimit: {
+        max: 10,
+        timeWindow: "1 minute",
+      },
+    },
+  },
+  handler
+);
+```
+
 ## Observability
 
 ### Logging (Winston)
@@ -386,6 +451,85 @@ docker-compose -f docker-compose.dev.yml up -d
 ```
 
 See `docs/DOCKER.md` for complete documentation.
+
+## Documentation
+
+### Architecture Decision Records (ADRs)
+
+All architectural decisions are documented in `docs/adr/`:
+
+- **ADR-0001**: Use Hexagonal Architecture
+- **ADR-0002**: Use Fastify instead of Express
+- **ADR-0003**: Use SWC for TypeScript compilation
+- **ADR-0004**: Use Vitest for testing
+- **ADR-0005**: Use Zod for runtime validation
+- **ADR-0006**: Use Winston for logging
+- **ADR-0007**: Organize code by bounded contexts (Vertical Slices)
+
+Each ADR documents:
+
+- Context and problem
+- Decision made
+- Consequences (positive, negative, neutral)
+- Alternatives considered
+- References
+
+**Creating New ADRs**:
+
+```bash
+cp docs/adr/template.md docs/adr/0008-new-decision.md
+```
+
+See `docs/adr/README.md` for complete documentation.
+
+### Guides
+
+#### Database Integration
+
+Complete guide for integrating databases with Hexagonal Architecture:
+
+**Location**: `docs/guides/database-integration.md`
+
+**Supported ORMs**:
+
+- Prisma (recommended)
+- TypeORM
+- Sequelize
+- Mongoose (MongoDB)
+
+**Key Principles**:
+
+- Repository pattern for database abstraction
+- Domain entities remain ORM-agnostic
+- Mapping between domain and persistence models
+- Transaction handling
+- Error handling
+
+**Example**:
+
+```typescript
+// Domain layer: Define interface (port)
+export interface IGreetingRepository {
+  findById(id: string): Promise<Greeting | null>;
+  save(greeting: Greeting): Promise<void>;
+}
+
+// Infrastructure layer: Implement with Prisma
+export class PrismaGreetingRepository implements IGreetingRepository {
+  async findById(id: string): Promise<Greeting | null> {
+    const record = await this.prisma.greeting.findUnique({ where: { id } });
+    if (!record) return null;
+
+    return Greeting.create(
+      record.id,
+      Message.create(record.message),
+      record.createdAt
+    );
+  }
+}
+```
+
+This architecture allows you to switch ORMs without changing business logic!
 
 ## Design Patterns
 

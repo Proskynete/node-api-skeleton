@@ -123,30 +123,4 @@ export function registerHealthRoutes(app: FastifyInstance): void {
       return reply.status(statusCode).send(response);
     }
   );
-
-  // Legacy /health endpoint for backward compatibility
-  app.get(
-    "/health",
-    {
-      schema: {
-        description: "Legacy health check endpoint (alias for /health/live)",
-        tags: ["Health"],
-        response: {
-          200: {
-            type: "object",
-            properties: {
-              status: { type: "string" },
-              timestamp: { type: "string" },
-            },
-          },
-        },
-      },
-    },
-    async (_request: FastifyRequest, reply: FastifyReply) => {
-      return reply.status(200).send({
-        status: "ok",
-        timestamp: new Date().toISOString(),
-      });
-    }
-  );
 }

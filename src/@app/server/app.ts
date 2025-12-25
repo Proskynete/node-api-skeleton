@@ -5,7 +5,7 @@ import { loadRoutes } from "@app/server/loaders/route-loader";
 import { errorHandler } from "@app/server/middlewares/errorHandler";
 import { corsPlugin } from "@app/server/plugins/cors.plugin";
 import { helmetPlugin } from "@app/server/plugins/helmet.plugin";
-import fastifyRateLimit from "@fastify/rate-limit";
+import { rateLimitPlugin } from "@app/server/plugins/rate-limit.plugin";
 import swagger from "@fastify/swagger";
 import swaggerUi from "@fastify/swagger-ui";
 import { env } from "@shared/infrastructure/config/environment";
@@ -34,37 +34,9 @@ export async function buildApp(): Promise<FastifyInstance> {
   // Register plugins
   await app.register(corsPlugin);
   await app.register(helmetPlugin);
+  await app.register(rateLimitPlugin);
 
-  // Rate Limiting - protect against abuse
-  await app.register(fastifyRateLimit, {
-    global: true, // Apply to all routes
-    max: env.RATE_LIMIT_MAX, // Maximum requests per time window
-    timeWindow: env.RATE_LIMIT_TIME_WINDOW, // Time window in milliseconds
-    cache: 10000, // Maximum number of clients to track
-    allowList: [], // No IP exemptions (even localhost for consistent testing)
-    skipOnError: true, // Don't apply rate limit if there's an error
-    addHeadersOnExceeding: {
-      "x-ratelimit-limit": true,
-      "x-ratelimit-remaining": true,
-      "x-ratelimit-reset": true,
-    },
-    addHeaders: {
-      "x-ratelimit-limit": true,
-      "x-ratelimit-remaining": true,
-      "x-ratelimit-reset": true,
-      "retry-after": true,
-    },
-    errorResponseBuilder: (_request, context) => ({
-      error: "Too Many Requests",
-      message: `Rate limit exceeded. Please try again in ${Math.ceil(context.ttl / 1000)} seconds.`,
-      statusCode: 429,
-      limit: context.max,
-      remaining: 0,
-      retryAfter: Math.ceil(context.ttl / 1000),
-    }),
-  });
-
-  // Swagger configuration
+  // Register Swagger
   await app.register(swagger, {
     openapi: {
       info: {
@@ -96,6 +68,7 @@ export async function buildApp(): Promise<FastifyInstance> {
     },
   });
 
+  // Register Swagger UI
   await app.register(swaggerUi, {
     routePrefix: "/docs",
     uiConfig: {

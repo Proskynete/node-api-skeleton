@@ -98,6 +98,7 @@ Production-ready Node.js API skeleton built with <strong>Hexagonal Architecture<
 - ✅ [Vitest](https://vitest.dev/) - Fast unit & integration tests
 - ✅ [Supertest](https://github.com/ladjs/supertest) - HTTP endpoint testing
 - ✅ [k6](https://k6.io/) - Load & performance testing
+- ✅ [Pact](https://pact.io/) - Contract testing framework
 - ✅ Coverage reports with v8
 
 ### Observability
@@ -112,9 +113,11 @@ Production-ready Node.js API skeleton built with <strong>Hexagonal Architecture<
 
 - ✅ [@fastify/helmet](https://github.com/fastify/fastify-helmet) - Security headers
 - ✅ [@fastify/cors](https://github.com/fastify/fastify-cors) - CORS support
+- ✅ [@fastify/rate-limit](https://github.com/fastify/fastify-rate-limit) - Rate limiting
 - ✅ Environment validation with Zod
 - ✅ Docker non-root user
 - ✅ Immutable domain entities
+- ✅ ADRs (Architecture Decision Records)
 
 ### Development Tools
 
