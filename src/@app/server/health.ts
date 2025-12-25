@@ -7,6 +7,32 @@ import { FastifyInstance, FastifyReply, FastifyRequest } from "fastify";
  */
 
 export function registerHealthRoutes(app: FastifyInstance): void {
+  // Legacy health endpoint - backward compatibility
+  app.get(
+    "/health",
+    {
+      schema: {
+        description: "Legacy health check endpoint",
+        tags: ["Health"],
+        response: {
+          200: {
+            type: "object",
+            properties: {
+              status: { type: "string" },
+              timestamp: { type: "string" },
+            },
+          },
+        },
+      },
+    },
+    async (_request: FastifyRequest, reply: FastifyReply) => {
+      return reply.status(200).send({
+        status: "ok",
+        timestamp: new Date().toISOString(),
+      });
+    }
+  );
+
   // Liveness probe - indicates if the application is alive
   app.get(
     "/health/live",

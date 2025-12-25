@@ -5,7 +5,7 @@ import { loadRoutes } from "@app/server/loaders/route-loader";
 import { errorHandler } from "@app/server/middlewares/errorHandler";
 import { corsPlugin } from "@app/server/plugins/cors.plugin";
 import { helmetPlugin } from "@app/server/plugins/helmet.plugin";
-import { rateLimitPlugin } from "@app/server/plugins/rate-limit.plugin";
+import fastifyRateLimit from "@fastify/rate-limit";
 import swagger from "@fastify/swagger";
 import swaggerUi from "@fastify/swagger-ui";
 import { env } from "@shared/infrastructure/config/environment";
@@ -34,7 +34,35 @@ export async function buildApp(): Promise<FastifyInstance> {
   // Register plugins
   await app.register(corsPlugin);
   await app.register(helmetPlugin);
-  await app.register(rateLimitPlugin);
+
+  // Register rate limiting
+  await app.register(fastifyRateLimit, {
+    global: true,
+    max: env.RATE_LIMIT_MAX,
+    timeWindow: env.RATE_LIMIT_TIME_WINDOW,
+    cache: 10000,
+    allowList: [],
+    skipOnError: true,
+    addHeadersOnExceeding: {
+      "x-ratelimit-limit": true,
+      "x-ratelimit-remaining": true,
+      "x-ratelimit-reset": true,
+    },
+    addHeaders: {
+      "x-ratelimit-limit": true,
+      "x-ratelimit-remaining": true,
+      "x-ratelimit-reset": true,
+      "retry-after": true,
+    },
+    errorResponseBuilder: (_request, context) => ({
+      error: "Too Many Requests",
+      message: `Rate limit exceeded. Please try again in ${Math.ceil(context.ttl / 1000)} seconds.`,
+      statusCode: 429,
+      limit: context.max,
+      remaining: 0,
+      retryAfter: Math.ceil(context.ttl / 1000),
+    }),
+  });
 
   // Register Swagger
   await app.register(swagger, {
