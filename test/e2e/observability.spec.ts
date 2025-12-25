@@ -199,7 +199,7 @@ describe("E2E - Observability Workflow", () => {
 
       const spec = specResponse.json<{
         paths: Record<string, unknown>;
-        tags?: Array<{ name: string }>;
+        tags?: { name: string }[];
       }>();
 
       // Step 3: Verify all endpoints are documented

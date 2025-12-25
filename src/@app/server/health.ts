@@ -1,22 +1,10 @@
+import { HealthCheck, ReadinessResponse } from "@shared/types/http-responses";
 import { FastifyInstance, FastifyReply, FastifyRequest } from "fastify";
 
 /**
  * Health Check Routes
  * Provides liveness and readiness endpoints for Kubernetes-style health checks
  */
-
-interface HealthCheck {
-  name: string;
-  status: "healthy" | "unhealthy";
-  responseTime: number;
-  message?: string;
-}
-
-interface ReadinessResponse {
-  status: "ready" | "not ready";
-  checks: HealthCheck[];
-  timestamp: string;
-}
 
 export function registerHealthRoutes(app: FastifyInstance): void {
   // Liveness probe - indicates if the application is alive

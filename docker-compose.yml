@@ -1,6 +1,7 @@
 services:
-  # Node API Application
-  api:
+  # Node API Application - Production
+  api-prod:
+    profiles: ["production"]
     build:
       context: .
       dockerfile: Dockerfile
@@ -18,6 +19,30 @@ services:
       timeout: 3s
       retries: 3
       start_period: 10s
+    restart: unless-stopped
+    networks:
+      - app-network
+    depends_on:
+      - prometheus
+
+  # Node API Application - Development
+  api-dev:
+    profiles: ["dev"]
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: development
+    container_name: node-api-skeleton-dev
+    ports:
+      - "3000:3000"
+    environment:
+      - NODE_ENV=development
+      - PORT=3000
+      - LOG_LEVEL=debug
+    volumes:
+      - ./src:/app/src:ro
+      - ./test:/app/test:ro
+      - /app/node_modules
     restart: unless-stopped
     networks:
       - app-network

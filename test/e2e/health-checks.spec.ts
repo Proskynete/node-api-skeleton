@@ -1,4 +1,8 @@
 import { buildApp } from "@app/server/app";
+import {
+  HealthResponse,
+  ReadinessResponse,
+} from "@shared/types/http-responses";
 import { FastifyInstance } from "fastify";
 import { afterAll, beforeAll, describe, expect, it } from "vitest";
 
@@ -6,24 +10,6 @@ import { afterAll, beforeAll, describe, expect, it } from "vitest";
  * E2E Tests - Health Checks
  * Tests complete health check workflows for production monitoring
  */
-
-interface HealthResponse {
-  status: string;
-  timestamp: string;
-}
-
-interface HealthCheck {
-  name: string;
-  status: string;
-  responseTime: number;
-  message?: string;
-}
-
-interface ReadinessResponse {
-  status: string;
-  checks: HealthCheck[];
-  timestamp: string;
-}
 
 describe("E2E - Health Checks Workflow", () => {
   let app: FastifyInstance;

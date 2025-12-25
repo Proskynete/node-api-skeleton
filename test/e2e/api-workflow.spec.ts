@@ -1,4 +1,8 @@
 import { buildApp } from "@app/server/app";
+import {
+  V1GreetingResponse,
+  V2GreetingResponse,
+} from "@shared/types/http-responses";
 import { FastifyInstance } from "fastify";
 import { afterAll, beforeAll, describe, expect, it } from "vitest";
 
@@ -6,16 +10,6 @@ import { afterAll, beforeAll, describe, expect, it } from "vitest";
  * E2E Tests - API Workflow
  * Tests complete user workflows through the API
  */
-
-interface V1GreetingResponse {
-  message: string;
-}
-
-interface V2GreetingResponse {
-  message: string;
-  timestamp: string;
-  version: string;
-}
 
 describe("E2E - API Workflow", () => {
   let app: FastifyInstance;

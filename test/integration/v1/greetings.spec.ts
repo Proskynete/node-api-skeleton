@@ -1,10 +1,7 @@
 import { buildApp } from "@app/server/app";
+import { V1GreetingResponse } from "@shared/types/http-responses";
 import { FastifyInstance } from "fastify";
 import { afterAll, beforeAll, describe, expect, it } from "vitest";
-
-interface V1Response {
-  message: string;
-}
 
 describe("GET /api/v1/greetings", () => {
   let app: FastifyInstance;
@@ -24,7 +21,7 @@ describe("GET /api/v1/greetings", () => {
       url: "/api/v1/greetings",
     });
 
-    const body = response.json<V1Response>();
+    const body = response.json<V1GreetingResponse>();
     expect(response.statusCode).toBe(200);
     expect(body).toHaveProperty("message");
     expect(body.message).toBe("Hello World!");
@@ -45,7 +42,7 @@ describe("GET /api/v1/greetings", () => {
       url: "/api/v1/greetings",
     });
 
-    const body = response.json<V1Response>();
+    const body = response.json<V1GreetingResponse>();
     expect(body).toHaveProperty("message");
     expect(typeof body.message).toBe("string");
     expect(body.message.length).toBeGreaterThan(0);

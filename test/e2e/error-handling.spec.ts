@@ -1,4 +1,5 @@
 import { buildApp } from "@app/server/app";
+import { ErrorResponse } from "@shared/types/http-responses";
 import { FastifyInstance } from "fastify";
 import { afterAll, beforeAll, describe, expect, it } from "vitest";
 
@@ -6,13 +7,6 @@ import { afterAll, beforeAll, describe, expect, it } from "vitest";
  * E2E Tests - Error Handling
  * Tests complete error handling workflows and edge cases
  */
-
-interface ErrorResponse {
-  error: string;
-  message: string;
-  requestId?: string;
-  code?: string;
-}
 
 describe("E2E - Error Handling Workflow", () => {
   let app: FastifyInstance;

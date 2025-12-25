@@ -1,16 +1,10 @@
 import { buildApp } from "@app/server/app";
+import {
+  V1GreetingResponse,
+  V2GreetingResponse,
+} from "@shared/types/http-responses";
 import { FastifyInstance } from "fastify";
 import { afterAll, beforeAll, describe, expect, it } from "vitest";
-
-interface V1Response {
-  message: string;
-}
-
-interface V2Response {
-  message: string;
-  timestamp: string;
-  version: string;
-}
 
 describe("Version Compatibility", () => {
   let app: FastifyInstance;
@@ -30,7 +24,7 @@ describe("Version Compatibility", () => {
       url: "/api/v1/greetings",
     });
 
-    const body = response.json<V1Response>();
+    const body = response.json<V1GreetingResponse>();
     expect(response.statusCode).toBe(200);
     expect(body).toHaveProperty("message");
     expect(body).not.toHaveProperty("timestamp");
@@ -43,7 +37,7 @@ describe("Version Compatibility", () => {
       url: "/api/v2/greetings",
     });
 
-    const body = response.json<V2Response>();
+    const body = response.json<V2GreetingResponse>();
     expect(response.statusCode).toBe(200);
     expect(body).toHaveProperty("message");
     expect(body).toHaveProperty("timestamp");
@@ -66,8 +60,8 @@ describe("Version Compatibility", () => {
       app.inject({ method: "GET", url: "/api/v2/greetings" }),
     ]);
 
-    const v1Body = v1Response.json<V1Response>();
-    const v2Body = v2Response.json<V2Response>();
+    const v1Body = v1Response.json<V1GreetingResponse>();
+    const v2Body = v2Response.json<V2GreetingResponse>();
 
     expect(v1Body.message).toBe(v2Body.message);
   });
@@ -78,8 +72,8 @@ describe("Version Compatibility", () => {
       app.inject({ method: "GET", url: "/api/v2/greetings" }),
     ]);
 
-    const v1Body = v1Response.json<V1Response>();
-    const v2Body = v2Response.json<V2Response>();
+    const v1Body = v1Response.json<V1GreetingResponse>();
+    const v2Body = v2Response.json<V2GreetingResponse>();
 
     // v2 should have all v1 properties plus extras
     expect(v2Body).toMatchObject(v1Body);
