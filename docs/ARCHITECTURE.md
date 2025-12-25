@@ -403,9 +403,19 @@ Let's trace a request to `/api/v1/greetings`:
 
 ## Testing Strategy
 
+The project implements a comprehensive testing strategy covering all architectural layers:
+
+```
+Unit Tests        → Domain & Application Layers
+Integration Tests → Infrastructure Layer (HTTP)
+Contract Tests    → Infrastructure Layer (Adapters)
+E2E Tests         → Full application flow
+Performance Tests → Load and stress testing
+```
+
 ### Unit Tests (Domain & Application)
 
-Test business logic in isolation:
+Test business logic in isolation using **Vitest**:
 
 ```typescript
 // Domain test
@@ -426,9 +436,14 @@ describe("GetGreetingUseCase", () => {
 });
 ```
 
+**Run:**
+```bash
+npm run test:unit
+```
+
 ### Integration Tests (Infrastructure)
 
-Test HTTP endpoints:
+Test HTTP endpoints using **Vitest + Supertest**:
 
 ```typescript
 describe("GET /api/v1/greetings", () => {
@@ -441,15 +456,115 @@ describe("GET /api/v1/greetings", () => {
 });
 ```
 
+**Run:**
+```bash
+npm run test:integration
+npm run test:e2e
+```
+
+### Contract Tests (Pact)
+
+Validate infrastructure adapters according to Hexagonal Architecture principles using **Pact Foundation**:
+
+**Provider Tests** - Validate HTTP Inbound Adapters (Controllers):
+```typescript
+describe("Pact Provider - HTTP Inbound Adapter", () => {
+  it("should verify controllers fulfill consumer contracts", async () => {
+    const verifier = new Verifier({
+      provider: "GreetingsAPI",
+      providerBaseUrl: "http://localhost:5055",
+      pactUrls: ["pacts/webapp-greetingsapi.json"],
+    });
+    await verifier.verifyProvider();
+  });
+});
+```
+
+**Consumer Tests** - Validate HTTP Outbound Adapters (API Clients):
+- Reference documentation available in `docs/guides/contract-testing-consumer.md`
+- Only applicable when consuming external HTTP APIs
+
+**What Contract Tests Validate:**
+- ✅ HTTP Inbound Adapters (controllers, routes)
+- ✅ HTTP Outbound Adapters (API clients, if they exist)
+- ❌ Business logic (use unit tests)
+- ❌ Use cases (use integration tests)
+
+**Run:**
+```bash
+npm run test:contract
+```
+
+**Documentation:**
+- [Provider Tests Guide](./guides/contract-testing-provider.md)
+- [Consumer Tests Guide](./guides/contract-testing-consumer.md)
+- [Contract Testing README](../test/contract/README.md)
+
 ### Performance Tests (k6)
 
-Load testing:
+Load and stress testing using **k6**:
 
 ```javascript
+// Simple load test
 export default function () {
-  http.get("http://localhost:3000/api/v1/greetings");
+  const response = http.get("http://localhost:3000/api/v1/greetings");
+  check(response, {
+    "status is 200": (r) => r.status === 200,
+    "response time < 500ms": (r) => r.timings.duration < 500,
+  });
 }
+
+export const options = {
+  stages: [
+    { duration: "30s", target: 20 },  // Ramp up
+    { duration: "1m", target: 50 },   // Stay at 50 users
+    { duration: "30s", target: 100 }, // Peak load
+    { duration: "30s", target: 0 },   // Ramp down
+  ],
+  thresholds: {
+    http_req_duration: ["p(95)<500", "p(99)<1000"],
+    http_req_failed: ["rate<0.01"],
+  },
+};
 ```
+
+**Automated Test Runner:**
+
+The project includes an automated performance test runner that discovers and executes all `*.k6.js` files:
+
+```bash
+# Automatically runs all performance tests
+npm run test:performance
+
+# Or run individual tests
+npm run test:performance:v1
+npm run test:performance:v2
+npm run test:performance:load
+```
+
+**Features:**
+- 🔍 Auto-discovers all k6 test files
+- 📊 Runs tests sequentially with detailed output
+- ✨ Colored console output
+- 📈 Summary report with pass/fail status
+- ❌ Exits with error code on failures
+
+**Adding New Tests:**
+Simply create a new `*.k6.js` file in `test/performance/` - no need to update package.json.
+
+**Documentation:**
+- [Performance Testing README](../test/performance/README.md)
+- [Test Runner Script](../scripts/README.md)
+
+### Test Hierarchy
+
+| Test Type | Layer | Tool | What to Test |
+|-----------|-------|------|--------------|
+| **Unit** | Domain + Application | Vitest | Entities, Value Objects, Use Cases |
+| **Integration** | Infrastructure | Vitest + Supertest | HTTP endpoints, repositories |
+| **Contract** | Infrastructure | Pact | HTTP adapters (inbound/outbound) |
+| **E2E** | Full Stack | Vitest + Supertest | Complete user flows |
+| **Performance** | Full Stack | k6 | Load, stress, spike testing |
 
 ## Observability
 
