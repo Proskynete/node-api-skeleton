@@ -15,13 +15,16 @@ export async function buildApp(): Promise<FastifyInstance> {
   const app = Fastify({
     logger: {
       level: env.LOG_LEVEL,
-      transport: {
-        target: "pino-pretty",
-        options: {
-          translateTime: "HH:MM:ss Z",
-          ignore: "pid,hostname",
+      // Only use pino-pretty in development
+      ...(env.NODE_ENV === "development" && {
+        transport: {
+          target: "pino-pretty",
+          options: {
+            translateTime: "HH:MM:ss Z",
+            ignore: "pid,hostname",
+          },
         },
-      },
+      }),
     },
     requestIdLogLabel: "requestId",
     disableRequestLogging: false,
