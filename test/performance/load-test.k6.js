@@ -126,13 +126,28 @@ function textSummary(data, options = {}) {
   // Response time overall
   if (data.metrics.http_req_duration) {
     summary += `${indent}Response Time (Overall):\n`;
-    summary += `${indent}  Min: ${data.metrics.http_req_duration.values.min.toFixed(2)}ms\n`;
-    summary += `${indent}  Avg: ${data.metrics.http_req_duration.values.avg.toFixed(2)}ms\n`;
-    summary += `${indent}  Max: ${data.metrics.http_req_duration.values.max.toFixed(2)}ms\n`;
-    summary += `${indent}  p(50): ${data.metrics.http_req_duration.values["p(50)"].toFixed(2)}ms (median)\n`;
-    summary += `${indent}  p(90): ${data.metrics.http_req_duration.values["p(90)"].toFixed(2)}ms\n`;
-    summary += `${indent}  p(95): ${data.metrics.http_req_duration.values["p(95)"].toFixed(2)}ms\n`;
-    summary += `${indent}  p(99): ${data.metrics.http_req_duration.values["p(99)"].toFixed(2)}ms\n\n`;
+    if (data.metrics.http_req_duration.values.min !== undefined) {
+      summary += `${indent}  Min: ${data.metrics.http_req_duration.values.min.toFixed(2)}ms\n`;
+    }
+    if (data.metrics.http_req_duration.values.avg !== undefined) {
+      summary += `${indent}  Avg: ${data.metrics.http_req_duration.values.avg.toFixed(2)}ms\n`;
+    }
+    if (data.metrics.http_req_duration.values.max !== undefined) {
+      summary += `${indent}  Max: ${data.metrics.http_req_duration.values.max.toFixed(2)}ms\n`;
+    }
+    if (data.metrics.http_req_duration.values["p(50)"] !== undefined) {
+      summary += `${indent}  p(50): ${data.metrics.http_req_duration.values["p(50)"].toFixed(2)}ms (median)\n`;
+    }
+    if (data.metrics.http_req_duration.values["p(90)"] !== undefined) {
+      summary += `${indent}  p(90): ${data.metrics.http_req_duration.values["p(90)"].toFixed(2)}ms\n`;
+    }
+    if (data.metrics.http_req_duration.values["p(95)"] !== undefined) {
+      summary += `${indent}  p(95): ${data.metrics.http_req_duration.values["p(95)"].toFixed(2)}ms\n`;
+    }
+    if (data.metrics.http_req_duration.values["p(99)"] !== undefined) {
+      summary += `${indent}  p(99): ${data.metrics.http_req_duration.values["p(99)"].toFixed(2)}ms\n`;
+    }
+    summary += '\n';
   }
 
   // VUs
