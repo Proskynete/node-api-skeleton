@@ -72,13 +72,25 @@ npm run test:performance:load
 
 ## Running Tests
 
-### Start the server first:
+### Important: Start the server first
+
+**For best results, use production mode:**
+```bash
+# Build and start production server
+npm run build
+npm start
+```
+
+**Or use dev mode (results may vary):**
 ```bash
 npm run dev
 ```
 
 ### Then run tests in another terminal:
 ```bash
+# Run all tests sequentially (continues even if one fails)
+npm run test:performance
+
 # Run specific test
 npm run test:performance:v1
 npm run test:performance:v2
@@ -89,6 +101,8 @@ k6 run test/performance/greetings-v1.k6.js
 k6 run test/performance/greetings-v2.k6.js
 k6 run test/performance/load-test.k6.js
 ```
+
+**Note:** The `npm run test:performance` command uses `;` to run all tests sequentially, meaning all tests will run even if one fails. This allows you to see results from all test suites.
 
 ### Test against different environment:
 ```bash
@@ -188,19 +202,48 @@ k6 cloud test/performance/load-test.k6.js
 
 ## Troubleshooting
 
-**High error rate?**
-- Check server logs
-- Verify server is running
-- Check BASE_URL is correct
-- Reduce load (decrease VUs)
+**High error rate (e.g., 58%)?**
+
+This usually indicates the server is struggling under load. Common causes:
+
+1. **Server not running in production mode**
+   ```bash
+   # Stop dev server and run:
+   npm run build
+   npm start
+   ```
+   Dev mode (`npm run dev`) with nodemon can be slower under heavy load.
+
+2. **Server resource exhaustion**
+   - Check CPU usage during test
+   - Monitor memory consumption
+   - Reduce concurrent users in test configuration
+
+3. **Port conflicts or server not listening**
+   ```bash
+   # Verify server is running:
+   curl http://localhost:3000/health/live
+
+   # Check what's on port 3000:
+   lsof -i :3000
+   ```
+
+4. **Network/Connection limits**
+   - Increase system file descriptors: `ulimit -n 65536`
+   - Check system connection limits
 
 **Slow responses?**
 - Profile the code
 - Check database queries
 - Monitor server resources
 - Check network latency
+- Use production build, not dev mode
 
 **Tests timing out?**
 - Increase timeout in k6 options
 - Reduce concurrent users
 - Check for deadlocks or blocking code
+
+**Only first test runs?**
+- Fixed in latest version - script now uses `;` instead of `&&`
+- All tests will run even if one fails
