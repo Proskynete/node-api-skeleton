@@ -1,4 +1,6 @@
 import { registerHealthRoutes } from "@app/server/health";
+import { onRequestHook } from "@app/server/hooks/onRequest";
+import { onResponseHook } from "@app/server/hooks/onResponse";
 import { loadRoutes } from "@app/server/loaders/route-loader";
 import { errorHandler } from "@app/server/middlewares/errorHandler";
 import { corsPlugin } from "@app/server/plugins/cors.plugin";
@@ -6,6 +8,7 @@ import { helmetPlugin } from "@app/server/plugins/helmet.plugin";
 import swagger from "@fastify/swagger";
 import swaggerUi from "@fastify/swagger-ui";
 import { env } from "@shared/infrastructure/config/environment";
+import { metrics } from "@shared/infrastructure/observability/metrics/PrometheusMetrics";
 import Fastify, { FastifyInstance } from "fastify";
 
 export async function buildApp(): Promise<FastifyInstance> {
@@ -48,6 +51,14 @@ export async function buildApp(): Promise<FastifyInstance> {
           name: "Greetings",
           description: "Greeting endpoints (v1 and v2 available)",
         },
+        {
+          name: "Health",
+          description: "Health check endpoints",
+        },
+        {
+          name: "Metrics",
+          description: "Prometheus metrics endpoint",
+        },
       ],
     },
   });
@@ -60,6 +71,31 @@ export async function buildApp(): Promise<FastifyInstance> {
     },
     staticCSP: true,
   });
+
+  // Register hooks for Prometheus metrics
+  app.addHook("onRequest", onRequestHook);
+  app.addHook("onResponse", onResponseHook);
+
+  // Metrics endpoint
+  app.get(
+    "/metrics",
+    {
+      schema: {
+        description: "Prometheus metrics endpoint",
+        tags: ["Metrics"],
+        response: {
+          200: {
+            type: "string",
+            description: "Prometheus metrics in text format",
+          },
+        },
+      },
+    },
+    async (_request, reply) => {
+      reply.header("Content-Type", metrics.register.contentType);
+      return metrics.register.metrics();
+    }
+  );
 
   // Health check routes
   await registerHealthRoutes(app);
