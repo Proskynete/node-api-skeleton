@@ -10,6 +10,7 @@ Automatically discovers and executes all k6 performance test files in the `test/
 
 **Features:**
 - 🔍 Auto-discovers all `*.k6.js` files
+- 🎯 Run all tests or filter by file name
 - 📊 Runs tests sequentially with detailed output
 - ✨ Colored console output for better readability
 - 📈 Summary report with pass/fail status and duration
@@ -18,18 +19,25 @@ Automatically discovers and executes all k6 performance test files in the `test/
 **Usage:**
 
 ```bash
-# Using npm script (recommended)
+# Run all performance tests (recommended)
 npm run test:performance
 
+# Run specific test by name (without .k6.js extension)
+npm run test:performance greetings-v1
+npm run test:performance greetings-v2
+npm run test:performance load-test
+
 # Direct execution
-node scripts/run-performance-tests.js
+node scripts/run-performance-tests.js              # All tests
+node scripts/run-performance-tests.js greetings-v1 # Specific test
 
 # Make executable and run directly
 chmod +x scripts/run-performance-tests.js
 ./scripts/run-performance-tests.js
+./scripts/run-performance-tests.js greetings-v1
 ```
 
-**Output Example:**
+**Output Example (All Tests):**
 
 ```
 ================================================================================
@@ -63,6 +71,40 @@ Total Tests: 3
 Passed: 3
 Failed: 0
 Duration: 218.57s
+
+================================================================================
+```
+
+**Output Example (Specific Test):**
+
+```
+================================================================================
+PERFORMANCE TESTS - K6
+================================================================================
+
+Filter: Running tests matching "greetings-v1"
+
+Found 1 test file(s):
+  - greetings-v1.k6.js
+
+▶ Running: greetings-v1.k6.js
+  Path: /path/to/test/performance/greetings-v1.k6.js
+
+[k6 output...]
+
+✓ PASSED: greetings-v1.k6.js (45.23s)
+
+================================================================================
+PERFORMANCE TEST RESULTS SUMMARY
+================================================================================
+
+Test Files:
+  ✓ greetings-v1.k6.js (45.23s)
+
+Total Tests: 1
+Passed: 1
+Failed: 0
+Duration: 45.23s
 
 ================================================================================
 ```

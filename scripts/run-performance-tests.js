@@ -3,12 +3,14 @@
 /**
  * Run Performance Tests Script
  *
- * Automatically discovers and executes all k6 performance test files
+ * Automatically discovers and executes k6 performance test files
  * in the test/performance/ directory.
  *
  * Usage:
- *   node scripts/run-performance-tests.js
- *   npm run test:performance
+ *   node scripts/run-performance-tests.js              # Run all tests
+ *   node scripts/run-performance-tests.js greetings-v1 # Run specific test
+ *   npm run test:performance                           # Run all tests
+ *   npm run test:performance greetings-v1              # Run specific test
  */
 
 const { execSync } = require("child_process");
@@ -47,16 +49,37 @@ function header(message) {
 /**
  * Find all k6 test files in performance directory
  */
-function findK6Tests() {
+function findK6Tests(filePattern = null) {
   if (!fs.existsSync(PERFORMANCE_DIR)) {
     throw new Error(`Performance tests directory not found: ${PERFORMANCE_DIR}`);
   }
 
-  const files = fs
+  let files = fs
     .readdirSync(PERFORMANCE_DIR)
     .filter((file) => file.endsWith(".k6.js"))
     .map((file) => path.join(PERFORMANCE_DIR, file))
     .sort();
+
+  // Filter by pattern if provided
+  if (filePattern) {
+    const pattern = filePattern.endsWith(".k6.js")
+      ? filePattern
+      : `${filePattern}.k6.js`;
+
+    files = files.filter((file) => {
+      const fileName = path.basename(file);
+      return fileName === pattern || fileName.includes(filePattern);
+    });
+
+    if (files.length === 0) {
+      throw new Error(
+        `No test file found matching pattern: "${filePattern}"\n` +
+        `Available tests: ${fs.readdirSync(PERFORMANCE_DIR)
+          .filter((f) => f.endsWith(".k6.js"))
+          .join(", ")}`
+      );
+    }
+  }
 
   return files;
 }
@@ -137,10 +160,18 @@ function printSummary(results) {
  */
 function main() {
   try {
+    // Get file pattern from command line arguments
+    const filePattern = process.argv[2];
+
     header("PERFORMANCE TESTS - K6");
 
-    // Find all k6 test files
-    const testFiles = findK6Tests();
+    if (filePattern) {
+      log(`Filter: Running tests matching "${filePattern}"`, COLORS.yellow);
+      console.log();
+    }
+
+    // Find k6 test files (all or filtered by pattern)
+    const testFiles = findK6Tests(filePattern);
 
     if (testFiles.length === 0) {
       log("⚠ No k6 test files found in test/performance/", COLORS.yellow);
