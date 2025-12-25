@@ -11,12 +11,13 @@ export class InMemoryGreetingRepository implements IGreetingRepository {
 
   async getGreeting(): Promise<Greeting> {
     if (this.greetings.length > 0) {
-      return this.greetings[this.greetings.length - 1];
+      return Promise.resolve(this.greetings[this.greetings.length - 1]);
     }
-    return Greeting.create("Hello World!");
+    return Promise.resolve(Greeting.create("Hello World!"));
   }
 
   async save(greeting: Greeting): Promise<void> {
     this.greetings.push(greeting);
+    return Promise.resolve();
   }
 }

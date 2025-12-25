@@ -101,7 +101,7 @@ export async function buildApp(): Promise<FastifyInstance> {
   );
 
   // Health check routes
-  await registerHealthRoutes(app);
+  registerHealthRoutes(app);
 
   // Auto-load routes from all contexts (scans @contexts/*/infrastructure/http/v*/routes/)
   await loadRoutes(app);

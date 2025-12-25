@@ -1,7 +1,24 @@
-import { afterAll, beforeAll, describe, expect, it } from "vitest";
-
 import { buildApp } from "@app/server/app";
 import { FastifyInstance } from "fastify";
+import { afterAll, beforeAll, describe, expect, it } from "vitest";
+
+interface HealthResponse {
+  status: string;
+  timestamp: string;
+}
+
+interface HealthCheck {
+  name: string;
+  status: string;
+  responseTime: number;
+  message: string;
+}
+
+interface ReadinessResponse {
+  status: string;
+  checks: HealthCheck[];
+  timestamp: string;
+}
 
 describe("Observability Endpoints", () => {
   let app: FastifyInstance;
@@ -23,7 +40,7 @@ describe("Observability Endpoints", () => {
       });
 
       expect(response.statusCode).toBe(200);
-      const body = response.json();
+      const body = response.json<HealthResponse>();
       expect(body).toHaveProperty("status", "ok");
       expect(body).toHaveProperty("timestamp");
       expect(body.timestamp).toMatch(/^\d{4}-\d{2}-\d{2}T/);
@@ -47,7 +64,7 @@ describe("Observability Endpoints", () => {
       });
 
       expect(response.statusCode).toBe(200);
-      const body = response.json();
+      const body = response.json<HealthResponse>();
       expect(body).toHaveProperty("status", "alive");
       expect(body).toHaveProperty("timestamp");
       expect(body.timestamp).toMatch(/^\d{4}-\d{2}-\d{2}T/);
@@ -71,7 +88,7 @@ describe("Observability Endpoints", () => {
       });
 
       expect(response.statusCode).toBe(200);
-      const body = response.json();
+      const body = response.json<ReadinessResponse>();
       expect(body).toHaveProperty("status", "ready");
       expect(body).toHaveProperty("checks");
       expect(body).toHaveProperty("timestamp");
@@ -85,13 +102,13 @@ describe("Observability Endpoints", () => {
         url: "/health/ready",
       });
 
-      const body = response.json();
-      const memoryCheck = body.checks.find((c: any) => c.name === "memory");
+      const body = response.json<ReadinessResponse>();
+      const memoryCheck = body.checks.find((c) => c.name === "memory");
       expect(memoryCheck).toBeDefined();
-      expect(memoryCheck.status).toBe("healthy");
+      expect(memoryCheck?.status).toBe("healthy");
       expect(memoryCheck).toHaveProperty("responseTime");
       expect(memoryCheck).toHaveProperty("message");
-      expect(memoryCheck.message).toContain("Heap used:");
+      expect(memoryCheck?.message).toContain("Heap used:");
     });
 
     it("should have proper content-type", async () => {
@@ -109,7 +126,7 @@ describe("Observability Endpoints", () => {
         url: "/health/ready",
       });
 
-      const body = response.json();
+      const body = response.json<ReadinessResponse>();
       expect(body.timestamp).toMatch(/^\d{4}-\d{2}-\d{2}T/);
       expect(() => new Date(body.timestamp)).not.toThrow();
     });
@@ -124,7 +141,9 @@ describe("Observability Endpoints", () => {
 
       expect(response.statusCode).toBe(200);
       expect(response.body).toContain("# HELP http_request_duration_seconds");
-      expect(response.body).toContain("# TYPE http_request_duration_seconds histogram");
+      expect(response.body).toContain(
+        "# TYPE http_request_duration_seconds histogram"
+      );
       expect(response.body).toContain("# HELP http_requests_total");
       expect(response.body).toContain("# TYPE http_requests_total counter");
     });

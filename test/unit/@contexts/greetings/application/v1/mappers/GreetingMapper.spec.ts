@@ -4,7 +4,7 @@ import {
   greetingToDto,
 } from "@contexts/greetings/application/v1/mappers/GreetingMapper";
 import { Greeting } from "@contexts/greetings/domain/entities/Greeting";
-import { beforeEach, describe, expect, it } from "vitest";
+import { describe, expect, it } from "vitest";
 
 describe("GreetingMapper", () => {
   describe("greetingToDto", () => {

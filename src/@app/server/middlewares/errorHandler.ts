@@ -11,7 +11,7 @@ export async function errorHandler(
   error: FastifyError | Error,
   request: FastifyRequest,
   reply: FastifyReply
-) {
+): Promise<void> {
   request.log.error(error);
 
   // Domain exceptions (business logic errors)
@@ -26,17 +26,25 @@ export async function errorHandler(
 
   // Zod validation errors
   if (error instanceof ZodError) {
-    return reply.status(400).send({
+    /* eslint-disable @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unsafe-member-access */
+    const validationErrors = error.errors.map((err) => ({
+      path: err.path.join("."),
+      message: err.message,
+    }));
+
+    await reply.status(400).send({
       error: "ValidationError",
       message: "Request validation failed",
-      details: error.errors,
+      details: validationErrors,
       requestId: request.id,
     });
+    /* eslint-enable @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unsafe-member-access */
+    return;
   }
 
   // Fastify errors
   if ("statusCode" in error) {
-    return reply.status(error.statusCode || 500).send({
+    await reply.status(error.statusCode ?? 500).send({
       error: error.name,
       message: error.message,
       requestId: request.id,

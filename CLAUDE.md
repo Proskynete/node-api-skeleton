@@ -385,7 +385,7 @@ docker-compose down
 docker-compose -f docker-compose.dev.yml up -d
 ```
 
-See `DOCKER.md` for complete documentation.
+See `docs/DOCKER.md` for complete documentation.
 
 ## Design Patterns
 
@@ -581,8 +581,8 @@ This project was **successfully migrated** from Express to Hexagonal Architectur
 
 ## Documentation
 
-- **ARCHITECTURE.md**: Complete architecture documentation
-- **DOCKER.md**: Docker setup and usage guide
+- **docs/ARCHITECTURE.md**: Complete architecture documentation
+- **docs/DOCKER.md**: Docker setup and usage guide
 - **specs/**: Migration plan and design decisions (historical reference)
 - **test/performance/README.md**: k6 performance testing guide
 

@@ -2,6 +2,10 @@ import { buildApp } from "@app/server/app";
 import { FastifyInstance } from "fastify";
 import { afterAll, beforeAll, describe, expect, it } from "vitest";
 
+interface V1Response {
+  message: string;
+}
+
 describe("GET /api/v1/greetings", () => {
   let app: FastifyInstance;
 
@@ -20,9 +24,10 @@ describe("GET /api/v1/greetings", () => {
       url: "/api/v1/greetings",
     });
 
+    const body = response.json<V1Response>();
     expect(response.statusCode).toBe(200);
-    expect(response.json()).toHaveProperty("message");
-    expect(response.json().message).toBe("Hello World!");
+    expect(body).toHaveProperty("message");
+    expect(body.message).toBe("Hello World!");
   });
 
   it("should have proper content-type", async () => {
@@ -40,7 +45,7 @@ describe("GET /api/v1/greetings", () => {
       url: "/api/v1/greetings",
     });
 
-    const body = response.json();
+    const body = response.json<V1Response>();
     expect(body).toHaveProperty("message");
     expect(typeof body.message).toBe("string");
     expect(body.message.length).toBeGreaterThan(0);

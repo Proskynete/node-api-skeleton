@@ -1,15 +1,41 @@
 # Multi-stage Dockerfile for Node API Skeleton
-# Stage 1: Build
-FROM node:20-alpine AS builder
+# Supports both development and production environments
+
+# Stage 1: Base - Common dependencies
+FROM node:20-alpine AS base
 
 WORKDIR /app
+
+# Install dumb-init for proper signal handling
+RUN apk add --no-cache dumb-init
 
 # Copy package files
 COPY package*.json ./
 
-# Install ALL dependencies for building (including dev dependencies like @swc/cli)
+# Stage 2: Dependencies - Install all dependencies
+FROM base AS dependencies
+
+# Install ALL dependencies (including dev dependencies)
 # Skip postinstall scripts (husky) during Docker build
 RUN npm ci --ignore-scripts
+
+# Stage 3: Development - For local development with hot reload
+FROM dependencies AS development
+
+# Copy source code
+COPY . .
+
+# Expose port
+EXPOSE 3000
+
+# Use dumb-init to handle signals properly
+ENTRYPOINT ["dumb-init", "--"]
+
+# Start development server with hot reload
+CMD ["npm", "run", "dev"]
+
+# Stage 4: Builder - Build the application
+FROM dependencies AS builder
 
 # Copy source code
 COPY . .
@@ -17,20 +43,12 @@ COPY . .
 # Build the application using SWC
 RUN npm run build
 
-# Stage 2: Production
-FROM node:20-alpine AS production
-
-WORKDIR /app
-
-# Install dumb-init for proper signal handling
-RUN apk add --no-cache dumb-init
+# Stage 5: Production - Minimal production image
+FROM base AS production
 
 # Create non-root user
 RUN addgroup -g 1001 -S nodejs && \
     adduser -S nodejs -u 1001
-
-# Copy package files
-COPY package*.json ./
 
 # Install only production dependencies
 # Skip postinstall scripts (husky) during Docker build

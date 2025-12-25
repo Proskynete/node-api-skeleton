@@ -27,48 +27,53 @@ describe("GetGreetingUseCase", () => {
 
   it("should return greeting DTO from repository", async () => {
     const greeting = Greeting.create("Test Greeting");
-    vi.mocked(mockRepository.getGreeting).mockResolvedValue(greeting);
+    const getGreetingSpy = vi
+      .spyOn(mockRepository, "getGreeting")
+      .mockResolvedValue(greeting);
 
     const result = await useCase.execute();
 
     expect(result).toEqual({ message: "Test Greeting" });
-    expect(mockRepository.getGreeting).toHaveBeenCalledTimes(1);
+    expect(getGreetingSpy).toHaveBeenCalledTimes(1);
   });
 
   it("should log debug message when fetching", async () => {
     const greeting = Greeting.create("Hello");
-    vi.mocked(mockRepository.getGreeting).mockResolvedValue(greeting);
+    vi.spyOn(mockRepository, "getGreeting").mockResolvedValue(greeting);
+    const debugSpy = vi.spyOn(mockLogger, "debug");
 
     await useCase.execute();
 
-    expect(mockLogger.debug).toHaveBeenCalledWith(
+    expect(debugSpy).toHaveBeenCalledWith(
       "GetGreetingUseCase: Fetching greeting"
     );
   });
 
   it("should log info message on success", async () => {
     const greeting = Greeting.create("Hello");
-    vi.mocked(mockRepository.getGreeting).mockResolvedValue(greeting);
+    vi.spyOn(mockRepository, "getGreeting").mockResolvedValue(greeting);
+    const infoSpy = vi.spyOn(mockLogger, "info");
 
     await useCase.execute();
 
-    expect(mockLogger.info).toHaveBeenCalledWith(
+    expect(infoSpy).toHaveBeenCalledWith(
       "GetGreetingUseCase: Greeting fetched successfully"
     );
   });
 
   it("should propagate repository errors", async () => {
     const error = new Error("Repository error");
-    vi.mocked(mockRepository.getGreeting).mockRejectedValue(error);
+    vi.spyOn(mockRepository, "getGreeting").mockRejectedValue(error);
 
     await expect(useCase.execute()).rejects.toThrow("Repository error");
   });
 
   it("should not call logger.info if repository fails", async () => {
     const error = new Error("Repository error");
-    vi.mocked(mockRepository.getGreeting).mockRejectedValue(error);
+    vi.spyOn(mockRepository, "getGreeting").mockRejectedValue(error);
+    const infoSpy = vi.spyOn(mockLogger, "info");
 
     await expect(useCase.execute()).rejects.toThrow();
-    expect(mockLogger.info).not.toHaveBeenCalled();
+    expect(infoSpy).not.toHaveBeenCalled();
   });
 });

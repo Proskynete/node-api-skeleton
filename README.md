@@ -163,7 +163,7 @@ Each bounded context is a complete vertical slice:
 - Scalable - add new contexts without touching existing ones
 - Microservices-ready - easy to extract contexts
 
-See [ARCHITECTURE.md](./ARCHITECTURE.md) for complete documentation.
+See [ARCHITECTURE.md](./docs/ARCHITECTURE.md) for complete documentation.
 
 ## 📁 Folder Structure
 
@@ -284,7 +284,7 @@ docker-compose -f docker-compose.dev.yml up -d
 - **Prometheus**: http://localhost:9090
 - **Grafana**: http://localhost:3001 (admin/admin)
 
-See [DOCKER.md](./DOCKER.md) for complete documentation.
+See [DOCKER.md](./docs/DOCKER.md) for complete documentation.
 
 ## 📡 API Endpoints
 
@@ -385,8 +385,8 @@ Interactive API docs at:
 
 ## 📚 Documentation
 
-- **[ARCHITECTURE.md](./ARCHITECTURE.md)** - Complete architecture guide
-- **[DOCKER.md](./DOCKER.md)** - Docker setup and usage
+- **[ARCHITECTURE.md](./docs/ARCHITECTURE.md)** - Complete architecture guide
+- **[DOCKER.md](./docs/DOCKER.md)** - Docker setup and usage
 - **[CLAUDE.md](./CLAUDE.md)** - Development guide for Claude Code
 - **[specs/](./specs/)** - Migration plan and design decisions (historical)
 - **[test/performance/README.md](./test/performance/README.md)** - k6 testing guide

@@ -16,9 +16,9 @@ import { WinstonLogger } from "@shared/infrastructure/observability/WinstonLogge
 class Container {
   private services = new Map<
     string,
-    { factory: () => any; singleton: boolean }
+    { factory: () => unknown; singleton: boolean }
   >();
-  private singletons = new Map<string, any>();
+  private singletons = new Map<string, unknown>();
 
   /**
    * Register a singleton service (single instance shared across app)

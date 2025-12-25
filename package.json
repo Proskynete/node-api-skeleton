@@ -13,12 +13,14 @@
     "format": "prettier --write \"src/**/*.{ts,tsx,js,jsx,json,md}\" \"test/**/*.{ts,tsx,js,jsx,json,md}\"",
     "format:check": "prettier --check \"src/**/*.{ts,tsx,js,jsx,json,md}\" \"test/**/*.{ts,tsx,js,jsx,json,md}\"",
     "test": "cross-env PORT=5054 vitest run",
+    "test:all": "npm run test:unit && npm run test:integration && npm run test:e2e && npm run test:performance",
+    "test:unit": "cross-env PORT=5054 vitest run test/unit",
+    "test:integration": "cross-env PORT=5054 vitest run test/integration",
+    "test:e2e": "cross-env PORT=5054 vitest run test/e2e",
     "test:watch": "cross-env PORT=5054 vitest",
     "test:ui": "cross-env PORT=5054 vitest --ui",
     "test:coverage": "cross-env PORT=5054 vitest run --coverage",
-    "test:performance:v1": "k6 run test/performance/greetings-v1.k6.js",
-    "test:performance:v2": "k6 run test/performance/greetings-v2.k6.js",
-    "test:performance:load": "k6 run test/performance/load-test.k6.js",
+    "test:performance": "k6 run test/performance/greetings-v1.k6.js && k6 run test/performance/greetings-v2.k6.js && k6 run test/performance/load-test.k6.js",
     "prepare": "husky install"
   },
   "dependencies": {

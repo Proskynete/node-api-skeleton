@@ -2,6 +2,12 @@ import { buildApp } from "@app/server/app";
 import { FastifyInstance } from "fastify";
 import { afterAll, beforeAll, describe, expect, it } from "vitest";
 
+interface V2Response {
+  message: string;
+  timestamp: string;
+  version: string;
+}
+
 describe("GET /api/v2/greetings", () => {
   let app: FastifyInstance;
 
@@ -21,7 +27,7 @@ describe("GET /api/v2/greetings", () => {
     });
 
     expect(response.statusCode).toBe(200);
-    const body = response.json();
+    const body = response.json<V2Response>();
     expect(body).toHaveProperty("message");
     expect(body).toHaveProperty("timestamp");
     expect(body).toHaveProperty("version");
@@ -35,7 +41,7 @@ describe("GET /api/v2/greetings", () => {
       url: "/api/v2/greetings",
     });
 
-    const body = response.json();
+    const body = response.json<V2Response>();
     expect(body.timestamp).toMatch(/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}/);
     expect(() => new Date(body.timestamp)).not.toThrow();
   });
@@ -55,7 +61,7 @@ describe("GET /api/v2/greetings", () => {
       url: "/api/v2/greetings",
     });
 
-    const body = response.json();
+    const body = response.json<V2Response>();
     expect(body).toHaveProperty("message");
     expect(body).toHaveProperty("timestamp");
     expect(body).toHaveProperty("version");

@@ -6,7 +6,7 @@ import { FastifyInstance } from "fastify";
  * Greeting Routes (Fastify v1)
  * Registers all greeting endpoints with OpenAPI schemas
  */
-export async function greetingRoutes(fastify: FastifyInstance) {
+export function greetingRoutes(fastify: FastifyInstance): void {
   const controller =
     container.resolve<GreetingController>("greetingController");
 

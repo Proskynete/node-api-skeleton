@@ -48,7 +48,9 @@ async function loadContextVersionRoutes(
       const prefix = `/api/${version}`;
       await app.register(routeHandler, { prefix });
 
-      console.log(`✓ Registered ${contextName}/${version} routes at ${prefix}`);
+      app.log.info(
+        `✓ Registered ${contextName}/${version} routes at ${prefix}`
+      );
     }
   }
 }
@@ -61,7 +63,7 @@ export async function loadRoutes(app: FastifyInstance): Promise<void> {
   const contextsPath = join(__dirname, "../../../@contexts");
 
   if (!existsSync(contextsPath)) {
-    console.warn("⚠️  @contexts folder not found, skipping route loading");
+    app.log.warn("⚠️  @contexts folder not found, skipping route loading");
     return;
   }
 
@@ -70,7 +72,7 @@ export async function loadRoutes(app: FastifyInstance): Promise<void> {
     return statSync(itemPath).isDirectory();
   });
 
-  console.log(`\n📦 Loading routes from ${contexts.length} context(s)...`);
+  app.log.info(`\n📦 Loading routes from ${contexts.length} context(s)...`);
 
   for (const contextName of contexts) {
     const contextPath = join(contextsPath, contextName);
@@ -91,5 +93,5 @@ export async function loadRoutes(app: FastifyInstance): Promise<void> {
     }
   }
 
-  console.log("✓ Route loading completed\n");
+  app.log.info("✓ Route loading completed\n");
 }

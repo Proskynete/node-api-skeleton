@@ -10,7 +10,7 @@ async function start(): Promise<void> {
       host: "0.0.0.0",
     });
 
-    console.log(`
+    app.log.info(`
 ╔═══════════════════════════════════════════════════════╗
 ║                                                       ║
 ║   Server Ready                                        ║
@@ -27,4 +27,4 @@ async function start(): Promise<void> {
   }
 }
 
-start();
+void start();

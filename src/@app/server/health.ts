@@ -18,9 +18,7 @@ interface ReadinessResponse {
   timestamp: string;
 }
 
-export async function registerHealthRoutes(
-  app: FastifyInstance
-): Promise<void> {
+export function registerHealthRoutes(app: FastifyInstance): void {
   // Liveness probe - indicates if the application is alive
   app.get(
     "/health/live",

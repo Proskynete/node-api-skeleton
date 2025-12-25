@@ -21,12 +21,17 @@ export class WinstonLogger implements ILogger {
         new winston.transports.Console({
           format: winston.format.combine(
             winston.format.colorize(),
-            winston.format.printf(({ level, message, timestamp, ...meta }) => {
+            winston.format.printf((info) => {
+              const { level, message, timestamp, ...meta } = info;
               const metaStr =
                 Object.keys(meta).length > 0
                   ? JSON.stringify(meta, null, 2)
                   : "";
-              return `${timestamp} [${level}]: ${message} ${metaStr}`;
+              const ts =
+                timestamp && typeof timestamp === "string" ? timestamp : "";
+              const lvl: string = typeof level === "string" ? level : "";
+              // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
+              return `${ts} [${lvl}]: ${message} ${metaStr}`;
             })
           ),
         }),
