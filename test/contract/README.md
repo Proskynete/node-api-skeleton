@@ -1,113 +1,113 @@
 # Contract Testing with Pact
 
-Este directorio contiene tests de contrato usando [Pact](https://pact.io/), enfocados en validar los **Adaptadores de Infraestructura** según Arquitectura Hexagonal.
+This directory contains contract tests using [Pact](https://pact.io/), focused on validating **Infrastructure Adapters** according to Hexagonal Architecture.
 
-## 📚 Documentación Completa
+## 📚 Complete Documentation
 
-Para guías detalladas sobre contract testing en este proyecto, ver:
+For detailed guides on contract testing in this project, see:
 
-- **[Provider Tests Guide](../../docs/guides/contract-testing-provider.md)** - Validación de adaptadores HTTP inbound (controllers) ✅ ACTIVO
-- **[Consumer Tests Guide](../../docs/guides/contract-testing-consumer.md)** - Validación de adaptadores HTTP outbound (clients) ⚠️ REFERENCIA
+- **[Provider Tests Guide](../../docs/guides/contract-testing-provider.md)** - HTTP inbound adapter validation (controllers) ✅ ACTIVE
+- **[Consumer Tests Guide](../../docs/guides/contract-testing-consumer.md)** - HTTP outbound adapter validation (clients) ⚠️ REFERENCE
 
-## Arquitectura Hexagonal y Contract Testing
+## Hexagonal Architecture and Contract Testing
 
-En **Arquitectura Hexagonal (Puertos y Adaptadores)**, los tests de contrato validan específicamente los **adaptadores** que manejan comunicación externa, NO la lógica de negocio.
+In **Hexagonal Architecture (Ports and Adapters)**, contract tests specifically validate **adapters** that handle external communication, NOT business logic.
 
 ```
 ┌────────────────────────────────────────────────────────────┐
 │              HEXAGONAL ARCHITECTURE                         │
 ├────────────────────────────────────────────────────────────┤
 │                                                              │
-│  INBOUND ADAPTERS (Entrada) ← Provider Tests ✅            │
+│  INBOUND ADAPTERS (Input) ← Provider Tests ✅              │
 │  ├─ HTTP Controllers (Fastify)                             │
 │  │  └─ infrastructure/http/v*/controllers/                 │
 │  │                                                          │
-│  APPLICATION CORE (Puertos + Dominio)                      │
+│  APPLICATION CORE (Ports + Domain)                         │
 │  ├─ Use Cases (application/)                               │
 │  ├─ Domain (entities, value objects)                       │
 │  └─ Repository Ports (interfaces)                          │
 │  │                                                          │
-│  OUTBOUND ADAPTERS (Salida) ← Consumer Tests ⚠️           │
-│  ├─ InMemoryGreetingRepository (NO requiere Pact)          │
-│  └─ [HTTP Clients externos] (NO implementado)              │
+│  OUTBOUND ADAPTERS (Output) ← Consumer Tests ⚠️            │
+│  ├─ InMemoryGreetingRepository (NO Pact needed)            │
+│  └─ [External HTTP Clients] (NOT implemented)              │
 │                                                              │
 └────────────────────────────────────────────────────────────┘
 ```
 
-## Tests en Este Directorio
+## Tests in This Directory
 
-### `greetings-provider.pact.spec.ts` ✅ ACTIVO
+### `greetings-provider.pact.spec.ts` ✅ ACTIVE
 
-**Propósito**: Valida el **adaptador HTTP Inbound** (controllers que exponen nuestra API).
+**Purpose**: Validates the **HTTP Inbound adapter** (controllers that expose our API).
 
-**Componentes probados**:
+**Components tested**:
 
 - `@contexts/greetings/infrastructure/http/v1/controllers/GreetingController.ts`
 - `@contexts/greetings/infrastructure/http/v2/controllers/GreetingController.ts`
 
-**Ejecutar**:
+**Run**:
 
 ```bash
 npm run test:contract
 ```
 
-## Principios Clave
+## Key Principles
 
-### ✅ QUÉ Probar con Pact
+### ✅ WHAT to Test with Pact
 
-1. **Provider Tests**: Adaptadores HTTP **Inbound** (Controllers/Routes)
-   - Validan que nuestros endpoints cumplen contratos
-   - Prueban: `infrastructure/http/controllers`
+1. **Provider Tests**: HTTP **Inbound** Adapters (Controllers/Routes)
+   - Validate that our endpoints comply with contracts
+   - Test: `infrastructure/http/controllers`
 
-2. **Consumer Tests**: Adaptadores HTTP **Outbound** (HTTP Clients)
-   - Validan que nuestros clientes HTTP cumplen contratos
-   - Prueban: `infrastructure/clients` o `infrastructure/adapters/http`
+2. **Consumer Tests**: HTTP **Outbound** Adapters (HTTP Clients)
+   - Validate that our HTTP clients comply with contracts
+   - Test: `infrastructure/clients` or `infrastructure/adapters/http`
 
-### ❌ QUÉ NO Probar con Pact
+### ❌ WHAT NOT to Test with Pact
 
-- ❌ Casos de uso (application layer)
-- ❌ Entidades de dominio (domain layer)
-- ❌ Repositorios in-memory
-- ❌ Comunicación entre capas internas
-- ❌ Lógica de negocio
+- ❌ Use cases (application layer)
+- ❌ Domain entities (domain layer)
+- ❌ In-memory repositories
+- ❌ Communication between internal layers
+- ❌ Business logic
 
-## Comandos Útiles
+## Useful Commands
 
 ```bash
-# Ejecutar tests de contrato
+# Run contract tests
 npm run test:contract
 
-# Ejecutar todos los tests (incluye contract)
+# Run all tests (includes contract)
 npm run test:all
 
-# Publicar pacts al Pact Broker (en CI/CD)
+# Publish pacts to Pact Broker (in CI/CD)
 npx pact-broker publish pacts \
   --broker-base-url=$PACT_BROKER_URL \
   --broker-token=$PACT_BROKER_TOKEN \
   --consumer-app-version=$GIT_COMMIT
 ```
 
-## Cuándo Usar Cada Tipo
+## When to Use Each Type
 
-### Provider Tests (Nuestro Caso Actual)
+### Provider Tests (Our Current Case)
 
-**Usar cuando**:
+**Use when**:
 
-- ✅ Exponemos endpoints HTTP (REST, GraphQL)
-- ✅ Otros sistemas/equipos consumen nuestra API
-- ✅ Necesitamos garantizar contratos con consumidores
+- ✅ We expose HTTP endpoints (REST, GraphQL)
+- ✅ Other systems/teams consume our API
+- ✅ We need to guarantee contracts with consumers
 
-### Consumer Tests (Futuro)
+### Consumer Tests (Future)
 
-**Usar cuando**:
+**Use when**:
 
-- ✅ Consumimos APIs HTTP externas
-- ✅ Implementamos clientes HTTP como adaptadores
-- ✅ Necesitamos garantizar que cumplimos contratos de providers externos
+- ✅ We consume external HTTP APIs
+- ✅ We implement HTTP clients as adapters
+- ✅ We need to ensure we comply with external provider contracts
 
-**Nota**: Este proyecto actualmente NO tiene adaptadores HTTP outbound, por lo que no hay consumer tests implementados.
+**Note**: This project currently has NO HTTP outbound adapters, so no consumer tests are implemented.
 
-## Integración con CI/CD
+## CI/CD Integration
 
 ```yaml
 # GitHub Actions Example
@@ -119,29 +119,29 @@ npx pact-broker publish pacts \
   run: npm run test:contract
 ```
 
-## Recursos
+## Resources
 
 - [Pact Documentation](https://docs.pact.io/)
 - [Hexagonal Architecture](https://alistair.cockburn.us/hexagonal-architecture/)
 - [Pact JS](https://github.com/pact-foundation/pact-js)
 - [Contract Testing Best Practices](https://docs.pact.io/getting_started/testing_contracts)
 
-## Resumen: Qué Probar en Cada Capa
+## Summary: What to Test in Each Layer
 
-| Capa                               | Qué Probar                                  | Tipo de Test                 |
+| Layer                              | What to Test                                | Test Type                    |
 | ---------------------------------- | ------------------------------------------- | ---------------------------- |
-| **Domain**                         | Entidades, Value Objects, Reglas de negocio | Unit Tests                   |
-| **Application**                    | Casos de uso, Orquestación                  | Unit/Integration Tests       |
+| **Domain**                         | Entities, Value Objects, Business rules     | Unit Tests                   |
+| **Application**                    | Use cases, Orchestration                    | Unit/Integration Tests       |
 | **Infrastructure (HTTP Inbound)**  | Controllers, Routes                         | **Provider Tests** (Pact) ✅ |
 | **Infrastructure (HTTP Outbound)** | HTTP Clients, API Adapters                  | **Consumer Tests** (Pact) ⚠️ |
 | **Infrastructure (Persistence)**   | Repositories, Databases                     | Integration Tests            |
 
 ---
 
-**Estado Actual del Proyecto**:
+**Current Project Status**:
 
-- ✅ Provider Tests: Implementados y activos
-- ⚠️ Consumer Tests: No implementados (sin adaptadores HTTP outbound)
+- ✅ Provider Tests: Implemented and active
+- ⚠️ Consumer Tests: Not implemented (no HTTP outbound adapters)
 
-**Versión**: 2.0
-**Última Actualización**: Diciembre 2024
+**Version**: 2.1.0
+**Last Updated**: December 2024
