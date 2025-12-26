@@ -1,7 +1,7 @@
-import { describe, it, expect, beforeEach, vi } from "vitest";
 import { GreetingCreatedEventHandler } from "@contexts/greetings/application/v1/event-handlers/GreetingCreatedEventHandler";
 import { GreetingCreatedEvent } from "@contexts/greetings/domain/events/GreetingCreatedEvent";
 import { ILogger } from "@shared/infrastructure/observability/ILogger";
+import { beforeEach, describe, expect, it, vi } from "vitest";
 
 describe("GreetingCreatedEventHandler", () => {
   let handler: GreetingCreatedEventHandler;
@@ -118,9 +118,7 @@ describe("GreetingCreatedEventHandler", () => {
       });
 
       await expect(handler.handle(event)).resolves.toBeUndefined();
-      expect(loggerInfoSpy).toHaveBeenCalledWith(
-        'New greeting created: ""'
-      );
+      expect(loggerInfoSpy).toHaveBeenCalledWith('New greeting created: ""');
     });
 
     it("should handle events with long messages", async () => {

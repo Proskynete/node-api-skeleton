@@ -1,5 +1,5 @@
-import { describe, it, expect, beforeEach } from "vitest";
 import { GreetingCreatedEvent } from "@contexts/greetings/domain/events/GreetingCreatedEvent";
+import { beforeEach, describe, expect, it } from "vitest";
 
 describe("GreetingCreatedEvent", () => {
   const aggregateId = "greeting-123";

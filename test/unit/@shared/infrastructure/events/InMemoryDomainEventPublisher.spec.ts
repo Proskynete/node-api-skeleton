@@ -1,8 +1,8 @@
-import { describe, it, expect, beforeEach, vi } from "vitest";
-import { InMemoryDomainEventPublisher } from "@shared/infrastructure/events/InMemoryDomainEventPublisher";
 import { IDomainEvent } from "@shared/domain/events/IDomainEvent";
 import { IDomainEventHandler } from "@shared/domain/events/IDomainEventHandler";
+import { InMemoryDomainEventPublisher } from "@shared/infrastructure/events/InMemoryDomainEventPublisher";
 import { ILogger } from "@shared/infrastructure/observability/ILogger";
+import { beforeEach, describe, expect, it, vi } from "vitest";
 
 // Mock Event for testing
 class MockDomainEvent implements IDomainEvent {
@@ -386,9 +386,7 @@ describe("InMemoryDomainEventPublisher", () => {
       publisher.subscribe(handler);
       publisher.clearHandlers();
 
-      expect(loggerInfoSpy).toHaveBeenCalledWith(
-        "All event handlers cleared"
-      );
+      expect(loggerInfoSpy).toHaveBeenCalledWith("All event handlers cleared");
     });
 
     it("should allow re-subscribing after clearing", () => {

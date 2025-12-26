@@ -1,5 +1,5 @@
-import { describe, it, expect, beforeEach } from "vitest";
 import { DomainEvent } from "@shared/domain/events/DomainEvent";
+import { beforeEach, describe, expect, it } from "vitest";
 
 // Test implementation of DomainEvent
 class TestDomainEvent extends DomainEvent {
