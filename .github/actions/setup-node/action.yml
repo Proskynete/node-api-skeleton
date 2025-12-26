@@ -1,0 +1,22 @@
+name: 'Setup Node.js Environment'
+description: 'Setup Node.js with caching and dependency installation'
+author: 'Proskynete'
+
+runs:
+  using: 'composite'
+  steps:
+    - name: 🟢 Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '24.x'
+        cache: 'npm'
+
+    - name: 🛠 Install Dependencies
+      shell: bash
+      run: npm ci
+
+    - name: 📋 Verify Installation
+      shell: bash
+      run: |
+        echo "Node version: $(node --version)"
+        echo "NPM version: $(npm --version)"
