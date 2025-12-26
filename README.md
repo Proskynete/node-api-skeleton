@@ -8,7 +8,7 @@ Production-ready Node.js API skeleton built with <strong>Hexagonal Architecture<
 
 ## Status
 
-[![Coverage Status](https://img.shields.io/coverallsCoverage/github/Proskynete/node-api-skeleton?logo=Coveralls)](https://coveralls.io/github/Proskynete/node-api-skeleton?branch=master) [![CI](https://img.shields.io/github/actions/workflow/status/Proskynete/node-api-skeleton/ci.yml?logo=GithubActions&logoColor=fff)](https://github.com/Proskynete/node-api-skeleton/actions/workflows/ci.yml) [![GitHub issues](https://img.shields.io/github/issues/Proskynete/node-api-skeleton)](https://github.com/Proskynete/node-api-skeleton/issues) [![GitHub forks](https://img.shields.io/github/forks/Proskynete/node-api-skeleton)](https://github.com/Proskynete/node-api-skeleton/network) [![GitHub stars](https://img.shields.io/github/stars/Proskynete/node-api-skeleton)](https://github.com/Proskynete/node-api-skeleton/stargazers) [![PRs welcome](https://img.shields.io/badge/PRs-welcome-green)](#CONTRIBUTING.md)
+[![CI](https://img.shields.io/github/actions/workflow/status/Proskynete/node-api-skeleton/ci.yml?logo=GithubActions&logoColor=fff&label=CI)](https://github.com/Proskynete/node-api-skeleton/actions/workflows/ci.yml) [![Lint](https://img.shields.io/github/actions/workflow/status/Proskynete/node-api-skeleton/lint.yml?logo=ESLint&logoColor=fff&label=Lint)](https://github.com/Proskynete/node-api-skeleton/actions/workflows/lint.yml) [![GitHub issues](https://img.shields.io/github/issues/Proskynete/node-api-skeleton)](https://github.com/Proskynete/node-api-skeleton/issues) [![GitHub forks](https://img.shields.io/github/forks/Proskynete/node-api-skeleton)](https://github.com/Proskynete/node-api-skeleton/network) [![GitHub stars](https://img.shields.io/github/stars/Proskynete/node-api-skeleton)](https://github.com/Proskynete/node-api-skeleton/stargazers) [![PRs welcome](https://img.shields.io/badge/PRs-welcome-green)](#CONTRIBUTING.md)
 
 ## 🎉 Architecture Status: PRODUCTION READY
 
@@ -392,6 +392,7 @@ Interactive API docs at:
 
 - **[ARCHITECTURE.md](./docs/ARCHITECTURE.md)** - Complete architecture guide (Hexagonal + DDD + Vertical Slices)
 - **[DOCKER.md](./docs/DOCKER.md)** - Docker setup, multi-stage builds, and Docker Compose
+- **[GITHUB_ACTIONS.md](./docs/GITHUB_ACTIONS.md)** - CI/CD pipeline, workflows, and automation
 - **[CLAUDE.md](./CLAUDE.md)** - Development guide for Claude Code AI assistant
 
 ### Architecture Decision Records (ADRs)

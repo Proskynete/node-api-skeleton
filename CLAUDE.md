@@ -685,6 +685,90 @@ app.post("/api/v1/greetings", GreetingController.createGreeting);
 - Expose domain entities directly via HTTP
 - Use console.log (use logger instead)
 
+## GitHub Actions & CI/CD
+
+The project uses a **modular GitHub Actions architecture** with 10 specialized workflows.
+
+### Core Workflows
+
+1. **CI (Continuous Integration)** - `.github/workflows/ci.yml`
+   - Runs on push and PR to main/feat/** branches
+   - Matrix testing across Ubuntu, macOS, Windows
+   - Build → Test → Coverage
+   - Uses custom reusable action (`.github/actions/setup-node`)
+
+2. **Lint** - `.github/workflows/lint.yml`
+   - ESLint + Prettier checks
+   - Uses custom reusable action
+
+3. **Dependency Review** - `.github/workflows/dependency-review.yml`
+   - Scans PRs for vulnerable dependencies
+   - Blocks PRs with security issues
+   - Posts summary comments
+
+### Code Quality Workflows
+
+4. **YAML Lint** - `.github/workflows/lint-yaml.yml`
+   - Validates all YAML files (.github/workflows, docker-compose, etc.)
+   - Configuration: `.yamllint.yml`
+
+5. **Typo Detection** - `.github/workflows/typos.yml`
+   - Detects spelling errors in code/docs
+   - Scans src/, docs/, test/, README.md, CLAUDE.md
+
+### PR Automation Workflows
+
+6. **PR Title Lint** - `.github/workflows/lint-pr-title.yml`
+   - Enforces Conventional Commits format: `type(scope): description`
+   - Valid types: feat, fix, docs, style, refactor, test, chore, perf, ci
+   - Posts sticky error comment with examples
+
+7. **PR Size Labeler** - `.github/workflows/pr-size-labeler.yml`
+   - Auto-labels PRs: 🤩 xs (0-10), 🥳 s (11-100), 😎 m (101-500), 😖 l (501-1000), 🤯 xl (1000+)
+   - Warns when PR > 1000 lines
+   - Ignores lock files and docs
+
+### Monitoring Workflows
+
+8. **Docker Size** - `.github/workflows/docker-size.yml`
+   - Compares Docker image size between base and PR branch
+   - Posts comparison comment
+   - Helps catch image bloat
+
+### Maintenance Workflows
+
+9. **Stale Issues/PRs** - `.github/workflows/stale-issues-and-prs.yml`
+   - Marks inactive items stale after 30 days
+   - Closes after 5 additional days
+   - Exempt labels: pinned, security, work-in-progress
+
+10. **TODO to Issue** - `.github/workflows/todo-to-issue.yml`
+    - Converts `// TODO:`, `// FIXME:`, `// HACK:` to GitHub issues
+    - Auto-assigns to committer
+    - Links to file and line number
+
+### Dependency Management
+
+**Dependabot** - `.github/dependabot.yml`
+- Daily updates for npm and GitHub Actions
+- Conventional commit messages
+- Auto-labeling: 📦 Dependencies, 🚀 CI/CD
+
+### Custom Reusable Action
+
+**Setup Node** - `.github/actions/setup-node/action.yml`
+- DRY principle - centralized Node.js setup
+- Node 24.x + npm caching + dependency installation
+- Used by ci.yml and lint.yml
+
+### Configuration Files
+
+- **Labels** - `.github/labels.yml` (44 labels organized by category)
+- **YAML Lint** - `.yamllint.yml` (validation rules)
+- **Dependabot** - `.github/dependabot.yml` (update configuration)
+
+See `docs/GITHUB_ACTIONS.md` for complete documentation.
+
 ## Git Hooks
 
 Pre-commit hook automatically runs:
@@ -729,6 +813,7 @@ This project was **successfully migrated** from Express to Hexagonal Architectur
 
 - **docs/ARCHITECTURE.md**: Complete architecture documentation
 - **docs/DOCKER.md**: Docker setup and usage guide
+- **docs/GITHUB_ACTIONS.md**: CI/CD pipeline, GitHub Actions workflows, and automation
 - **specs/**: Migration plan and design decisions (historical reference)
 - **test/performance/README.md**: k6 performance testing guide
 
