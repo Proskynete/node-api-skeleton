@@ -26,10 +26,9 @@ export async function errorHandler(
 
   // Zod validation errors
   if (error instanceof ZodError) {
-    /* eslint-disable @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unsafe-member-access */
-    const validationErrors = error.errors.map((err) => ({
-      path: err.path.join("."),
-      message: err.message,
+    const validationErrors = error.issues.map((issue) => ({
+      path: issue.path.join("."),
+      message: issue.message,
     }));
 
     await reply.status(400).send({
@@ -38,7 +37,6 @@ export async function errorHandler(
       details: validationErrors,
       requestId: request.id,
     });
-    /* eslint-enable @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unsafe-member-access */
     return;
   }
 

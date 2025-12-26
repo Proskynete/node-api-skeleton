@@ -2,6 +2,7 @@ import { IGreetingRepository } from "@contexts/greetings/application/v1/ports/ou
 import { GetGreetingUseCase } from "@contexts/greetings/application/v1/use-cases/GetGreetingUseCase";
 import { Greeting } from "@contexts/greetings/domain/entities/Greeting";
 import { ILogger } from "@shared/infrastructure/observability/ILogger";
+import { isFailure, isSuccess } from "@shared/types/result";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 
 describe("GetGreetingUseCase", () => {
@@ -33,7 +34,10 @@ describe("GetGreetingUseCase", () => {
 
     const result = await useCase.execute();
 
-    expect(result).toEqual({ message: "Test Greeting" });
+    expect(isSuccess(result)).toBe(true);
+    if (isSuccess(result)) {
+      expect(result.value).toEqual({ message: "Test Greeting" });
+    }
     expect(getGreetingSpy).toHaveBeenCalledTimes(1);
   });
 
@@ -61,11 +65,17 @@ describe("GetGreetingUseCase", () => {
     );
   });
 
-  it("should propagate repository errors", async () => {
+  it("should return failure result for repository errors", async () => {
     const error = new Error("Repository error");
     vi.spyOn(mockRepository, "getGreeting").mockRejectedValue(error);
 
-    await expect(useCase.execute()).rejects.toThrow("Repository error");
+    const result = await useCase.execute();
+
+    expect(isFailure(result)).toBe(true);
+    if (isFailure(result)) {
+      expect(result.error.message).toBe("Failed to fetch greeting");
+      expect(result.error.code).toBe("GREETING_FETCH_ERROR");
+    }
   });
 
   it("should not call logger.info if repository fails", async () => {
@@ -73,7 +83,8 @@ describe("GetGreetingUseCase", () => {
     vi.spyOn(mockRepository, "getGreeting").mockRejectedValue(error);
     const infoSpy = vi.spyOn(mockLogger, "info");
 
-    await expect(useCase.execute()).rejects.toThrow();
+    await useCase.execute();
+
     expect(infoSpy).not.toHaveBeenCalled();
   });
 });
