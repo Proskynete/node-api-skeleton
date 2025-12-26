@@ -261,24 +261,32 @@ npm run format:check     # Check formatting
 
 ## 🐳 Docker
 
-### Quick Start with Docker Compose
+The project uses **Docker Compose profiles** for managing development and production environments in a single configuration file.
+
+### Production Environment
 
 ```bash
 # Start production stack (API + Prometheus + Grafana)
-docker-compose up -d
+docker-compose --profile production up -d
 
 # View logs
-docker-compose logs -f api
+docker-compose logs -f api-prod
 
 # Stop services
-docker-compose down
+docker-compose --profile production down
 ```
 
-### Development with Docker
+### Development Environment
 
 ```bash
 # Start dev environment with hot reload
-docker-compose -f docker-compose.dev.yml up -d
+docker-compose --profile dev up -d
+
+# View logs
+docker-compose logs -f api-dev
+
+# Stop services
+docker-compose --profile dev down
 ```
 
 ### Services

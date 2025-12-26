@@ -424,17 +424,32 @@ Interactive API docs available at:
 
 ## Docker
 
+The project uses **Docker Compose profiles** to manage development and production environments in a single `docker-compose.yml` file.
+
 ### Production
 
 ```bash
-# Build and start all services
-docker-compose up -d
+# Build and start production stack (API + Prometheus + Grafana)
+docker-compose --profile production up -d
 
 # View logs
-docker-compose logs -f api
+docker-compose logs -f api-prod
 
 # Stop services
-docker-compose down
+docker-compose --profile production down
+```
+
+### Development
+
+```bash
+# Start dev environment with hot reload
+docker-compose --profile dev up -d
+
+# View logs
+docker-compose logs -f api-dev
+
+# Stop services
+docker-compose --profile dev down
 ```
 
 **Services**:
@@ -442,13 +457,6 @@ docker-compose down
 - API: `http://localhost:3000`
 - Prometheus: `http://localhost:9090`
 - Grafana: `http://localhost:3001` (admin/admin)
-
-### Development
-
-```bash
-# Start dev environment with hot reload
-docker-compose -f docker-compose.dev.yml up -d
-```
 
 See `docs/DOCKER.md` for complete documentation.
 

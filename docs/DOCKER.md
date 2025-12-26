@@ -1,228 +1,384 @@
 # Docker Setup
 
-This project includes complete Docker support for both development and production environments.
+This project includes complete Docker support using **Docker Compose profiles** for both development and production environments with a single unified configuration.
+
+## Architecture Overview
+
+The Docker setup uses:
+
+- **Single `docker-compose.yml`** with profiles for dev/production environments
+- **Single `Dockerfile`** with multi-stage builds (development/production targets)
+- **Node.js 24 Alpine** base image for minimal footprint
+- **Observability stack**: Prometheus + Grafana
 
 ## Quick Start
 
-### Production
+### Production Environment
 
 ```bash
-# Build and start all services
-docker-compose up -d
+# Build and start production stack (API + Prometheus + Grafana)
+docker-compose --profile production up -d
 
 # View logs
-docker-compose logs -f api
+docker-compose logs -f api-prod
 
 # Stop services
-docker-compose down
+docker-compose --profile production down
 ```
 
-### Development
+### Development Environment
 
 ```bash
-# Build and start dev environment with hot reload
-docker-compose -f docker-compose.dev.yml up -d
+# Build and start dev stack with hot reload
+docker-compose --profile dev up -d
 
 # View logs
-docker-compose -f docker-compose.dev.yml logs -f api
+docker-compose logs -f api-dev
 
 # Stop services
-docker-compose -f docker-compose.dev.yml down
+docker-compose --profile dev down
 ```
+
+## Docker Compose Profiles
+
+The project uses **Docker Compose profiles** to manage different environments in a single file:
+
+| Profile      | Service    | Target       | Hot Reload | Use Case           |
+| ------------ | ---------- | ------------ | ---------- | ------------------ |
+| `production` | `api-prod` | `production` | No         | Production deploy  |
+| `dev`        | `api-dev`  | `development`| Yes        | Local development  |
+
+**Benefits**:
+
+- Single source of truth (`docker-compose.yml`)
+- No duplicate configuration
+- Easy environment switching
+- Shared infrastructure services (Prometheus, Grafana)
 
 ## Services
 
 The stack includes:
 
-- **API** (Node API Skeleton): `http://localhost:3000`
-- **Prometheus**: `http://localhost:9090`
-- **Grafana**: `http://localhost:3001`
+- **API (Production)**: `http://localhost:3000` - Optimized production build
+- **API (Development)**: `http://localhost:3000` - Hot reload enabled
+- **Prometheus**: `http://localhost:9090` - Metrics collection
+- **Grafana**: `http://localhost:3001` - Metrics visualization (admin/admin)
 
 ## API Endpoints
 
 Once running, you can access:
 
 - **API Documentation**: http://localhost:3000/docs
-- **Health Check**: http://localhost:3000/health
 - **Liveness Probe**: http://localhost:3000/health/live
 - **Readiness Probe**: http://localhost:3000/health/ready
 - **Metrics**: http://localhost:3000/metrics
 - **v1 Greetings**: http://localhost:3000/api/v1/greetings
 - **v2 Greetings**: http://localhost:3000/api/v2/greetings
 
-## Grafana Setup
+## Multi-Stage Dockerfile
 
-1. Open Grafana: http://localhost:3001
-2. Login with:
-   - **Username**: admin
-   - **Password**: admin
-3. Add Prometheus as data source:
-   - URL: `http://prometheus:9090`
-   - Click "Save & Test"
-4. Import dashboards or create custom ones
+The single `Dockerfile` uses multi-stage builds with different targets:
 
-## Prometheus
+### Development Target
 
-Access Prometheus UI at http://localhost:9090
+```dockerfile
+FROM node:24-alpine AS development
 
-Prometheus is configured to scrape metrics from the API every 10 seconds.
-
-### Query Examples
-
-```promql
-# Request rate
-rate(http_requests_total[5m])
-
-# p95 response time
-histogram_quantile(0.95, http_request_duration_seconds_bucket)
-
-# Requests in progress
-http_requests_in_progress
+# All dependencies (including dev)
+# Hot reload with nodemon
+# Source code mounted as volume
 ```
+
+**Features**:
+
+- Full development dependencies
+- Hot reload on code changes
+- Fast feedback loop
+
+### Production Target
+
+```dockerfile
+FROM node:24-alpine AS production
+
+# Only production dependencies
+# Built with SWC
+# Non-root user (nodejs:1001)
+# Health checks included
+```
+
+**Features**:
+
+- Minimal image size (Alpine)
+- No build tools in final image
+- Security hardened (non-root)
+- Optimized for performance
+
+**Multi-Stage Build Process**:
+
+1. **Base**: Common dependencies and setup
+2. **Dependencies**: Install all npm packages
+3. **Development**: Dev target with hot reload
+4. **Builder**: Build application with SWC
+5. **Production**: Minimal production image
 
 ## Docker Commands Reference
 
 ### Production
 
 ```bash
+# Start production stack
+docker-compose --profile production up -d
+
 # Build without cache
-docker-compose build --no-cache
-
-# Start services
-docker-compose up -d
-
-# Scale API instances
-docker-compose up -d --scale api=3
+docker-compose --profile production build --no-cache
 
 # View resource usage
 docker stats
 
 # Execute command in container
-docker-compose exec api sh
+docker-compose exec api-prod sh
 
 # Remove volumes (clean slate)
-docker-compose down -v
+docker-compose --profile production down -v
+
+# View logs (follow mode)
+docker-compose logs -f api-prod prometheus grafana
 ```
 
 ### Development
 
 ```bash
-# Build dev image
-docker-compose -f docker-compose.dev.yml build
+# Start dev stack
+docker-compose --profile dev up -d
 
-# Start with build
-docker-compose -f docker-compose.dev.yml up -d --build
+# Rebuild and start
+docker-compose --profile dev up -d --build
 
 # View API logs only
-docker-compose -f docker-compose.dev.yml logs -f api
+docker-compose logs -f api-dev
 
 # Restart API only
-docker-compose -f docker-compose.dev.yml restart api
+docker-compose restart api-dev
+
+# Stop dev stack
+docker-compose --profile dev down
 ```
 
-## Building Production Image
+### Both Profiles
 
 ```bash
-# Build the image
-docker build -t node-api-skeleton:latest .
+# Start BOTH environments (not recommended - port conflicts)
+docker-compose --profile dev --profile production up -d
 
-# Run standalone
-docker run -p 3000:3000 \
-  -e NODE_ENV=production \
-  -e PORT=3000 \
-  -e LOG_LEVEL=info \
-  node-api-skeleton:latest
+# View all running containers
+docker-compose ps
 
-# Push to registry
-docker tag node-api-skeleton:latest your-registry/node-api-skeleton:1.0.0
-docker push your-registry/node-api-skeleton:1.0.0
+# View all services (including stopped)
+docker-compose ps -a
 ```
 
-## Multi-Stage Build
+## Environment Variables
 
-The production Dockerfile uses multi-stage builds:
+### Production Profile
 
-1. **Builder Stage**: Installs dependencies and builds with SWC
-2. **Production Stage**: Minimal Alpine image with only production dependencies
+Default environment for `api-prod`:
 
-Benefits:
+```yaml
+NODE_ENV: production
+PORT: 3000
+LOG_LEVEL: info
+```
 
-- Smaller final image size
-- Faster builds (caches dependencies)
-- More secure (no build tools in production)
+### Development Profile
+
+Default environment for `api-dev`:
+
+```yaml
+NODE_ENV: development
+PORT: 3000
+LOG_LEVEL: debug
+```
+
+### Override with .env File
+
+Create a `.env` file in the project root:
+
+```bash
+# Override for production
+NODE_ENV=staging
+LOG_LEVEL=warn
+RATE_LIMIT_MAX=200
+```
+
+Docker Compose will automatically load these variables.
+
+## Grafana Setup
+
+1. Start services: `docker-compose --profile production up -d`
+2. Open Grafana: http://localhost:3001
+3. Login with:
+   - **Username**: admin
+   - **Password**: admin
+4. Add Prometheus data source:
+   - URL: `http://prometheus:9090`
+   - Click "Save & Test"
+5. Import dashboards or create custom ones
+
+### Dashboard Ideas
+
+- Request rate and latency (p50, p95, p99)
+- Error rates by endpoint
+- Active requests gauge
+- Response time heatmap
+
+## Prometheus
+
+Access Prometheus UI at http://localhost:9090
+
+Prometheus scrapes metrics from the API every 10 seconds.
+
+### Useful Queries
+
+```promql
+# Request rate (requests/second)
+rate(http_requests_total[5m])
+
+# p95 response time
+histogram_quantile(0.95, rate(http_request_duration_seconds_bucket[5m]))
+
+# p99 response time
+histogram_quantile(0.99, rate(http_request_duration_seconds_bucket[5m]))
+
+# Requests in progress
+http_requests_in_progress
+
+# Error rate (4xx + 5xx)
+sum(rate(http_requests_total{status_code=~"4..|5.."}[5m]))
+
+# Request rate by version
+sum(rate(http_requests_total[5m])) by (version)
+```
 
 ## Health Checks
 
-The API container includes built-in health checks:
+The production API container includes built-in health checks:
 
 ```yaml
 healthcheck:
-  test: ["CMD", "node", "-e", "...health check..."]
+  test: ["CMD", "node", "-e", "...liveness check..."]
   interval: 30s
   timeout: 3s
   retries: 3
   start_period: 10s
 ```
 
-Check health status:
+**Check health status**:
 
 ```bash
 docker inspect --format='{{json .State.Health}}' node-api-skeleton
 ```
 
+**Health states**:
+
+- `starting`: Container starting (grace period)
+- `healthy`: Health check passing
+- `unhealthy`: Health check failing (after retries)
+
 ## Volumes
 
-Persistent data is stored in Docker volumes:
+Persistent data stored in Docker volumes:
 
 - **prometheus-data**: Prometheus time-series database
 - **grafana-data**: Grafana dashboards and configuration
 
-List volumes:
+**List volumes**:
 
 ```bash
-docker volume ls
+docker volume ls | grep node-api-skeleton
 ```
 
-Backup volume:
+**Backup volume**:
 
 ```bash
-docker run --rm -v prometheus-data:/data -v $(pwd):/backup alpine tar czf /backup/prometheus-backup.tar.gz -C /data .
+docker run --rm \
+  -v prometheus-data:/data \
+  -v $(pwd):/backup \
+  alpine tar czf /backup/prometheus-backup.tar.gz -C /data .
+```
+
+**Restore volume**:
+
+```bash
+docker run --rm \
+  -v prometheus-data:/data \
+  -v $(pwd):/backup \
+  alpine tar xzf /backup/prometheus-backup.tar.gz -C /data
 ```
 
 ## Networks
 
 All services run in the `app-network` bridge network for inter-container communication.
 
-Inspect network:
+**Inspect network**:
 
 ```bash
-docker network inspect node-api-skeleton_app-network
+docker network inspect node-api-skeleton_default
 ```
 
-## Environment Variables
-
-### Production (docker-compose.yml)
-
-- `NODE_ENV=production`
-- `PORT=3000`
-- `LOG_LEVEL=info`
-
-### Development (docker-compose.dev.yml)
-
-- `NODE_ENV=development`
-- `PORT=3000`
-- `LOG_LEVEL=debug`
-
-Override in `.env` file:
+**Test connectivity**:
 
 ```bash
-NODE_ENV=staging
-LOG_LEVEL=warn
+# From API to Prometheus
+docker-compose exec api-prod wget -qO- http://prometheus:9090/-/healthy
+
+# From Grafana to Prometheus
+docker-compose exec grafana wget -qO- http://prometheus:9090/api/v1/status/config
 ```
+
+## Building Standalone Image
+
+Build and run the production image without Docker Compose:
+
+```bash
+# Build the image
+docker build -t node-api-skeleton:2.1.0 .
+
+# Run standalone
+docker run -p 3000:3000 \
+  -e NODE_ENV=production \
+  -e PORT=3000 \
+  -e LOG_LEVEL=info \
+  --name api \
+  node-api-skeleton:2.1.0
+
+# Push to registry
+docker tag node-api-skeleton:2.1.0 your-registry/node-api-skeleton:2.1.0
+docker push your-registry/node-api-skeleton:2.1.0
+```
+
+## Development Hot Reload
+
+The dev profile mounts source code as volumes for hot reload:
+
+```yaml
+volumes:
+  - ./src:/app/src:ro        # Source code (read-only)
+  - ./test:/app/test:ro      # Tests (read-only)
+  - /app/node_modules        # Preserve container node_modules
+```
+
+**How it works**:
+
+1. Code changes in `./src` or `./test`
+2. Nodemon detects changes inside container
+3. Server automatically restarts
+4. Changes reflected immediately
+
+**Note**: `node_modules` is NOT mounted to avoid conflicts between host and container dependencies.
 
 ## Troubleshooting
 
-### Port already in use
+### Port Already in Use
 
 ```bash
 # Find process using port 3000
@@ -230,93 +386,129 @@ lsof -ti:3000 | xargs kill -9
 
 # Or change port in docker-compose.yml
 ports:
-  - "3001:3000"
+  - "3001:3000"  # Host:Container
 ```
 
-### Container won't start
+### Container Won't Start
 
 ```bash
 # Check logs
-docker-compose logs api
+docker-compose logs api-prod
 
 # Check container status
-docker ps -a
+docker-compose ps -a
 
 # Rebuild from scratch
-docker-compose down -v
-docker-compose build --no-cache
-docker-compose up -d
+docker-compose --profile production down -v
+docker-compose --profile production build --no-cache
+docker-compose --profile production up -d
 ```
 
-### Out of disk space
+### Out of Disk Space
 
 ```bash
 # Clean up unused resources
 docker system prune -a
 
-# Remove volumes
+# Remove unused volumes
 docker volume prune
+
+# Remove specific volumes
+docker volume rm node-api-skeleton_prometheus-data
 ```
 
-### Slow build
+### Health Check Failing
 
 ```bash
-# Use BuildKit for faster builds
-DOCKER_BUILDKIT=1 docker build .
+# Check health status
+docker inspect node-api-skeleton | grep -A 10 Health
 
-# Or set as default
+# Test health endpoint manually
+docker-compose exec api-prod wget -qO- http://localhost:3000/health/live
+
+# Check logs for errors
+docker-compose logs --tail=100 api-prod
+```
+
+### Slow Build Times
+
+```bash
+# Enable BuildKit for faster builds
 export DOCKER_BUILDKIT=1
+docker-compose --profile production build
+
+# Or use as one-liner
+DOCKER_BUILDKIT=1 docker-compose --profile production build
+
+# Check .dockerignore to exclude unnecessary files
+cat .dockerignore
+```
+
+### Hot Reload Not Working (Dev)
+
+```bash
+# Ensure volumes are mounted correctly
+docker-compose ps api-dev
+
+# Check nodemon is running
+docker-compose logs api-dev | grep nodemon
+
+# Restart container
+docker-compose restart api-dev
 ```
 
 ## Security Best Practices
 
 The Docker setup follows security best practices:
 
-1. **Non-root user**: API runs as user `nodejs` (UID 1001)
-2. **Multi-stage build**: No build tools in production image
+1. **Non-root user**: Production runs as `nodejs` (UID 1001)
+2. **Multi-stage build**: No dev dependencies or build tools in production
 3. **Minimal base**: Alpine Linux for smaller attack surface
-4. **Health checks**: Automatic container restart on failure
-5. **Read-only volumes**: Prometheus config mounted read-only
-6. **Signal handling**: dumb-init for proper process management
+4. **Health checks**: Automatic failure detection and restart
+5. **Read-only volumes**: Source code mounted read-only in dev
+6. **Signal handling**: dumb-init for proper SIGTERM handling
+7. **Environment validation**: Zod validates env vars at startup
+8. **Security headers**: Helmet middleware enabled
+9. **Rate limiting**: Configurable rate limits per endpoint
 
-## CI/CD Integration
+## Performance Optimization
 
-Example GitHub Actions workflow:
+### Layer Caching
 
-```yaml
-name: Docker Build
+The Dockerfile is optimized for layer caching:
 
-on: [push]
+```dockerfile
+# 1. Copy package files first (changes rarely)
+COPY package*.json ./
 
-jobs:
-  build:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v3
+# 2. Install dependencies (cached unless package.json changes)
+RUN npm ci
 
-      - name: Build Docker image
-        run: docker build -t node-api-skeleton .
-
-      - name: Run tests
-        run: |
-          docker-compose up -d
-          sleep 10
-          curl http://localhost:3000/health
-          docker-compose down
+# 3. Copy source code last (changes frequently)
+COPY . .
 ```
 
-## Performance Tips
+### .dockerignore
 
-1. **Layer caching**: Order Dockerfile commands from least to most frequently changed
-2. **.dockerignore**: Exclude unnecessary files to speed up builds
-3. **BuildKit**: Enable for parallel builds and better caching
-4. **Resource limits**: Set memory/CPU limits in docker-compose.yml
+Exclude unnecessary files to speed up builds:
 
-Example resource limits:
+```
+node_modules
+npm-debug.log
+dist
+coverage
+.git
+.env
+*.md
+```
+
+### Resource Limits (Optional)
+
+Add resource limits in `docker-compose.yml`:
 
 ```yaml
 services:
-  api:
+  api-prod:
     deploy:
       resources:
         limits:
@@ -327,9 +519,85 @@ services:
           memory: 256M
 ```
 
+## CI/CD Integration
+
+The project includes a **Docker Image Size** workflow that compares image sizes between base and PR branches.
+
+**Manual CI/CD example**:
+
+```yaml
+name: Docker Build
+
+on: [push]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Build Docker image
+        run: docker build -t node-api-skeleton .
+
+      - name: Run health check
+        run: |
+          docker-compose --profile production up -d
+          sleep 10
+          curl -f http://localhost:3000/health/live
+          docker-compose --profile production down
+```
+
+## Monitoring Stack
+
+### Prometheus Configuration
+
+The `prometheus.yml` file configures scraping:
+
+```yaml
+scrape_configs:
+  - job_name: 'node-api'
+    scrape_interval: 10s
+    static_configs:
+      - targets: ['api-prod:3000', 'api-dev:3000']
+```
+
+### Available Metrics
+
+- `http_request_duration_seconds`: Request latency histogram
+- `http_requests_total`: Total request counter
+- `http_requests_in_progress`: Active requests gauge
+- `nodejs_*`: Node.js runtime metrics (memory, CPU, event loop)
+
+### Alerting (Optional)
+
+Add alerting rules to `prometheus.yml`:
+
+```yaml
+rule_files:
+  - 'alerts.yml'
+
+alerting:
+  alertmanagers:
+    - static_configs:
+        - targets: ['alertmanager:9093']
+```
+
+## Docker Compose Profiles Reference
+
+| Command                                          | Effect                                    |
+| ------------------------------------------------ | ----------------------------------------- |
+| `docker-compose up -d`                           | Starts only Prometheus + Grafana          |
+| `docker-compose --profile dev up -d`             | Starts dev API + infrastructure           |
+| `docker-compose --profile production up -d`      | Starts production API + infrastructure    |
+| `docker-compose --profile dev --profile production up -d` | Starts BOTH APIs (port conflict) |
+
+**Best Practice**: Use one profile at a time to avoid port conflicts.
+
 ## Additional Resources
 
 - [Docker Documentation](https://docs.docker.com/)
-- [Docker Compose Reference](https://docs.docker.com/compose/compose-file/)
+- [Docker Compose Profiles](https://docs.docker.com/compose/profiles/)
+- [Docker Multi-Stage Builds](https://docs.docker.com/build/building/multi-stage/)
 - [Prometheus Docker](https://prometheus.io/docs/prometheus/latest/installation/#using-docker)
-- [Grafana Docker](https://grafana.com/docs/grafana/latest/installation/docker/)
+- [Grafana Docker](https://grafana.com/docs/grafana/latest/setup-grafana/installation/docker/)
+- [Alpine Linux](https://alpinelinux.org/)

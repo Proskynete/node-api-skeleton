@@ -2,7 +2,7 @@
 # Supports both development and production environments
 
 # Stage 1: Base - Common dependencies
-FROM node:20-alpine AS base
+FROM node:24-alpine AS base
 
 WORKDIR /app
 
