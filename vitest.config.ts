@@ -22,6 +22,10 @@ export default defineConfig({
         "src/@shared/infrastructure/config/**",
         "vitest.config.ts",
         "eslint.config.mjs",
+        "src/@app/server/middlewares/**",
+        "src/@app/server/plugins/**",
+        "src/@app/server/loaders/**",
+        "src/@contexts/**/infrastructure/http/**/controllers/**",
       ],
       thresholds: {
         branches: 80,
