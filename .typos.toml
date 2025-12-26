@@ -110,4 +110,6 @@ extend-exclude = [
     "*.log",
     "*.md.backup",
     ".typos.toml",
+    "**/README.md",
+    "README.md"
 ]
