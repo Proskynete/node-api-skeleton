@@ -1,10 +1,13 @@
+import { GreetingCreatedEventHandler } from "@contexts/greetings/application/v1/event-handlers/GreetingCreatedEventHandler";
 import { IGreetingRepository } from "@contexts/greetings/application/v1/ports/outbound/IGreetingRepository";
 import { GetGreetingUseCase as GetGreetingUseCaseV1 } from "@contexts/greetings/application/v1/use-cases/GetGreetingUseCase";
 import { GetGreetingUseCase as GetGreetingUseCaseV2 } from "@contexts/greetings/application/v2/use-cases/GetGreetingUseCase";
 import { GreetingController as GreetingControllerV1 } from "@contexts/greetings/infrastructure/http/v1/controllers/GreetingController";
 import { GreetingController as GreetingControllerV2 } from "@contexts/greetings/infrastructure/http/v2/controllers/GreetingController";
 import { InMemoryGreetingRepository } from "@contexts/greetings/infrastructure/persistence/InMemoryGreetingRepository";
+import { IDomainEventPublisher } from "@shared/domain/events/IDomainEventPublisher";
 import { env } from "@shared/infrastructure/config/environment";
+import { InMemoryDomainEventPublisher } from "@shared/infrastructure/events/InMemoryDomainEventPublisher";
 import { ILogger } from "@shared/infrastructure/observability/ILogger";
 import { WinstonLogger } from "@shared/infrastructure/observability/WinstonLogger";
 
@@ -47,10 +50,10 @@ class Container {
       if (!this.singletons.has(name)) {
         this.singletons.set(name, service.factory());
       }
-      return this.singletons.get(name);
+      return this.singletons.get(name) as T;
     }
 
-    return service.factory();
+    return service.factory() as T;
   }
 }
 
@@ -61,6 +64,29 @@ container.registerSingleton<ILogger>(
   "logger",
   () => new WinstonLogger(env.LOG_LEVEL)
 );
+
+// Register domain event publisher (singleton)
+container.registerSingleton<IDomainEventPublisher>(
+  "domainEventPublisher",
+  () => new InMemoryDomainEventPublisher(container.resolve<ILogger>("logger"))
+);
+
+// Register event handlers
+const registerEventHandlers = (): void => {
+  const eventPublisher = container.resolve<IDomainEventPublisher>(
+    "domainEventPublisher"
+  );
+  const logger = container.resolve<ILogger>("logger");
+
+  // Register GreetingCreatedEventHandler
+  const greetingCreatedHandler = new GreetingCreatedEventHandler(logger);
+  eventPublisher.subscribe(greetingCreatedHandler);
+
+  // Add more event handlers here as they are created
+};
+
+// Initialize event handlers
+registerEventHandlers();
 
 // Register greetings context services (shared repository)
 container.register<IGreetingRepository>(
