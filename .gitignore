@@ -113,3 +113,8 @@ node_modules/.prisma/
 
 # MongoDB doesn't use migrations, but keep this for reference
 # prisma/mongodb/migrations/
+
+# ================================
+# 📝 Pull Request
+# ================================
+PULL_REQUEST.md
