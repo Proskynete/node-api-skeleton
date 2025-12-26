@@ -147,7 +147,7 @@ function textSummary(data, options = {}) {
     if (data.metrics.http_req_duration.values["p(99)"] !== undefined) {
       summary += `${indent}  p(99): ${data.metrics.http_req_duration.values["p(99)"].toFixed(2)}ms\n`;
     }
-    summary += '\n';
+    summary += "\n";
   }
 
   // VUs
@@ -159,7 +159,9 @@ function textSummary(data, options = {}) {
 
   // Error rate
   if (data.metrics.http_req_failed) {
-    const errorRate = (data.metrics.http_req_failed.values.rate * 100).toFixed(2);
+    const errorRate = (data.metrics.http_req_failed.values.rate * 100).toFixed(
+      2
+    );
     const passed = errorRate < 1;
     const status = passed ? "✓ PASSED" : "✗ FAILED";
     summary += `${indent}Error Rate: ${errorRate}% ${status}\n\n`;

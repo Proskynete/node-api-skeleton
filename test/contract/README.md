@@ -41,10 +41,12 @@ En **Arquitectura Hexagonal (Puertos y Adaptadores)**, los tests de contrato val
 **Propósito**: Valida el **adaptador HTTP Inbound** (controllers que exponen nuestra API).
 
 **Componentes probados**:
+
 - `@contexts/greetings/infrastructure/http/v1/controllers/GreetingController.ts`
 - `@contexts/greetings/infrastructure/http/v2/controllers/GreetingController.ts`
 
 **Ejecutar**:
+
 ```bash
 npm run test:contract
 ```
@@ -90,6 +92,7 @@ npx pact-broker publish pacts \
 ### Provider Tests (Nuestro Caso Actual)
 
 **Usar cuando**:
+
 - ✅ Exponemos endpoints HTTP (REST, GraphQL)
 - ✅ Otros sistemas/equipos consumen nuestra API
 - ✅ Necesitamos garantizar contratos con consumidores
@@ -97,6 +100,7 @@ npx pact-broker publish pacts \
 ### Consumer Tests (Futuro)
 
 **Usar cuando**:
+
 - ✅ Consumimos APIs HTTP externas
 - ✅ Implementamos clientes HTTP como adaptadores
 - ✅ Necesitamos garantizar que cumplimos contratos de providers externos
@@ -124,17 +128,18 @@ npx pact-broker publish pacts \
 
 ## Resumen: Qué Probar en Cada Capa
 
-| Capa | Qué Probar | Tipo de Test |
-|------|-----------|--------------|
-| **Domain** | Entidades, Value Objects, Reglas de negocio | Unit Tests |
-| **Application** | Casos de uso, Orquestación | Unit/Integration Tests |
-| **Infrastructure (HTTP Inbound)** | Controllers, Routes | **Provider Tests** (Pact) ✅ |
-| **Infrastructure (HTTP Outbound)** | HTTP Clients, API Adapters | **Consumer Tests** (Pact) ⚠️ |
-| **Infrastructure (Persistence)** | Repositories, Databases | Integration Tests |
+| Capa                               | Qué Probar                                  | Tipo de Test                 |
+| ---------------------------------- | ------------------------------------------- | ---------------------------- |
+| **Domain**                         | Entidades, Value Objects, Reglas de negocio | Unit Tests                   |
+| **Application**                    | Casos de uso, Orquestación                  | Unit/Integration Tests       |
+| **Infrastructure (HTTP Inbound)**  | Controllers, Routes                         | **Provider Tests** (Pact) ✅ |
+| **Infrastructure (HTTP Outbound)** | HTTP Clients, API Adapters                  | **Consumer Tests** (Pact) ⚠️ |
+| **Infrastructure (Persistence)**   | Repositories, Databases                     | Integration Tests            |
 
 ---
 
 **Estado Actual del Proyecto**:
+
 - ✅ Provider Tests: Implementados y activos
 - ⚠️ Consumer Tests: No implementados (sin adaptadores HTTP outbound)
 

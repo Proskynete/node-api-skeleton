@@ -7,11 +7,13 @@ This directory contains k6 performance tests for the Node API Skeleton.
 Install k6 on your system:
 
 **macOS:**
+
 ```bash
 brew install k6
 ```
 
 **Linux:**
+
 ```bash
 sudo gpg -k
 sudo gpg --no-default-keyring --keyring /usr/share/keyrings/k6-archive-keyring.gpg --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys C5AD17C747E3415A3642D57D77C6C491D6AC1D69
@@ -21,6 +23,7 @@ sudo apt-get install k6
 ```
 
 **Windows:**
+
 ```bash
 choco install k6
 ```
@@ -30,41 +33,50 @@ Or download from: https://k6.io/docs/get-started/installation/
 ## Available Tests
 
 ### 1. Greetings v1 Performance Test
+
 Tests the `/api/v1/greetings` endpoint under load.
 
 **Run:**
+
 ```bash
 npm run test:performance:v1
 ```
 
 **Details:**
+
 - Stages: 20 → 50 → 100 users
 - Duration: ~3.5 minutes
 - Thresholds: p95 < 500ms, error rate < 1%
 
 ### 2. Greetings v2 Performance Test
+
 Tests the `/api/v2/greetings` endpoint under load.
 
 **Run:**
+
 ```bash
 npm run test:performance:v2
 ```
 
 **Details:**
+
 - Stages: 20 → 50 → 100 users
 - Duration: ~3.5 minutes
 - Thresholds: p95 < 500ms, error rate < 1%
 - Additional checks for timestamp and version fields
 
 ### 3. Complete Load Test
+
 Tests all API endpoints (v1, v2, health, metrics) simultaneously.
 
 **Run:**
+
 ```bash
 npm run test:performance:load
 ```
 
 **Details:**
+
 - Stages: 50 → 100 → 150 users (spike test)
 - Duration: ~8 minutes
 - Tests v1, v2, health endpoints, and metrics
@@ -75,6 +87,7 @@ npm run test:performance:load
 ### Important: Start the server first
 
 **For best results, use production mode:**
+
 ```bash
 # Build and start production server
 npm run build
@@ -82,11 +95,13 @@ npm start
 ```
 
 **Or use dev mode (results may vary):**
+
 ```bash
 npm run dev
 ```
 
 ### Then run tests in another terminal:
+
 ```bash
 # Run all tests sequentially (continues even if one fails)
 npm run test:performance
@@ -105,6 +120,7 @@ k6 run test/performance/load-test.k6.js
 **Note:** The `npm run test:performance` command uses `;` to run all tests sequentially, meaning all tests will run even if one fails. This allows you to see results from all test suites.
 
 ### Test against different environment:
+
 ```bash
 BASE_URL=http://production-url.com k6 run test/performance/load-test.k6.js
 ```
@@ -186,16 +202,19 @@ You can run k6 tests in CI/CD pipelines:
 ## Advanced Usage
 
 ### Custom stages:
+
 ```bash
 k6 run --stage 10s:10,30s:50,10s:0 test/performance/greetings-v1.k6.js
 ```
 
 ### Output to file:
+
 ```bash
 k6 run --out json=results.json test/performance/load-test.k6.js
 ```
 
 ### Cloud execution:
+
 ```bash
 k6 cloud test/performance/load-test.k6.js
 ```
@@ -207,11 +226,13 @@ k6 cloud test/performance/load-test.k6.js
 This usually indicates the server is struggling under load. Common causes:
 
 1. **Server not running in production mode**
+
    ```bash
    # Stop dev server and run:
    npm run build
    npm start
    ```
+
    Dev mode (`npm run dev`) with nodemon can be slower under heavy load.
 
 2. **Server resource exhaustion**
@@ -220,6 +241,7 @@ This usually indicates the server is struggling under load. Common causes:
    - Reduce concurrent users in test configuration
 
 3. **Port conflicts or server not listening**
+
    ```bash
    # Verify server is running:
    curl http://localhost:3000/health/live
@@ -233,6 +255,7 @@ This usually indicates the server is struggling under load. Common causes:
    - Check system connection limits
 
 **Slow responses?**
+
 - Profile the code
 - Check database queries
 - Monitor server resources
@@ -240,10 +263,12 @@ This usually indicates the server is struggling under load. Common causes:
 - Use production build, not dev mode
 
 **Tests timing out?**
+
 - Increase timeout in k6 options
 - Reduce concurrent users
 - Check for deadlocks or blocking code
 
 **Only first test runs?**
+
 - Fixed in latest version - script now uses `;` instead of `&&`
 - All tests will run even if one fails
