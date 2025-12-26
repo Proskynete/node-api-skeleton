@@ -20,6 +20,10 @@ const envSchema = z.object({
     .min(32)
     .default("change-me-in-production-use-at-least-32-characters"),
   JWT_EXPIRES_IN: z.string().default("1h"),
+  // CORS Configuration
+  ALLOWED_ORIGINS: z
+    .string()
+    .default("http://localhost:3000,http://localhost:3001"),
 });
 
 export type Environment = z.infer<typeof envSchema>;
@@ -30,13 +34,11 @@ function validateEnvironment(): Environment {
   } catch (error) {
     if (error instanceof z.ZodError) {
       console.error("❌ Invalid environment variables:");
-      /* eslint-disable @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unsafe-member-access */
-      for (const err of error.errors) {
-        const path = err.path.join(".");
-        const message = err.message;
+      for (const issue of error.issues) {
+        const path = issue.path.join(".");
+        const message = issue.message;
         console.error(`  - ${path}: ${message}`);
       }
-      /* eslint-enable @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unsafe-member-access */
       process.exit(1);
     }
     throw error;
