@@ -63,7 +63,7 @@ Production-ready Node.js API skeleton built with <strong>Hexagonal Architecture<
 
 - **Vitest** - Lightning-fast unit & integration tests
 - **k6** - Performance/load testing with thresholds
-- **>80% coverage** - Comprehensive test suite
+- **98%+ coverage** - 244 comprehensive tests across all layers
 - **Type-safe** validation with Zod
 - **ESLint + Prettier** - Code quality enforcement
 
@@ -318,21 +318,51 @@ See [DOCKER.md](./docs/DOCKER.md) for complete documentation.
 
 ## 🧪 Testing
 
+### Comprehensive Test Suite
+
+The project includes **244 tests** across all layers with excellent coverage:
+
+**Coverage Stats** (as of v2.1.0):
+- ✅ **Statements**: 98.42%
+- ✅ **Branches**: 84.00%
+- ✅ **Functions**: 96.87%
+- ✅ **Lines**: 98.38%
+
+**Coverage Thresholds**: 80% minimum for all metrics
+
 ### Unit Tests
 
 Test business logic in isolation:
 
 ```bash
-npm run test
-npm run test:watch
-npm run test:coverage
+npm run test             # Run all tests
+npm run test:watch       # Watch mode
+npm run test:ui          # Interactive UI dashboard
+npm run test:coverage    # Generate coverage report
 ```
 
-**Coverage thresholds**: 80% for branches, functions, lines, statements
+**Test Coverage by Layer**:
+
+**Domain Layer** (Pure business logic):
+- `DomainEvent.spec.ts` - Base domain event class (12 tests)
+- `GreetingCreatedEvent.spec.ts` - Greeting domain event (21 tests)
+- `Greeting.spec.ts` - Greeting entity
+- `Message.spec.ts` - Message value object
+
+**Application Layer** (Use cases & orchestration):
+- `GetGreetingUseCase.spec.ts` (v1 and v2) - Business workflows (19 tests each)
+- `GreetingMapper.spec.ts` (v1 and v2) - Data transformations (29 tests v2)
+- `GreetingCreatedEventHandler.spec.ts` - Event handling (13 tests)
+- `InMemoryDomainEventPublisher.spec.ts` - Event publishing (29 tests)
+
+**Infrastructure Layer** (Repositories):
+- `InMemoryGreetingRepository.spec.ts` - Data persistence (19 tests)
+
+**Architecture Principle**: Infrastructure adapters (controllers, middlewares, plugins, route loaders) are excluded from unit test coverage as they're validated through integration/E2E tests. This aligns with Hexagonal Architecture best practices.
 
 ### Integration Tests
 
-Test HTTP endpoints:
+Test HTTP endpoints and infrastructure:
 
 ```typescript
 describe("GET /api/v1/greetings", () => {
@@ -345,22 +375,40 @@ describe("GET /api/v1/greetings", () => {
 });
 ```
 
+**Integration Test Coverage**:
+- HTTP endpoints (v1 and v2)
+- Rate limiting
+- Health checks
+- Metrics collection
+- Error handling
+
 ### Performance Tests (k6)
 
-Load testing with thresholds:
+Load testing with strict performance thresholds:
 
 ```bash
-npm run test:performance:load
+npm run test:performance:v1     # Test v1 endpoint
+npm run test:performance:v2     # Test v2 endpoint
+npm run test:performance:load   # Full load test
 ```
 
-**Thresholds**:
-
-- p95 < 500ms
-- p99 < 1000ms
+**Performance Thresholds**:
+- p95 latency < 500ms
+- p99 latency < 1000ms
 - Error rate < 1%
 - Request rate > 50 req/s
 
 See [test/performance/README.md](./test/performance/README.md)
+
+### Contract Tests (Pact)
+
+Consumer-driven contract testing ensures API compatibility:
+
+```bash
+npm run test:contract:provider
+```
+
+See [test/contract/README.md](./test/contract/README.md)
 
 ## 📊 Observability
 

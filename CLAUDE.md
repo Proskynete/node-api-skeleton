@@ -275,9 +275,32 @@ npm run test:ui
 npm run test:coverage
 ```
 
-**Location**: `test/unit/@contexts/greetings/`
+**Location**: `test/unit/`
+
+**Test Suites**: 244 tests across all layers
+
+**Coverage**:
+- Statements: 98.42% ✅
+- Branches: 84.00% ✅
+- Functions: 96.87% ✅
+- Lines: 98.38% ✅
 
 **Coverage Thresholds**: 80% for branches, functions, lines, statements
+
+**Test Files**:
+- Domain Events: `DomainEvent.spec.ts`, `GreetingCreatedEvent.spec.ts`
+- Event Handlers: `GreetingCreatedEventHandler.spec.ts`
+- Event Publisher: `InMemoryDomainEventPublisher.spec.ts`
+- Entities: `Greeting.spec.ts`
+- Value Objects: `Message.spec.ts`
+- Use Cases: `GetGreetingUseCase.spec.ts` (v1 and v2)
+- Mappers: `GreetingMapper.spec.ts` (v1 and v2)
+- Repositories: `InMemoryGreetingRepository.spec.ts`
+
+**Infrastructure Exclusion**:
+Infrastructure layer (controllers, middlewares, plugins, route loaders) is excluded from unit test coverage as it's covered by integration/E2E tests. This aligns with Hexagonal Architecture principles:
+- Domain + Application layers: Unit tested (98%+ coverage)
+- Infrastructure layer: Integration tested
 
 **Example**:
 
