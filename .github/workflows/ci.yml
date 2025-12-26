@@ -19,7 +19,7 @@ jobs:
         node-version: [24.x]
     steps:
       - name: 📚 Checkout git repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
 
       - name: 🟢 Setup Node.js Environment
         uses: ./.github/actions/setup-node
