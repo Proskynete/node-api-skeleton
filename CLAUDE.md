@@ -492,7 +492,7 @@ Complete guide for integrating databases with Hexagonal Architecture:
 
 **Supported ORMs**:
 
-- Prisma (recommended)
+- **Prisma v7** (pre-configured with PostgreSQL and MongoDB support)
 - TypeORM
 - Sequelize
 - Mongoose (MongoDB)
@@ -514,8 +514,10 @@ export interface IGreetingRepository {
   save(greeting: Greeting): Promise<void>;
 }
 
-// Infrastructure layer: Implement with Prisma
+// Infrastructure layer: Implement with Prisma v7
 export class PrismaGreetingRepository implements IGreetingRepository {
+  constructor(private readonly prisma: PrismaClient) {}
+
   async findById(id: string): Promise<Greeting | null> {
     const record = await this.prisma.greeting.findUnique({ where: { id } });
     if (!record) return null;

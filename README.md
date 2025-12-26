@@ -388,11 +388,37 @@ Interactive API docs at:
 
 ## 📚 Documentation
 
-- **[ARCHITECTURE.md](./docs/ARCHITECTURE.md)** - Complete architecture guide
-- **[DOCKER.md](./docs/DOCKER.md)** - Docker setup and usage
-- **[CLAUDE.md](./CLAUDE.md)** - Development guide for Claude Code
-- **[specs/](./specs/)** - Migration plan and design decisions (historical)
-- **[test/performance/README.md](./test/performance/README.md)** - k6 testing guide
+### Core Documentation
+
+- **[ARCHITECTURE.md](./docs/ARCHITECTURE.md)** - Complete architecture guide (Hexagonal + DDD + Vertical Slices)
+- **[DOCKER.md](./docs/DOCKER.md)** - Docker setup, multi-stage builds, and Docker Compose
+- **[CLAUDE.md](./CLAUDE.md)** - Development guide for Claude Code AI assistant
+
+### Architecture Decision Records (ADRs)
+
+Document key architectural decisions with context and consequences:
+
+- **[ADR Index](./docs/adr/README.md)** - Complete list of architectural decisions
+- **[ADR-0001](./docs/adr/0001-use-hexagonal-architecture.md)** - Hexagonal Architecture adoption
+- **[ADR-0007](./docs/adr/0007-vertical-slice-by-contexts.md)** - Bounded Contexts organization
+- **[ADR-0009](./docs/adr/0009-use-hybrid-pragmatic-approach.md)** - OOP + FP hybrid approach
+
+[View all ADRs →](./docs/adr/README.md)
+
+### Testing Guides
+
+- **[Performance Testing](./test/performance/README.md)** - k6 load testing, thresholds, and automated test runner
+- **[Contract Testing - Provider](./docs/guides/contract-testing-provider.md)** - Pact provider tests for HTTP inbound adapters
+- **[Contract Testing - Consumer](./docs/guides/contract-testing-consumer.md)** - Pact consumer tests reference (HTTP outbound adapters)
+- **[Contract Tests README](./test/contract/README.md)** - Contract testing overview and execution
+
+### Integration Guides
+
+- **[Database Integration](./docs/guides/database-integration.md)** - Prisma setup and repository implementation guide
+
+### Utility Scripts
+
+- **[Scripts README](./scripts/README.md)** - Automated performance test runner documentation
 
 ## 🎯 Design Patterns
 
