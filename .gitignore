@@ -95,3 +95,21 @@ docker-compose.override.yml
 # 📚 Optional: Docs / Generated
 # ================================
 docs/generated/
+
+# ================================
+# 🗄️ Prisma / Database
+# ================================
+# Prisma generated clients (both PostgreSQL and MongoDB)
+node_modules/.prisma/
+
+# SQLite databases (if used for development)
+*.db
+*.db-journal
+*.sqlite
+*.sqlite3
+
+# PostgreSQL migrations (optional - comment out if you want to track migrations)
+# prisma/postgresql/migrations/
+
+# MongoDB doesn't use migrations, but keep this for reference
+# prisma/mongodb/migrations/
