@@ -7,53 +7,56 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [2.1.0] - 2024-12-26
+
 ### Added
 
-- Domain events infrastructure with pub/sub pattern
-  - `IDomainEvent`, `IDomainEventHandler`, and `IDomainEventPublisher` interfaces
-  - `InMemoryDomainEventPublisher` implementation
-  - `GreetingCreatedEvent` and `GreetingCreatedEventHandler` as examples
-  - Support for multiple handlers per event type
-- Result type for explicit error handling
-  - Railway Oriented Programming pattern in use cases
-  - `GreetingFetchException` for repository errors
-  - Type-safe error handling throughout application layer
-- Environment-based CORS and CSP configuration
-  - CORS with restricted origins in production
-  - `ALLOWED_ORIGINS` environment variable with Zod validation
-  - CSP (Content Security Policy) enabled only in production
-- Zod schemas to Fastify routes for OpenAPI documentation
-  - `ErrorResponseSchema` for consistent error responses
-  - Automatic OpenAPI/Swagger documentation generation
-  - Schemas for 200, 400, and 500 status codes
-- Prisma v7 configuration with dual database support
-  - Schemas for PostgreSQL and MongoDB
-  - Comprehensive usage examples and migration guide
-  - npm scripts for Prisma operations
-- Performance testing enhancements
-  - File filter parameter to performance test runner
-  - Automated performance test runner script
+- **GitHub Actions CI/CD Pipeline** - Complete modular workflow automation
+  - Core workflows: CI (multi-OS testing), Lint, Dependency Review
+  - Security: Automated dependency vulnerability scanning with dependency-review-action
+  - Code quality: YAML linting, typo detection workflows
+  - PR automation: Title linting (Conventional Commits), size labeling (xs/s/m/l/xl)
+  - Monitoring: Docker image size comparison workflow
+  - Maintenance: Stale issues/PRs management, TODO-to-issue converter
+- **Dependabot Configuration** - Daily automated dependency updates
+  - npm package updates with conventional commit messages
+  - GitHub Actions updates with auto-labeling
+- **Custom Reusable Actions** - `.github/actions/setup-node`
+  - DRY principle for Node.js setup across workflows
+  - Centralized version management (Node.js 24.x)
+- **GitHub Repository Templates**
+  - 44 organized labels (bug, feature, priority, size, workflow status)
+  - Pull request template with comprehensive checklist
+  - Issue templates for bug reports and feature requests
+  - CODEOWNERS for automatic code review assignments
+- **Configuration Files**
+  - `.yamllint.yml` for YAML validation rules
+  - `.github/labels.yml` for labels-as-code
+  - `.github/dependabot.yml` for dependency automation
 
 ### Changed
 
-- Updated error handling to use `issues` instead of `errors` (Zod v4)
-- Improved CORS configuration for production security
-
-### Documentation
-
-- Added ADR-0008: Path-based API versioning strategy
-- Added ADR-0009: Hybrid pragmatic approach (OOP + FP)
-- Added ADR-0010: Observability stack (Winston + Prometheus + Grafana)
-- Added ADR-0011: k6 for performance testing
-- Updated CLAUDE.md with Prisma v7 integration guide
-- Updated README.md with latest features and architecture
-- Enhanced testing strategy documentation
-- Documented domain events, Result type, and Zod schemas
+- **Optimized Core Workflows**
+  - Removed Coveralls integration (unused)
+  - Fixed Node.js version check in CI workflow (20.x → 24.x)
+  - Refactored ci.yml and lint.yml to use custom reusable action
+- **Badge Updates**
+  - Replaced Coveralls badge with CI and Lint status badges
 
 ### Removed
 
-- Historical planning documents from specs/ directory
-- Obsolete integration test placeholders
+- Duplicate `test.yml` workflow (consolidated into `ci.yml`)
+- Coveralls coverage reporting integration
+- Temporary MERGE_REQUEST.md documentation
+
+### Documentation
+
+- **New**: GITHUB_ACTIONS.md - Complete CI/CD pipeline documentation
+  - Detailed explanation of all 10 workflows
+  - Configuration guides and best practices
+  - Troubleshooting section
+- **Updated**: README.md with CI/CD section and new badges
+- **Updated**: CLAUDE.md with GitHub Actions automation details
 
 ## [2.0.0] - 2024-12-26
 
@@ -92,5 +95,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Performance testing guide
 - Contract testing guide
 
-[unreleased]: https://github.com/yourusername/node-api-skeleton/compare/v2.0.0...HEAD
-[2.0.0]: https://github.com/yourusername/node-api-skeleton/releases/tag/v2.0.0
+[unreleased]: https://github.com/Proskynete/node-api-skeleton/compare/v2.1.0...HEAD
+[2.1.0]: https://github.com/Proskynete/node-api-skeleton/compare/v2.0.0...v2.1.0
+[2.0.0]: https://github.com/Proskynete/node-api-skeleton/releases/tag/v2.0.0

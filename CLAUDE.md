@@ -837,6 +837,6 @@ This project was **successfully migrated** from Express to Hexagonal Architectur
 
 ---
 
-**Version**: 2.0.0 - Production Ready
+**Version**: 2.1.0 - Production Ready
 **Architecture**: Hexagonal + Onion + Screaming
 **Last Updated**: December 2024

@@ -452,7 +452,7 @@ This project is licensed under the MIT License.
 
 ---
 
-**Version**: 2.0.0
+**Version**: 2.1.0
 **Status**: Production Ready
 **Architecture**: Hexagonal + Onion + Screaming
 **Last Updated**: December 2024
