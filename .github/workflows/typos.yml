@@ -1,0 +1,23 @@
+name: "🙊 Typos"
+
+on:
+  push:
+    branches:
+      - main
+      - feat/**
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  typos:
+    name: Spell Checking
+    runs-on: ubuntu-latest
+    steps:
+      - name: 📚 Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: 🔍 Check for Typos
+        uses: crate-ci/typos@v1.40.0
+        with:
+          files: ./src ./docs ./test README.md CLAUDE.md
