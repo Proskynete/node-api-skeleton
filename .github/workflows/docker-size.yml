@@ -1,0 +1,65 @@
+name: "🐳 Docker Image Size"
+
+on:
+  pull_request:
+    branches: [main]
+
+permissions:
+  pull-requests: write
+
+jobs:
+  calculate-base:
+    name: Calculate Base Branch Size
+    runs-on: ubuntu-latest
+    outputs:
+      size: ${{ steps.size.outputs.size }}
+    steps:
+      - name: 📚 Checkout Base Branch
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.base.ref }}
+
+      - name: 🔧 Build Docker Image (Base)
+        run: docker build -t api-base .
+
+      - name: 📊 Get Image Size
+        id: size
+        run: echo "size=$(docker images api-base --format '{{.Size}}')" >> $GITHUB_OUTPUT
+
+  calculate-head:
+    name: Calculate PR Branch Size
+    runs-on: ubuntu-latest
+    outputs:
+      size: ${{ steps.size.outputs.size }}
+    steps:
+      - name: 📚 Checkout PR Branch
+        uses: actions/checkout@v4
+
+      - name: 🔧 Build Docker Image (PR)
+        run: docker build -t api-head .
+
+      - name: 📊 Get Image Size
+        id: size
+        run: echo "size=$(docker images api-head --format '{{.Size}}')" >> $GITHUB_OUTPUT
+
+  write-comment:
+    name: Post Size Comparison
+    runs-on: ubuntu-latest
+    needs: [calculate-base, calculate-head]
+    permissions:
+      pull-requests: write
+    steps:
+      - name: 💬 Post Size Comparison
+        uses: marocchino/sticky-pull-request-comment@v2
+        with:
+          header: docker-size
+          message: |
+            ## 🐳 Docker Image Size Comparison
+
+            | Branch | Size |
+            |--------|------|
+            | **Base** (`${{ github.event.pull_request.base.ref }}`) | ${{ needs.calculate-base.outputs.size }} |
+            | **PR** (`${{ github.event.pull_request.head.ref }}`) | ${{ needs.calculate-head.outputs.size }} |
+
+            ---
+            💡 **Tip**: Keep image size small using multi-stage builds and `.dockerignore`
