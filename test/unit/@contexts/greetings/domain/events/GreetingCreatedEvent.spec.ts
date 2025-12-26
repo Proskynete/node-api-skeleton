@@ -132,7 +132,11 @@ describe("GreetingCreatedEvent", () => {
     it("should be deserializable", () => {
       const json = event.toJSON();
       const jsonString = JSON.stringify(json);
-      const parsed = JSON.parse(jsonString);
+      const parsed = JSON.parse(jsonString) as {
+        eventName: string;
+        aggregateId: string;
+        payload: { message: string };
+      };
 
       expect(parsed.eventName).toBe("GreetingCreated");
       expect(parsed.aggregateId).toBe(aggregateId);

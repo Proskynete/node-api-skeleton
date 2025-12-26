@@ -113,7 +113,8 @@ describe("GetGreetingUseCase v2", () => {
 
   describe("execute - error handling", () => {
     it("should handle DomainException from repository", async () => {
-      const domainError = new DomainException("Test error");
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+      const domainError: Error = new DomainException("Test error");
       vi.spyOn(mockRepository, "getGreeting").mockRejectedValue(domainError);
 
       const result = await useCase.execute();
@@ -256,8 +257,14 @@ describe("GetGreetingUseCase v2", () => {
       );
       await customUseCase.execute();
 
-      expect(customRepository.getGreeting).toHaveBeenCalled();
-      expect(mockRepository.getGreeting).not.toHaveBeenCalled();
+      const customGetGreetingSpy = customRepository.getGreeting as ReturnType<
+        typeof vi.fn
+      >;
+      const mockGetGreetingSpy = mockRepository.getGreeting as ReturnType<
+        typeof vi.fn
+      >;
+      expect(customGetGreetingSpy).toHaveBeenCalled();
+      expect(mockGetGreetingSpy).not.toHaveBeenCalled();
     });
 
     it("should use injected logger", async () => {
@@ -277,7 +284,8 @@ describe("GetGreetingUseCase v2", () => {
       );
       await customUseCase.execute();
 
-      expect(customLogger.debug).toHaveBeenCalled();
+      const customDebugSpy = customLogger.debug as ReturnType<typeof vi.fn>;
+      expect(customDebugSpy).toHaveBeenCalled();
       expect(loggerDebugSpy).not.toHaveBeenCalled();
     });
   });

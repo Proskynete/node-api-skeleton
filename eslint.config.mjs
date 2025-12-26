@@ -98,6 +98,8 @@ export default tseslint.config(
       ...vitestPlugin.configs.recommended.rules,
       "vitest/expect-expect": "warn",
       "vitest/no-disabled-tests": "warn",
+      // Disable unbound-method for test files (false positives with Vitest mocks)
+      "@typescript-eslint/unbound-method": "off",
     },
   },
 

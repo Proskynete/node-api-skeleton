@@ -13,7 +13,14 @@ class MockDomainEvent implements IDomainEvent {
   readonly version = 1;
   readonly payload = { data: "test" };
 
-  toJSON() {
+  toJSON(): {
+    eventId: string;
+    eventName: string;
+    aggregateId: string;
+    occurredOn: string;
+    version: number;
+    payload: Record<string, unknown>;
+  } {
     return {
       eventId: this.eventId,
       eventName: this.eventName,
@@ -32,6 +39,7 @@ class MockEventHandler implements IDomainEventHandler<MockDomainEvent> {
 
   async handle(event: MockDomainEvent): Promise<void> {
     this.handleFn(event);
+    return Promise.resolve();
   }
 }
 
@@ -40,7 +48,7 @@ class FailingEventHandler implements IDomainEventHandler<MockDomainEvent> {
   readonly eventName = "MockEvent";
 
   async handle(_event: MockDomainEvent): Promise<void> {
-    throw new Error("Handler failed");
+    return Promise.reject(new Error("Handler failed"));
   }
 }
 

@@ -158,10 +158,15 @@ describe("GreetingCreatedEventHandler", () => {
       await handler.handle(event);
 
       const firstCall = loggerInfoSpy.mock.calls[0];
-      expect(firstCall[1]).toHaveProperty("eventId");
-      expect(firstCall[1]).toHaveProperty("message");
-      expect(firstCall[1]).toHaveProperty("createdAt");
-      expect(firstCall[1].eventId).toBe(event.eventId);
+      const metadata = firstCall[1] as {
+        eventId: string;
+        message: string;
+        createdAt: Date;
+      };
+      expect(metadata).toHaveProperty("eventId");
+      expect(metadata).toHaveProperty("message");
+      expect(metadata).toHaveProperty("createdAt");
+      expect(metadata.eventId).toBe(event.eventId);
     });
   });
 
@@ -189,8 +194,10 @@ describe("GreetingCreatedEventHandler", () => {
 
       await customHandler.handle(event);
 
-      expect(customLogger.info).toHaveBeenCalled();
-      expect(mockLogger.info).not.toHaveBeenCalled();
+      const customInfoSpy = customLogger.info as ReturnType<typeof vi.fn>;
+      const mockInfoSpy = mockLogger.info as ReturnType<typeof vi.fn>;
+      expect(customInfoSpy).toHaveBeenCalled();
+      expect(mockInfoSpy).not.toHaveBeenCalled();
     });
   });
 });
