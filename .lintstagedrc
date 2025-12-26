@@ -1,6 +1,4 @@
 {
-  "*.{ts,tsx,js,jsx}": [
-    "npm run lint:fix",
-    "git add ."
-  ]
+  "*.{js,ts}": ["prettier --write", "eslint --fix"],
+  "*.{json,md}": ["prettier --write"]
 }

@@ -1,0 +1,47 @@
+name: "✅ TODO to Issue"
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:  # Allow manual trigger
+
+permissions:
+  issues: write
+  contents: read
+
+jobs:
+  todo:
+    name: Convert TODOs to Issues
+    runs-on: ubuntu-latest
+    steps:
+      - name: 📚 Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: 🔄 Convert TODOs to Issues
+        uses: alstr/todo-to-issue-action@v4
+        with:
+          ISSUE_TEMPLATE: |
+            ## ✅ Codebase TODO
+
+            **File**: {{ url }}
+            **Line**: {{ line }}
+
+            ### Description
+            {{ body }}
+
+            ### Code Snippet
+            ```{{ language }}
+            {{ snippet }}
+            ```
+
+            ---
+            *This issue was automatically created from a TODO comment in the code.*
+          AUTO_ASSIGN: true
+          IGNORE: |
+            .github/workflows/todo-to-issue.yml
+            node_modules/**
+            dist/**
+            build/**
+            coverage/**
+          IDENTIFIERS: '[{"name": "TODO", "labels": ["todo"]}, {"name": "FIXME", "labels": ["bug"]}, {"name": "HACK", "labels": ["tech-debt"]}]'

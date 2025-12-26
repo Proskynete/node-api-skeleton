@@ -1,0 +1,35 @@
+name: "🗑️ Close Stale Issues/PRs"
+
+on:
+  schedule:
+    - cron: "30 1 * * *"  # Daily at 1:30 AM UTC
+  workflow_dispatch:  # Allow manual trigger
+
+permissions:
+  issues: write
+  pull-requests: write
+
+jobs:
+  stale:
+    name: Mark/Close Stale Items
+    runs-on: ubuntu-latest
+    steps:
+      - name: 🧹 Mark and Close Stale Items
+        uses: actions/stale@v9
+        with:
+          stale-issue-message: |
+            This issue is stale because it has been open 30 days with no activity.
+            Remove the stale label or comment, or this will be closed in 5 days.
+          stale-pr-message: |
+            This PR is stale because it has been open 30 days with no activity.
+            Remove the stale label or comment, or this will be closed in 5 days.
+          close-issue-message: |
+            This issue was closed because it has been inactive for 5 days since being marked as stale.
+          close-pr-message: |
+            This PR was closed because it has been inactive for 5 days since being marked as stale.
+          days-before-stale: 30
+          days-before-close: 5
+          stale-issue-label: 'stale'
+          stale-pr-label: 'stale'
+          exempt-issue-labels: 'pinned,security'
+          exempt-pr-labels: 'pinned,security,work-in-progress'

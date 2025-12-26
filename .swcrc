@@ -1,0 +1,26 @@
+{
+  "$schema": "https://swc.rs/schema.json",
+  "sourceMaps": true,
+  "minify": false,
+  "jsc": {
+    "parser": {
+      "syntax": "typescript",
+      "decorators": true,
+      "dynamicImport": true
+    },
+    "target": "es2022",
+    "transform": {
+      "decoratorMetadata": false
+    },
+    "keepClassNames": true,
+    "baseUrl": "./src",
+    "paths": {
+      "@app/*": ["@app/*"],
+      "@contexts/*": ["@contexts/*"],
+      "@shared/*": ["@shared/*"]
+    }
+  },
+  "module": {
+    "type": "commonjs"
+  }
+}

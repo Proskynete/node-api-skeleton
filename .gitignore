@@ -1,18 +1,120 @@
+# ================================
+# 🧠 IDEs / Editors
+# ================================
 .idea/
 .vscode/
+.claude/
 
-.coveralls.yml
+# ================================
+# 🖥️ OS
+# ================================
+.DS_Store
+Thumbs.db
 
+# ================================
+# 📦 Node / Package managers
+# ================================
 node_modules/
+.pnpm-store/
+.yarn/cache/
+.yarn/unplugged/
+.yarn/build-state.yml
+.yarn/install-state.gz
+.yarn.lock
+npm-debug.log*
+pnpm-debug.log*
 
+# ================================
+# 🔧 Build / Transpilation (SWC / TS)
+# ================================
+dist/
+build/
+.out/
+.swc/
+*.tsbuildinfo
+
+# ================================
+# 🧪 Testing
+# ================================
+coverage/
+coverage-unit/
+coverage-integration/
+reports/
+test-results/
+
+# Vitest
+.vitest/
+vitest-report/
+
+# ================================
+# 🚀 Performance testing (k6)
+# ================================
+k6-results/
+k6-report/
+*.har
+
+# ================================
+# 🗂️ Temporary / Runtime
+# ================================
 tmp/
 temp/
+.cache/
+logs/
+*.log
 
-build/
-dist/
+# Winston logs
+winston.log
+combined.log
+error.log
 
-coverage/
-
+# ================================
+# 🔐 Environment variables
+# ================================
 .env
 .env.*
 !.env.example
+
+# ================================
+# 🧾 CI / Coverage tools
+# ================================
+.coveralls.yml
+.nyc_output/
+
+# ================================
+# 🧠 Project specific
+# ================================
+.zsh_history_project
+
+# ================================
+# 📦 Optional: Docker
+# ================================
+docker-compose.override.yml
+.env.docker
+
+# ================================
+# 📚 Optional: Docs / Generated
+# ================================
+docs/generated/
+
+# ================================
+# 🗄️ Prisma / Database
+# ================================
+# Prisma generated clients (both PostgreSQL and MongoDB)
+node_modules/.prisma/
+
+# SQLite databases (if used for development)
+*.db
+*.db-journal
+*.sqlite
+*.sqlite3
+
+# PostgreSQL migrations (optional - comment out if you want to track migrations)
+# prisma/postgresql/migrations/
+
+# MongoDB doesn't use migrations, but keep this for reference
+# prisma/mongodb/migrations/
+
+# ================================
+# 📝 Pull Request
+# ================================
+PULL_REQUEST.md

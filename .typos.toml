@@ -1,0 +1,115 @@
+# Typos Configuration
+# https://github.com/crate-ci/typos
+
+[default]
+# Extend the default identifier regex to ignore specific patterns
+extend-ignore-identifiers-re = [
+    # Web Frameworks & Libraries
+    "Fastif.*",           # Fastify variations
+    "Awilix",             # Dependency injection
+    "Vitest",             # Test framework
+    "Supertest",          # HTTP testing
+    "prom.*",             # Prometheus client variations
+
+    # Project specific
+    "Proskynete",         # Author/Organization name
+    "proskynete",         # Lowercase variant
+
+    # GitHub & Git
+    "CODEOWNERS",         # GitHub file
+    "github",             # GitHub references
+    "githubusercontent",  # GitHub raw content
+
+    # Technical terms
+    "datetime",           # Date time
+    "postgres.*",         # PostgreSQL variations
+    "mongodb",            # MongoDB
+    "prisma.*",           # Prisma ORM
+    "dto.*",              # Data Transfer Object
+    "uuid.*",             # UUID variations
+    "openapi",            # OpenAPI
+    "swc",                # SWC compiler
+    "esbuild",            # esbuild
+    "nodejs",             # Node.js
+    "grafana",            # Grafana
+    "kubernetes",         # Kubernetes
+    "kubectl",            # Kubernetes CLI
+    "dockerignore",       # .dockerignore
+    "yamllint",           # YAML linter
+    "dependabot",         # Dependabot
+    "automerge",          # Auto-merge
+    "subgraph.*",         # Mermaid subgraphs
+    "promql",             # Prometheus Query Language
+    "testsprite",         # TestSprite MCP
+
+    # HTTP & Networking
+    "healthcheck.*",      # Health check variations
+    "liveness",           # Liveness probe
+    "readiness",          # Readiness probe
+    "cors",               # CORS
+    "nocache",            # No cache
+
+    # Development tools
+    "eslint",             # ESLint
+    "prettier",           # Prettier
+    "husky",              # Husky git hooks
+    "vitest",             # Vitest
+    "coveralls",          # Coveralls (even though removed)
+]
+
+# Extend words dictionary with technical terms
+[default.extend-words]
+# Common technical terms
+fastify = "fastify"
+awilix = "awilix"
+vitest = "vitest"
+promclient = "promclient"
+proskynete = "proskynete"
+healthcheck = "healthcheck"
+liveness = "liveness"
+readiness = "readiness"
+automerge = "automerge"
+openapi = "openapi"
+datetime = "datetime"
+subgraph = "subgraph"
+subgraphs = "subgraphs"
+postgresql = "postgresql"
+mongodb = "mongodb"
+prisma = "prisma"
+grafana = "grafana"
+kubernetes = "kubernetes"
+dockerignore = "dockerignore"
+yamllint = "yamllint"
+dependabot = "dependabot"
+testsprite = "testsprite"
+
+# Allow technical abbreviations
+dto = "dto"
+dtos = "dtos"
+orm = "orm"
+swc = "swc"
+uuid = "uuid"
+cors = "cors"
+api = "api"
+apis = "apis"
+cli = "cli"
+sdk = "sdk"
+url = "url"
+urls = "urls"
+
+[files]
+# Extend ignored files (in addition to defaults)
+extend-exclude = [
+    "*.lock",
+    "package-lock.json",
+    "node_modules/",
+    "dist/",
+    "build/",
+    "coverage/",
+    ".git/",
+    "*.log",
+    "*.md.backup",
+    ".typos.toml",
+    "**/README.md",
+    "README.md"
+]

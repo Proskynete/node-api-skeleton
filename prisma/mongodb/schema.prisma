@@ -1,0 +1,22 @@
+// MongoDB Database Configuration
+// This is the Prisma schema file for MongoDB
+// Learn more: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+  output   = "../../node_modules/.prisma/client-mongodb"
+}
+
+datasource db {
+  provider = "mongodb"
+}
+
+// Add your MongoDB models here
+// Example:
+// model User {
+//   id        String   @id @default(auto()) @map("_id") @db.ObjectId
+//   email     String   @unique
+//   name      String?
+//   createdAt DateTime @default(now())
+//   updatedAt DateTime @updatedAt
+// }

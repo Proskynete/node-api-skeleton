@@ -1,0 +1,31 @@
+# Prometheus Configuration for Node API Skeleton
+
+global:
+  scrape_interval: 15s # Scrape targets every 15 seconds
+  evaluation_interval: 15s # Evaluate rules every 15 seconds
+  external_labels:
+    monitor: 'node-api-skeleton'
+
+# Scrape configurations
+scrape_configs:
+  # API metrics
+  - job_name: 'api'
+    static_configs:
+      - targets: ['api:3000']
+        labels:
+          service: 'node-api-skeleton'
+          environment: 'development'
+    
+    # Scrape /metrics endpoint
+    metrics_path: '/metrics'
+    
+    # Scrape interval for this job (overrides global)
+    scrape_interval: 10s
+    
+    # Timeout for scraping
+    scrape_timeout: 5s
+
+  # Prometheus self-monitoring
+  - job_name: 'prometheus'
+    static_configs:
+      - targets: ['localhost:9090']
