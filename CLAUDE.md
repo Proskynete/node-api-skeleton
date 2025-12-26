@@ -687,7 +687,7 @@ app.post("/api/v1/greetings", GreetingController.createGreeting);
 
 ## GitHub Actions & CI/CD
 
-The project uses a **modular GitHub Actions architecture** with 10 specialized workflows.
+The project uses a **modular GitHub Actions architecture** with 11 specialized workflows.
 
 ### Core Workflows
 
@@ -746,6 +746,11 @@ The project uses a **modular GitHub Actions architecture** with 10 specialized w
     - Converts `// TODO:`, `// FIXME:`, `// HACK:` to GitHub issues
     - Auto-assigns to committer
     - Links to file and line number
+
+11. **Sync Labels** - `.github/workflows/sync-labels.yml`
+    - Automatically synchronizes repository labels from `.github/labels.yml`
+    - Creates, updates, and prunes labels
+    - Labels as code - version controlled
 
 ### Dependency Management
 

@@ -36,8 +36,8 @@ The project uses a **modular GitHub Actions architecture** following the **Singl
 | **Code Quality** | 2 | YAML validation, spell checking |
 | **PR Automation** | 2 | Size labeling, title validation |
 | **Monitoring** | 1 | Docker image size tracking |
-| **Maintenance** | 2 | Stale items, TODO conversion |
-| **Total** | **10** | Complete automation suite |
+| **Maintenance** | 3 | Stale items, TODO conversion, label sync |
+| **Total** | **11** | Complete automation suite |
 
 ---
 
@@ -443,6 +443,51 @@ coverage/**
 
 ---
 
+### 11. Sync Labels (`sync-labels.yml`)
+
+**Purpose**: Automatically synchronize repository labels from configuration file
+
+**Triggers**:
+- Push to `main` branch affecting `.github/labels.yml`
+- Manual trigger (workflow_dispatch)
+
+**Tool**: [micnncim/action-label-syncer](https://github.com/micnncim/action-label-syncer)
+
+**Features**:
+- ✅ Creates labels defined in `labels.yml`
+- ✅ Updates existing labels (color, description)
+- ✅ Removes labels not in configuration (`prune: true`)
+- ✅ Labels as code - version controlled
+
+**Configuration File**: `.github/labels.yml` (44 labels)
+
+**How It Works**:
+1. Reads label definitions from `.github/labels.yml`
+2. Compares with current repository labels
+3. Creates new labels
+4. Updates modified labels
+5. Deletes labels not in file (if prune enabled)
+
+**Benefits**:
+- Consistent labels across repositories
+- No manual label management
+- Changes tracked in git history
+- Easy to replicate label structure
+
+**Example Usage**:
+```yaml
+# .github/labels.yml
+- name: "🐛 bug"
+  color: "d73a4a"
+  description: "Something isn't working"
+```
+
+**Manual Trigger**: Can be triggered manually from GitHub Actions tab
+
+**Location**: `.github/workflows/sync-labels.yml`
+
+---
+
 ## Custom Reusable Actions
 
 ### Setup Node.js (`setup-node/action.yml`)
@@ -777,4 +822,4 @@ All workflows automatically inherit the new version.
 
 **Last Updated**: December 2024
 **Version**: 2.1.0
-**Workflows**: 10 active workflows
+**Workflows**: 11 active workflows
