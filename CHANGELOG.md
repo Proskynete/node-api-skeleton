@@ -7,6 +7,23 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Changed
+
+- **Server Architecture** - Refactored application bootstrap for better maintainability
+  - Extracted rate limiting configuration to `rate-limit.plugin.ts`
+  - Extracted Swagger OpenAPI configuration to `swagger.plugin.ts`
+  - Extracted Swagger UI configuration to `swagger-ui.plugin.ts`
+  - Extracted metrics endpoint to dedicated `metrics.ts` file
+  - Reduced `app.ts` from 145 lines to 57 lines (60% reduction)
+  - All plugins now use `fastify-plugin` wrapper for proper context sharing
+
+### Fixed
+
+- **TODO to Issue Workflow** - Prevented workflow from processing documentation files
+  - Workflow was incorrectly creating GitHub issues from example TODO comments in CLAUDE.md and docs/GITHUB_ACTIONS.md
+  - Added ignore patterns for `docs/**`, `*.md`, and `**/*.md`
+  - Ensures only actual code TODOs are converted to GitHub issues
+
 ## [2.1.0] - 2024-12-26
 
 ### Added
