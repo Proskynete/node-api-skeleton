@@ -21,6 +21,7 @@ jobs:
       - name: 🔄 Convert TODOs to Issues
         uses: alstr/todo-to-issue-action@v5
         with:
+          INSERT_ISSUE_URLS: false
           ISSUE_TEMPLATE: |
             ## ✅ Codebase TODO
 
