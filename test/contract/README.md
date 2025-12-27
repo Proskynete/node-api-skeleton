@@ -128,13 +128,13 @@ npx pact-broker publish pacts \
 
 ## Summary: What to Test in Each Layer
 
-| Layer                              | What to Test                                | Test Type                    |
-| ---------------------------------- | ------------------------------------------- | ---------------------------- |
-| **Domain**                         | Entities, Value Objects, Business rules     | Unit Tests                   |
-| **Application**                    | Use cases, Orchestration                    | Unit/Integration Tests       |
-| **Infrastructure (HTTP Inbound)**  | Controllers, Routes                         | **Provider Tests** (Pact) ✅ |
-| **Infrastructure (HTTP Outbound)** | HTTP Clients, API Adapters                  | **Consumer Tests** (Pact) ⚠️ |
-| **Infrastructure (Persistence)**   | Repositories, Databases                     | Integration Tests            |
+| Layer                              | What to Test                            | Test Type                    |
+| ---------------------------------- | --------------------------------------- | ---------------------------- |
+| **Domain**                         | Entities, Value Objects, Business rules | Unit Tests                   |
+| **Application**                    | Use cases, Orchestration                | Unit/Integration Tests       |
+| **Infrastructure (HTTP Inbound)**  | Controllers, Routes                     | **Provider Tests** (Pact) ✅ |
+| **Infrastructure (HTTP Outbound)** | HTTP Clients, API Adapters              | **Consumer Tests** (Pact) ⚠️ |
+| **Infrastructure (Persistence)**   | Repositories, Databases                 | Integration Tests            |
 
 ---
 
