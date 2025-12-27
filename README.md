@@ -29,6 +29,7 @@ Production-ready Node.js API skeleton built with <strong>Hexagonal Architecture<
 <details>
   <summary>📋 Table of Contents</summary>
   <ol>
+    <li><a href="#-using-as-template">Using as Template</a></li>
     <li><a href="#highlights">Highlights</a></li>
     <li><a href="#features">Features</a></li>
     <li><a href="#architecture">Architecture</a></li>
@@ -41,6 +42,37 @@ Production-ready Node.js API skeleton built with <strong>Hexagonal Architecture<
     <li><a href="#documentation">Documentation</a></li>
   </ol>
 </details>
+
+## 🚀 Using as Template
+
+This skeleton is designed to be used as a **starting point for your Node.js API projects**. You have two options:
+
+### Option 1: Use as GitHub Template (Recommended)
+
+1. Click the **"Use this template"** button at the top of this repository
+2. Create your new repository with your project name
+3. Clone your new repository
+4. Follow the **[Setup Guide](./docs/SETUP.md)** to customize for your project
+
+### Option 2: Clone and Explore First
+
+Want to explore the skeleton before committing?
+
+```bash
+# Clone this repository
+git clone https://github.com/Proskynete/node-api-skeleton.git
+cd node-api-skeleton
+
+# Install dependencies
+npm install
+
+# Start development server
+npm run dev
+```
+
+Visit `http://localhost:3000/api/v1/greetings` to see it in action!
+
+Once you're ready to use it as a template, follow the [Setup Guide](./docs/SETUP.md).
 
 ## ✨ Highlights
 
@@ -207,6 +239,8 @@ src/
 
 ## 🚀 Quick Start
 
+> **Note**: These instructions are for exploring the skeleton. If you've already created a project from this template, see the [Setup Guide](./docs/SETUP.md) instead.
+
 ### Prerequisites
 
 - Node.js >= 20
@@ -323,6 +357,7 @@ See [DOCKER.md](./docs/DOCKER.md) for complete documentation.
 The project includes **244 tests** across all layers with excellent coverage:
 
 **Coverage Stats** (as of v2.1.0):
+
 - ✅ **Statements**: 98.42%
 - ✅ **Branches**: 84.00%
 - ✅ **Functions**: 96.87%
@@ -344,18 +379,21 @@ npm run test:coverage    # Generate coverage report
 **Test Coverage by Layer**:
 
 **Domain Layer** (Pure business logic):
+
 - `DomainEvent.spec.ts` - Base domain event class (12 tests)
 - `GreetingCreatedEvent.spec.ts` - Greeting domain event (21 tests)
 - `Greeting.spec.ts` - Greeting entity
 - `Message.spec.ts` - Message value object
 
 **Application Layer** (Use cases & orchestration):
+
 - `GetGreetingUseCase.spec.ts` (v1 and v2) - Business workflows (19 tests each)
 - `GreetingMapper.spec.ts` (v1 and v2) - Data transformations (29 tests v2)
 - `GreetingCreatedEventHandler.spec.ts` - Event handling (13 tests)
 - `InMemoryDomainEventPublisher.spec.ts` - Event publishing (29 tests)
 
 **Infrastructure Layer** (Repositories):
+
 - `InMemoryGreetingRepository.spec.ts` - Data persistence (19 tests)
 
 **Architecture Principle**: Infrastructure adapters (controllers, middlewares, plugins, route loaders) are excluded from unit test coverage as they're validated through integration/E2E tests. This aligns with Hexagonal Architecture best practices.
@@ -376,6 +414,7 @@ describe("GET /api/v1/greetings", () => {
 ```
 
 **Integration Test Coverage**:
+
 - HTTP endpoints (v1 and v2)
 - Rate limiting
 - Health checks
@@ -393,6 +432,7 @@ npm run test:performance:load   # Full load test
 ```
 
 **Performance Thresholds**:
+
 - p95 latency < 500ms
 - p99 latency < 1000ms
 - Error rate < 1%
@@ -446,6 +486,7 @@ Interactive API docs at:
 
 ### Core Documentation
 
+- **[SETUP.md](./docs/SETUP.md)** - Initial setup guide after using this template (start here!)
 - **[ARCHITECTURE.md](./docs/ARCHITECTURE.md)** - Complete architecture guide (Hexagonal + DDD + Vertical Slices)
 - **[DOCKER.md](./docs/DOCKER.md)** - Docker setup, multi-stage builds, and Docker Compose
 - **[GITHUB_ACTIONS.md](./docs/GITHUB_ACTIONS.md)** - CI/CD pipeline, workflows, and automation
