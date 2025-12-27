@@ -1,0 +1,96 @@
+changelog:
+  exclude:
+    labels:
+      - ignore-for-release
+      - dependencies
+      - skip-changelog
+    authors:
+      - dependabot
+      - dependabot[bot]
+      - github-actions[bot]
+
+  categories:
+    - title: 🚀 Features
+      labels:
+        - feature
+        - enhancement
+        - feat
+
+    - title: 🐛 Bug Fixes
+      labels:
+        - bug
+        - fix
+        - bugfix
+
+    - title: 🔒 Security
+      labels:
+        - security
+        - vulnerability
+
+    - title: ⚡ Performance
+      labels:
+        - performance
+        - perf
+        - optimization
+
+    - title: 📚 Documentation
+      labels:
+        - documentation
+        - docs
+
+    - title: 🏗️ Architecture
+      labels:
+        - architecture
+        - refactor
+        - refactoring
+
+    - title: 🧪 Testing
+      labels:
+        - test
+        - testing
+        - tests
+
+    - title: 🔧 Maintenance
+      labels:
+        - chore
+        - maintenance
+        - housekeeping
+
+    - title: 🚀 CI/CD
+      labels:
+        - ci
+        - cd
+        - github-actions
+        - workflow
+
+    - title: 📦 Dependencies
+      labels:
+        - dependencies
+        - deps
+        - npm
+
+    - title: 🐳 Docker
+      labels:
+        - docker
+        - dockerfile
+        - docker-compose
+
+    - title: 🔥 Breaking Changes
+      labels:
+        - breaking-change
+        - breaking
+
+    - title: ⏪ Reverts
+      labels:
+        - revert
+
+    - title: 🎨 Style
+      labels:
+        - style
+        - formatting
+        - prettier
+        - eslint
+
+    - title: 📝 Other Changes
+      labels:
+        - "*"
