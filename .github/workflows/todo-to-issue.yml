@@ -44,4 +44,7 @@ jobs:
             dist/**
             build/**
             coverage/**
+            docs/**
+            *.md
+            **/*.md
           IDENTIFIERS: '[{"name": "TODO", "labels": ["todo"]}, {"name": "FIXME", "labels": ["bug"]}, {"name": "HACK", "labels": ["tech-debt"]}]'
