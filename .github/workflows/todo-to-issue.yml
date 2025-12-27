@@ -4,7 +4,7 @@ on:
   push:
     branches:
       - main
-  workflow_dispatch:  # Allow manual trigger
+  workflow_dispatch: # Allow manual trigger
 
 permissions:
   issues: write
