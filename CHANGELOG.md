@@ -22,9 +22,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fixed
 
-- **TODO to Issue Workflow** - Prevented workflow from processing documentation files
-  - Workflow was incorrectly creating GitHub issues from example TODO comments in CLAUDE.md and docs/GITHUB_ACTIONS.md
+- **TODO to Issue Workflow** - Fixed multiple configuration issues
+  - Prevented workflow from processing documentation files (example TODOs in CLAUDE.md and docs/GITHUB_ACTIONS.md)
   - Added ignore patterns for `docs/**`, `*.md`, and `**/*.md`
+  - Fixed label mismatch: Updated IDENTIFIERS to use correct label names with emojis (`🐛 bug` instead of `bug`)
+  - Upgraded action from v4 to v5 for better stability
+  - Disabled `INSERT_ISSUE_URLS` to prevent push failures on protected branches
+  - Moved permissions from workflow level to job level
   - Ensures only actual code TODOs are converted to GitHub issues
 
 ## [2.2.0] - 2024-12-27
