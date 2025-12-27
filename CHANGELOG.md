@@ -7,10 +7,37 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Changed
+
+- **Pull Request Template** - Enhanced with comprehensive sections for production-ready reviews
+  - Added Architecture Impact section (bounded contexts, layers, ADRs)
+  - Added Testing Strategy with 5 test types (unit, integration, e2e, contract, performance)
+  - Added API Changes section (breaking changes, migration guides)
+  - Added Security Considerations checklist (OWASP Top 10, input validation)
+  - Added Observability section (Winston logs, Prometheus metrics)
+  - Added Deployment Considerations (database migrations, feature flags, rollback plans)
+  - Added Reviewer Guidance (required expertise, focus areas)
+  - Fixed outdated commands (test:cov → test:coverage)
+  - Removed GitLab/Sonar references, use GitHub Actions instead
+
+### Fixed
+
+- **TODO to Issue Workflow** - Prevented workflow from processing documentation files
+  - Workflow was incorrectly creating GitHub issues from example TODO comments in CLAUDE.md and docs/GITHUB_ACTIONS.md
+  - Added ignore patterns for `docs/**`, `*.md`, and `**/*.md`
+  - Ensures only actual code TODOs are converted to GitHub issues
+
 ## [2.2.0] - 2024-12-27
 
 ### Changed
 
+- **Server Architecture** - Refactored application bootstrap for better maintainability
+  - Extracted rate limiting configuration to `rate-limit.plugin.ts`
+  - Extracted Swagger OpenAPI configuration to `swagger.plugin.ts`
+  - Extracted Swagger UI configuration to `swagger-ui.plugin.ts`
+  - Extracted metrics endpoint to dedicated `metrics.ts` file
+  - Reduced `app.ts` from 145 lines to 57 lines (60% reduction)
+  - All plugins now use `fastify-plugin` wrapper for proper context sharing
 - **Dependency Updates** - Consolidated 10 Dependabot updates
   - **Production Dependencies**:
     - `dotenv`: 16.6.1 → 17.2.3 (major version bump)

@@ -5,8 +5,8 @@ on:
     branches:
       - main
     paths:
-      - '.github/labels.yml'
-  workflow_dispatch:  # Allow manual trigger
+      - ".github/labels.yml"
+  workflow_dispatch: # Allow manual trigger
 
 permissions:
   issues: write
@@ -26,4 +26,4 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           manifest: .github/labels.yml
-          prune: true  # Remove labels not in labels.yml
+          prune: true # Remove labels not in labels.yml

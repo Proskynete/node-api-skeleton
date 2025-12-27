@@ -4,7 +4,7 @@ on:
   push:
     branches:
       - main
-  workflow_dispatch:  # Allow manual trigger
+  workflow_dispatch: # Allow manual trigger
 
 permissions:
   issues: write
@@ -44,4 +44,7 @@ jobs:
             dist/**
             build/**
             coverage/**
+            docs/**
+            *.md
+            **/*.md
           IDENTIFIERS: '[{"name": "TODO", "labels": ["todo"]}, {"name": "FIXME", "labels": ["bug"]}, {"name": "HACK", "labels": ["tech-debt"]}]'
