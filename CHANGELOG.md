@@ -9,13 +9,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 
-- **Server Architecture** - Refactored application bootstrap for better maintainability
-  - Extracted rate limiting configuration to `rate-limit.plugin.ts`
-  - Extracted Swagger OpenAPI configuration to `swagger.plugin.ts`
-  - Extracted Swagger UI configuration to `swagger-ui.plugin.ts`
-  - Extracted metrics endpoint to dedicated `metrics.ts` file
-  - Reduced `app.ts` from 145 lines to 57 lines (60% reduction)
-  - All plugins now use `fastify-plugin` wrapper for proper context sharing
+- **Pull Request Template** - Enhanced with comprehensive sections for production-ready reviews
+  - Added Architecture Impact section (bounded contexts, layers, ADRs)
+  - Added Testing Strategy with 5 test types (unit, integration, e2e, contract, performance)
+  - Added API Changes section (breaking changes, migration guides)
+  - Added Security Considerations checklist (OWASP Top 10, input validation)
+  - Added Observability section (Winston logs, Prometheus metrics)
+  - Added Deployment Considerations (database migrations, feature flags, rollback plans)
+  - Added Reviewer Guidance (required expertise, focus areas)
+  - Fixed outdated commands (test:cov → test:coverage)
+  - Removed GitLab/Sonar references, use GitHub Actions instead
 
 ### Fixed
 
@@ -23,6 +26,37 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - Workflow was incorrectly creating GitHub issues from example TODO comments in CLAUDE.md and docs/GITHUB_ACTIONS.md
   - Added ignore patterns for `docs/**`, `*.md`, and `**/*.md`
   - Ensures only actual code TODOs are converted to GitHub issues
+
+## [2.2.0] - 2024-12-27
+
+### Changed
+
+- **Server Architecture** - Refactored application bootstrap for better maintainability
+  - Extracted rate limiting configuration to `rate-limit.plugin.ts`
+  - Extracted Swagger OpenAPI configuration to `swagger.plugin.ts`
+  - Extracted Swagger UI configuration to `swagger-ui.plugin.ts`
+  - Extracted metrics endpoint to dedicated `metrics.ts` file
+  - Reduced `app.ts` from 145 lines to 57 lines (60% reduction)
+  - All plugins now use `fastify-plugin` wrapper for proper context sharing
+- **Dependency Updates** - Consolidated 10 Dependabot updates
+  - **Production Dependencies**:
+    - `dotenv`: 16.6.1 → 17.2.3 (major version bump)
+  - **Development Dependencies**:
+    - `@types/supertest`: 2.0.16 → 6.0.3 (major version bump)
+    - `husky`: 8.0.3 → 9.1.7 (major version bump)
+    - `eslint-config-prettier`: 9.1.2 → 10.1.8 (major version bump)
+    - `@types/ioredis`: 4.28.10 → 5.0.0 (major version bump)
+    - `cross-env`: 7.0.3 → 10.1.0 (major version bump)
+  - **GitHub Actions**:
+    - `actions/checkout`: v4 → v6
+    - `actions/stale`: v9 → v10
+    - `amannn/action-semantic-pull-request`: v5 → v6
+    - `actions/setup-python`: v5 → v6
+
+### Security
+
+- Updated dependencies to latest versions with security fixes
+- All tests passing with updated dependencies (165 unit + 28 integration)
 
 ## [2.1.0] - 2024-12-26
 
@@ -112,6 +146,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Performance testing guide
 - Contract testing guide
 
-[unreleased]: https://github.com/Proskynete/node-api-skeleton/compare/v2.1.0...HEAD
+[unreleased]: https://github.com/Proskynete/node-api-skeleton/compare/v2.2.0...HEAD
+[2.2.0]: https://github.com/Proskynete/node-api-skeleton/compare/v2.1.0...v2.2.0
 [2.1.0]: https://github.com/Proskynete/node-api-skeleton/compare/v2.0.0...v2.1.0
 [2.0.0]: https://github.com/Proskynete/node-api-skeleton/releases/tag/v2.0.0

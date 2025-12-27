@@ -15,7 +15,7 @@ jobs:
       size: ${{ steps.size.outputs.size }}
     steps:
       - name: 📚 Checkout Base Branch
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
         with:
           ref: ${{ github.event.pull_request.base.ref }}
 
@@ -33,7 +33,7 @@ jobs:
       size: ${{ steps.size.outputs.size }}
     steps:
       - name: 📚 Checkout PR Branch
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
 
       - name: 🔧 Build Docker Image (PR)
         run: docker build -t api-head .
