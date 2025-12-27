@@ -3,6 +3,7 @@
   "version": "2.2.0",
   "description": "Production-ready Node.js API skeleton with Hexagonal Architecture, Fastify, TypeScript, DDD, Vitest, Docker, Prometheus, and k6",
   "private": true,
+  "license": "MIT",
   "scripts": {
     "start": "node ./dist/main.js",
     "dev": "nodemon --exec \"node -r @swc-node/register\" src/main.ts",
