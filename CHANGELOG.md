@@ -7,6 +7,30 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [2.2.0] - 2024-12-27
+
+### Changed
+
+- **Dependency Updates** - Consolidated 10 Dependabot updates
+  - **Production Dependencies**:
+    - `dotenv`: 16.6.1 → 17.2.3 (major version bump)
+  - **Development Dependencies**:
+    - `@types/supertest`: 2.0.16 → 6.0.3 (major version bump)
+    - `husky`: 8.0.3 → 9.1.7 (major version bump)
+    - `eslint-config-prettier`: 9.1.2 → 10.1.8 (major version bump)
+    - `@types/ioredis`: 4.28.10 → 5.0.0 (major version bump)
+    - `cross-env`: 7.0.3 → 10.1.0 (major version bump)
+  - **GitHub Actions**:
+    - `actions/checkout`: v4 → v6
+    - `actions/stale`: v9 → v10
+    - `amannn/action-semantic-pull-request`: v5 → v6
+    - `actions/setup-python`: v5 → v6
+
+### Security
+
+- Updated dependencies to latest versions with security fixes
+- All tests passing with updated dependencies (165 unit + 28 integration)
+
 ## [2.1.0] - 2024-12-26
 
 ### Added
@@ -95,6 +119,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Performance testing guide
 - Contract testing guide
 
-[unreleased]: https://github.com/Proskynete/node-api-skeleton/compare/v2.1.0...HEAD
+[unreleased]: https://github.com/Proskynete/node-api-skeleton/compare/v2.2.0...HEAD
+[2.2.0]: https://github.com/Proskynete/node-api-skeleton/compare/v2.1.0...v2.2.0
 [2.1.0]: https://github.com/Proskynete/node-api-skeleton/compare/v2.0.0...v2.1.0
 [2.0.0]: https://github.com/Proskynete/node-api-skeleton/releases/tag/v2.0.0
