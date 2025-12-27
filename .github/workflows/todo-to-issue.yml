@@ -47,4 +47,4 @@ jobs:
             docs/**
             *.md
             **/*.md
-          IDENTIFIERS: '[{"name": "TODO", "labels": ["todo"]}, {"name": "FIXME", "labels": ["bug"]}, {"name": "HACK", "labels": ["tech-debt"]}]'
+          IDENTIFIERS: '[{"name": "TODO", "labels": ["todo"]}, {"name": "FIXME", "labels": ["🐛 bug"]}, {"name": "HACK", "labels": ["tech-debt"]}]'
