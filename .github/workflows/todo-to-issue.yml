@@ -4,15 +4,11 @@ on:
   push:
     branches:
       - main
-  workflow_dispatch: # Allow manual trigger
 
 jobs:
   todo:
     name: Convert TODOs to Issues
     runs-on: ubuntu-latest
-    permissions:
-      issues: write
-      contents: read
     steps:
       - name: 📚 Checkout Repository
         uses: actions/checkout@v6
@@ -20,7 +16,6 @@ jobs:
       - name: 🔄 Convert TODOs to Issues
         uses: alstr/todo-to-issue-action@v5
         with:
-          INSERT_ISSUE_URLS: false
           ISSUE_TEMPLATE: |
             ## ✅ Codebase TODO
 
@@ -40,11 +35,3 @@ jobs:
           AUTO_ASSIGN: true
           IGNORE: |
             .github/workflows/todo-to-issue.yml
-            node_modules/**
-            dist/**
-            build/**
-            coverage/**
-            docs/**
-            *.md
-            **/*.md
-          IDENTIFIERS: '[{"name": "TODO", "labels": ["todo"]}, {"name": "FIXME", "labels": ["🐛 bug"]}, {"name": "HACK", "labels": ["tech-debt"]}]'
